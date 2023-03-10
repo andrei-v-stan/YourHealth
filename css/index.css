@@ -21,3 +21,53 @@
     color: black;
   }
   
+
+
+
+
+  .newPostContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .newPostButton {
+    width: 90%;
+    height: 50px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+
+  .newPostButton p {
+    margin-top: 15px;
+  }
+
+  .newPostButtonClicked {
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+  }
+
+  .newPostButtonClicked p {
+    margin-top: 5px;
+  }
+
+
+  
+  .hiddenFormContainer {
+    width: 400px;
+    height: 200px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
