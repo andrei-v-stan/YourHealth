@@ -1,0 +1,23 @@
+
+.mainNavBar {
+    background-color: #233c67;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 15px;
+  }
+  
+  .mainNavBar a {
+    float: top;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 15px 15px;
+    text-decoration: none;
+  }
+  
+  .mainNavBar a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
