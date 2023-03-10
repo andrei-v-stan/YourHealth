@@ -13,7 +13,7 @@ function toggleNewPostAnimations() {
     } else {
         npb.classList.add("newPostButtonClicked");
         npbtData = npbt.textContent;
-        npbt.innerHTML = 'Dont click';
+        npbt.innerHTML = 'Close form';
     }
 
     if (nfc.classList.contains("hidden")) {

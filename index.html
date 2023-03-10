@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My Website</title>
+        <title>Your Mind</title>
         <link rel="stylesheet" href="css/index.css" type="text/css">
     </head>
 <body>
@@ -16,19 +16,27 @@
 
     <div class="newPostContainer">
         <div class="newPostButton" id="newPostButton" onclick="toggleNewPostAnimations()">
-            <p id="newPostButtonText">Click here</p>
+            <p id="newPostButtonText">Click here to create a new post</p>
         </div>
         <div class="hiddenFormContainer hidden" id="hiddenFormContainer">
             <form action="/submit" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-                
+                <label>
+                    <input type="text" id="title" name="title" placeholder="Post title" required>
+                </label>
+                <label>
+                    <textarea id="text" name="text" rows="5" placeholder="Post text" required></textarea>
+                </label>
+                <label>
+                    <input type="checkbox" name="tag" value="sfw"> sfw
+                </label>
+                <label>
+                    <input type="checkbox" name="tag" value="nsfw"> nsfw
+                </label>
+                <label>
+                    <input type="checkbox" name="tag" value="rant"> rant
+                </label>
+                <label for="files">Select media files:</label>
+                <input type="file" id="files" name="files" multiple>
                 <button type="submit">Submit</button>
                 </form>
         </div>

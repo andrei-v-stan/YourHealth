@@ -36,24 +36,29 @@
     height: 50px;
     background-color: black;
     color: white;
-    text-align: center;
     cursor: pointer;
+    border-radius: 7pt;
     transition: all 0.5s ease;
   }
 
   .newPostButton p {
-    margin-top: 15px;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 20px;
   }
 
   .newPostButtonClicked {
-    width: 100px;
+    width: 150px;
     height: 50px;
     line-height: 50px;
     cursor: pointer;
+    border-radius: 15pt;
   }
 
   .newPostButtonClicked p {
-    margin-top: 5px;
+    text-align: center;
+    margin: 0;
+    font-size: 20px;
   }
 
 
