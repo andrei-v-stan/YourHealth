@@ -42,12 +42,18 @@
         </div>
     </div>
 
-    <form action="/signup" method="post">
+    <form action="/signup" method="POST">
         <input type="text" id="username" name="username" placeholder="Username">
         <input type="password" id="password" name="password" placeholder="Password">
         <input type="email" id="email" name="email" placeholder="Email">
         <button type="submit" id="submitBtn">Sign Up</button>
-      </form>
+    </form>
+    <form action="/mail" method="POST">
+        <input type="text" id="nameMail" name="nameMail" placeholder="Full name" required>
+        <input type="emailMail" id="emailMail" name="emailMail" placeholder="Email" required>
+        <textarea id="textMail" name="textMail" rows="5" placeholder="Email text" required></textarea>
+        <button type="submit">Send</button>
+    </form>
 
   
 
