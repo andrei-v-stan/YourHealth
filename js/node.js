@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const { con } = require('./sql');
 const app = express();
 
@@ -58,6 +60,7 @@ transporter.sendMail(mailOptions, (error, info) => {
 });
 
 
+
 app.post('/create_post', (req, res) => {
   const { titlePost, contentPost, authorPost } = req.body;
 
@@ -110,6 +113,29 @@ app.get('/posts/:id', (req, res) => {
       `);
     });
   });
+
+
+
+
+  app.use(cookieParser());
+  app.post('/login', (req, res) => {
+    const { emailLogin, passwordLogin } = req.body;
+
+    con.query('SELECT * FROM usercreds WHERE email = ? AND password = ?', [emailLogin, passwordLogin], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal server error');
+        } else if (results.length == 0) {
+            res.status(401).send('Invalid email or password');
+        } else {
+            const accountId = results[0].id;
+            res.cookie('account_id', accountId);
+            res.send('Logged in successfully');
+        }
+    });
+});
+
+
 
 
 
