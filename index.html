@@ -54,6 +54,18 @@
         <textarea id="textMail" name="textMail" rows="5" placeholder="Email text" required></textarea>
         <button type="submit">Send</button>
     </form>
+    <form action="/create_post" method="post">
+        <label for="title">Title:</label>
+        <input type="text" name="titlePost" id="titlePost"><br>
+      
+        <label for="content">Content:</label>
+        <textarea name="contentPost" id="contentPost"></textarea><br>
+      
+        <label for="author">Author:</label>
+        <input type="text" name="authorPost" id="authorPost"><br>
+      
+        <input type="submit" value="Create Post">
+      </form>
 
   
 

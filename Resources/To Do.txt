@@ -30,6 +30,7 @@ Post section:
     - A comment section
     - A report button
  - Search bar for looking up either keywords from a post's title, or for a user
+ - Has the choice of being anonymous (their name is changed)
 
 
 Chat section:
