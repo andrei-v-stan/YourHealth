@@ -3,13 +3,16 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+
 const { con } = require('./sql');
+
 const app = express();
 
 
 app.use(express.static(__dirname + '/../../YourMind'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 
 app.post('/signup', (req, res) => {
@@ -60,22 +63,47 @@ transporter.sendMail(mailOptions, (error, info) => {
 });
 
 
+app.get('/cookies', (req, res) => {
+  res.send(Object.entries(req.cookies));
+});
+
+
 
 app.post('/create_post', (req, res) => {
-  const { titlePost, contentPost, authorPost } = req.body;
+  const { titlePost, contentPost } = req.body;
 
-  con.query('INSERT INTO posts (title, content, author, created_at) VALUES (?, ?, ?, NOW())', [titlePost, contentPost, authorPost], (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send('Error creating post');
-    } else {
-      res.redirect('/posts');
-    }
-  });
+  if(!req.cookies.accountID){
+    res.status(401).send(`
+            <html>
+              <body>
+                <p>You need to be signed in to create a post... Redirecting in: <span id="countdown">5</span></p>
+                <script src="js/other.js"></script>
+              </body>
+            </html>
+            `);
+  }
+  else {
+    con.query('INSERT INTO posts (title, content, authorID, creationDate) VALUES (?, ?, ?, NOW())', [titlePost, contentPost, req.cookies.accountID], (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send(`
+            <html>
+              <body>
+                <p>There has been an error while uploading your post... Redirecting in: <span id="countdown">5</span></p>
+                <script src="js/other.js"></script>
+              </body>
+            </html>
+            `);
+      }
+      else {
+        res.status(200).redirect('/posts');
+      }
+    });
+  }
 });
 
 app.get('/posts', (req, res) => {
-  con.query('SELECT * FROM posts ORDER BY created_at DESC', (err, results) => {
+  con.query('SELECT * FROM posts ORDER BY creationDate DESC', (err, results) => {
     if (err) {
       throw err;
     }
@@ -106,7 +134,7 @@ app.get('/posts/:id', (req, res) => {
           <title>${post.title}</title>
         </head>
         <body>
-          <h1>${post.author}</h1>
+          <h1>${post.authorID}</h1>
           <p>${post.content}</p>
         </body>
         </html>
@@ -117,20 +145,39 @@ app.get('/posts/:id', (req, res) => {
 
 
 
-  app.use(cookieParser());
   app.post('/login', (req, res) => {
     const { emailLogin, passwordLogin } = req.body;
-
-    con.query('SELECT * FROM usercreds WHERE email = ? AND password = ?', [emailLogin, passwordLogin], (err, results) => {
+    con.query('SELECT * FROM usercreds WHERE ((email = ? AND password = ?) OR (username = ? AND password = ?))', 
+    [emailLogin, passwordLogin,emailLogin, passwordLogin], (err, results) => {
         if (err) {
             console.error(err);
-            res.status(500).send('Internal server error');
+            res.status(500).send(`
+            <html>
+              <body>
+                <p>Internal server error... Redirecting in: <span id="countdown">5</span></p>
+                <script src="js/other.js"></script>
+              </body>
+            </html>
+            `);
         } else if (results.length == 0) {
-            res.status(401).send('Invalid email or password');
+            res.status(401).send(`
+            <html>
+              <body>
+                <p>Invalid email or password... Redirecting in: <span id="countdown">5</span></p>
+                <script src="js/other.js"></script>
+              </body>
+            </html>
+            `);
         } else {
-            const accountId = results[0].id;
-            res.cookie('account_id', accountId);
-            res.send('Logged in successfully');
+            res.cookie('accountID', results[0].id);
+            res.status(200).send(`
+            <html>
+              <body>
+                <p>Logged in successfully... Redirecting in: <span id="countdown">5</span></p>
+                <script src="js/other.js"></script>
+              </body>
+            </html>
+            `);
         }
     });
 });
@@ -140,5 +187,5 @@ app.get('/posts/:id', (req, res) => {
 
 
 app.listen(3000, () => {
-  console.log(`Server is running on port ${3000}`);
+  console.log(`Web server is now live and running on port ${3000}`);
 });
