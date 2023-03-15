@@ -185,6 +185,16 @@ app.get('/posts/:id', (req, res) => {
 
 
 
+app.post('/logout', (req, res) => {
+  const cookies = Object.keys(req.cookies);
+  cookies.forEach(cookieName => {
+    res.clearCookie(cookieName);
+  });
+  res.send('Cookies deleted');
+});
+
+
+
 
 app.listen(3000, () => {
   console.log(`Web server is now live and running on port ${3000}`);
