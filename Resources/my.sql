@@ -1,4 +1,5 @@
 USE mydb;
+
 CREATE TABLE IF NOT EXISTS userCreds (
 	  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	  username VARCHAR(255) NOT NULL,
@@ -6,6 +7,10 @@ CREATE TABLE IF NOT EXISTS userCreds (
 	  email VARCHAR(255) NOT NULL,
 	  creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
+
+INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('', '', '');
+UPDATE usercreds SET id = 0 WHERE id = 1;
+
 CREATE TABLE IF NOT EXISTS posts (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
@@ -13,4 +18,14 @@ CREATE TABLE IF NOT EXISTS posts (
   authorID INT NOT NULL,
   FOREIGN KEY (authorID) REFERENCES usercreds(id),
   creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
+
+CREATE TABLE IF NOT EXISTS userlocs (
+  accountID INT NOT NULL,
+  FOREIGN KEY (accountID) REFERENCES usercreds(id),
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  latitude TEXT NOT NULL,
+  longitude TEXT NOT NULL,
+  accuracy TEXT NOT NULL,
+  recordingStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

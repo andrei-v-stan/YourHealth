@@ -17,3 +17,24 @@ function startCountdown() {
       }
     }, 1000);
   }
+
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(gpsPos);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+  
+  function gpsPos(position) {
+    const lat = position.coords.latitude;
+    const long = position.coords.longitude;
+    const acc = position.coords.accuracy;
+    setInterval(() => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:3000/location');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ lat, long, acc }));
+    }, 3000000);
+  }

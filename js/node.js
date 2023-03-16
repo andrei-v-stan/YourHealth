@@ -195,6 +195,25 @@ app.post('/logout', (req, res) => {
 
 
 
+app.post('/location', (req, res) => {
+  const { lat, long, acc } = req.body;
+  var querySql;
+  if(!req.cookies.accountID){
+    querySql = `INSERT INTO userlocs (accountID, latitude, longitude, accuracy, recordingStamp) VALUES (0, ${lat}, ${long}, ${acc}, NOW())`;
+  }
+  else {
+    querySql = `INSERT INTO userlocs (accountID, latitude, longitude, accuracy, recordingStamp) VALUES (${req.cookies.accountID}, ${lat}, ${long}, ${acc}, NOW())`;
+  }
+  con.query(querySql, (error, results) => {
+    if (error) throw error;
+    else {
+      console.log('yay');
+    }
+  });
+});
+
+
+
 
 app.listen(3000, () => {
   console.log(`Web server is now live and running on port ${3000}`);
