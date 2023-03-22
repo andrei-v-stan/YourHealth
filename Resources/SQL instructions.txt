@@ -13,4 +13,4 @@
 
 * Install in Visual Studio the extension "Code Runner"
 
-* Run in cmd "npm install mysql express body-parser"
+* Run in cmd "npm install mysql express body-parser nodemailer cookie-parser bcrypt ejs"

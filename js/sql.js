@@ -7,5 +7,4 @@ const con = mysql.createPool({
   database: "mydb"
 });
 
-
 module.exports = { con };

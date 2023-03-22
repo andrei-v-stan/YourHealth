@@ -3,9 +3,10 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const path = require('path');
+
 
 const { con } = require('./sql');
-
 const app = express();
 
 
@@ -13,6 +14,10 @@ app.use(express.static(__dirname + '/../../YourMind'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.set('views', path.join(__dirname));
+//app.set('views', path.join(__dirname, '../ejs'));
+app.set('view engine', 'ejs');
+
 
 
 app.post('/signup', (req, res) => {
@@ -30,6 +35,7 @@ app.post('/signup', (req, res) => {
 
     });
   });
+
 
 
 
@@ -209,6 +215,15 @@ app.post('/location', (req, res) => {
     else {
       console.log('yay');
     }
+  });
+});
+
+
+app.get('/pots', (req, res) => {
+  con.query('SELECT * FROM posts', (error, results, fields) => {
+    if (error) throw error;
+
+    res.render('posts', { posts: results });
   });
 });
 

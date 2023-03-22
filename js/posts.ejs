@@ -72,6 +72,11 @@
         <button type="submit">Logout</button>
       </form>
     <button onclick="getLocation()">Get Location</button>
+    <h1>Results</h1>
+    <% posts.forEach((post) => { %>
+        <h2><%= post.title %></h2>
+        <p><%= post.content %></p>
+      <% }); %>
 
   
 

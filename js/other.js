@@ -38,3 +38,5 @@ function startCountdown() {
       xhr.send(JSON.stringify({ lat, long, acc }));
     }, 3000000);
   }
+
+
