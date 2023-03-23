@@ -220,11 +220,18 @@ app.post('/location', (req, res) => {
 
 
 app.get('/pots', (req, res) => {
-  con.query('SELECT * FROM posts', (error, results, fields) => {
-    if (error) throw error;
-
-    res.render('posts', { posts: results });
-  });
+  var reqFilters;
+  if(!req.body.filters){
+    reqFilters = req.body.filters;
+  }
+  else{
+    con.query('SELECT * FROM posts', (error, results, fields) => {
+      if (error) throw error;
+  
+      res.render('posts', { posts: results });
+    }); 
+  }
+  res.render('posts', { posts: 0 });
 });
 
 

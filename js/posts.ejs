@@ -72,11 +72,23 @@
         <button type="submit">Logout</button>
       </form>
     <button onclick="getLocation()">Get Location</button>
+    <form action="/pots" method="POST">
+        <input type="checkbox" name="filters" value="sfw">
+        <label for="sfw"> SFW</label><br>
+        <input type="checkbox" name="fruits" value="nsfw">
+        <label for="nsfw"> NSFW</label><br>
+        <input type="checkbox" name="fruits" value="depression">
+        <label for="depression"> Depression</label><br>
+        <button type="submit">Submit</button>
+        </form>
     <h1>Results</h1>
-    <% posts.forEach((post) => { %>
-        <h2><%= post.title %></h2>
-        <p><%= post.content %></p>
-      <% }); %>
+    <% if (posts != 0) { %>
+        <% posts.forEach((post) => { %>
+            <h2><%= post.title %></h2>
+            <p><%= post.content %></p>
+          <% }); %>
+      <% } %>
+    
 
   
 
