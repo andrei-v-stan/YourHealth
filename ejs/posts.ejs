@@ -54,14 +54,17 @@
         <textarea id="textMail" name="textMail" rows="5" placeholder="Email text" required></textarea>
         <button type="submit">Send</button>
     </form>
-    <form action="/create_post" method="post">
+    <form id="postForm" action="/create_post" method="post">
         <label for="title">Title:</label>
         <input type="text" name="titlePost" id="titlePost"><br>
       
         <label for="content">Content:</label>
         <textarea name="contentPost" id="contentPost"></textarea><br>
-      
-        <input type="submit" value="Create Post">
+
+        <button id="addTagButton" type="button" onclick="createAndSet()">Add a new Tag</button><br>
+
+        <br>
+        <input type="submit" value="Create Post" style="margin-top: 10px;">
       </form>
       <form action="/login" method="post">
         <input type="email" id="emailLogin" name="emailLogin" placeholder="Email">
@@ -75,9 +78,9 @@
     <form action="/pots" method="POST">
         <input type="checkbox" name="filters" value="sfw">
         <label for="sfw"> SFW</label><br>
-        <input type="checkbox" name="fruits" value="nsfw">
+        <input type="checkbox" name="filters" value="nsfw">
         <label for="nsfw"> NSFW</label><br>
-        <input type="checkbox" name="fruits" value="depression">
+        <input type="checkbox" name="filters" value="depression">
         <label for="depression"> Depression</label><br>
         <button type="submit">Submit</button>
         </form>
@@ -87,10 +90,7 @@
             <h2><%= post.title %></h2>
             <p><%= post.content %></p>
           <% }); %>
-      <% } %>
-    
-
-  
+      <% } %>  
 
   <script src="js/index.js"></script>
   <script src="js/sql.js"></script>

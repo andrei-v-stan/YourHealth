@@ -39,4 +39,28 @@ function startCountdown() {
     }, 3000000);
   }
 
+  var tagId = 0
+  var ct = 0
+
+  function createAndSet() {
+    const newTagField = document.createElement("input");
+    tagId = tagId + 1;
+    newTagField.setAttribute("id", "tag-" + tagId);
+    newTagField.setAttribute("type", "text");
+    newTagField.setAttribute("name", "newTag");
+    newTagField.setAttribute("value", '');
+    
+    const postForm = document.getElementById("postForm");
+    const submitButton = postForm.querySelector("input[type='submit']");
+    postForm.insertBefore(newTagField, submitButton);
+
+    var buttonSpace = document.createElement("br");
+    postForm.insertBefore(buttonSpace, submitButton);
+
+    const disableField = document.getElementById("tag-" + (tagId-1));
+    if (tagId > 1) {
+      disableField.setAttribute("readonly", "readonly");
+    }
+  }
+
 
