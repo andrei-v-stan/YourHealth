@@ -15,17 +15,59 @@ const errorHtml = `
 `;
 
 
+
 appRouter.post('/signup', (req, res) => {
   const { username, password, email } = req.body;
   const querySignUp = `INSERT INTO usercreds (username, password, email) VALUES (?, ?, ?)`;
-  con.query(querySignUp, [username, password, email], (error, results) => {
+  const queryAccEmail = `SELECT 1 FROM usercreds WHERE email = ? LIMIT 1`;
+  const queryAccUsername = `SELECT 1 FROM usercreds WHERE username = ? LIMIT 1`;
+
+  con.query(queryAccUsername, [username], (error, result) => {
     if (error) {
-      console.log('[Error]: appRouter.get() -> con.query(querySignUp)');
+      console.log('[Error]: appRouter.get() -> con.query(queryAccUsername)');
       console.error(error);
       res.status(500).send(errorHtml);
     }
+    if (result == 0) {
+      con.query(queryAccEmail, [email], (error, result) => {
+        if (error) {
+          console.log('[Error]: appRouter.get() -> con.query(queryAccEmail)');
+          console.error(error);
+          res.status(500).send(errorHtml);
+        }
+        if (result == 0) {
+          con.query(querySignUp, [username, password, email], (error, results) => {
+            if (error) {
+              console.log('[Error]: appRouter.get() -> con.query(querySignUp)');
+              console.error(error);
+              res.status(500).send(errorHtml);
+            }
+            else {
+              res.status(200).redirect('/');
+            }
+          });
+        }
+        else {
+          res.status(500).send(`
+          <html>
+            <body>
+              <p>The email address is already in use... Redirecting in: <span id="countdown">5</span></p>
+              <script src="js/countRedirect.js"></script>
+            </body>
+          </html>
+          `);
+        }
+      });
+    }
     else {
-      res.status(200).redirect('/');
+        res.status(500).send(`
+        <html>
+          <body>
+            <p>The username is already in use... Redirecting in: <span id="countdown">5</span></p>
+            <script src="js/countRedirect.js"></script>
+          </body>
+        </html>
+        `);
     }
   });
 });
