@@ -1,0 +1,1 @@
+npm install mysql2 express body-parser nodemailer cookie-parser ejs
