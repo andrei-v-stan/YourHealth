@@ -64,3 +64,19 @@ function startCountdown() {
   }
 
 
+
+const searchTagField = document.getElementById('searchTag');
+searchTagField.addEventListener('keyup', () => {
+
+  const searchTagText = searchTagField.value.toLowerCase();
+  const tagBoxes = document.querySelectorAll('#tagBoxes input[type="checkbox"]');
+
+  tagBoxes.forEach((checkbox) => {
+    if (checkbox.parentNode.textContent.toLowerCase().includes(searchTagText)) {
+      checkbox.parentNode.style.display = 'block';
+    } else {
+      checkbox.parentNode.style.display = 'none';
+    }
+  });
+});
+

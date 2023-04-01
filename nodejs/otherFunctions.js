@@ -133,10 +133,14 @@ appRouter.post('/location', (req, res) => {
 
 appRouter.route('/posts')
   .get((req, res) => {
-    con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, result) => {
-      if (error) throw error;
-  
-      res.render('posts', { posts: result });
+    con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, resultPosts) => {
+      if (error) throw error; 
+
+      con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+        if (error) throw error; 
+
+        res.render('posts', { posts: resultPosts, tags: resultTags });
+      });
     });
   })
 
@@ -144,10 +148,12 @@ appRouter.route('/posts')
     let reqFilters;
     let queryFilters;
     let strFilters = '';
+    var i;
   
     if (req.body && req.body.filters) {
       if(typeof(req.body.filters) == 'string')  {
-        strFilters = `'` + req.body.filters + `'`
+        strFilters = `'` + req.body.filters + `'`;
+        i = 1;
       }
       else {
         reqFilters = Array.from(new Set(req.body.filters));
@@ -164,17 +170,25 @@ appRouter.route('/posts')
           GROUP BY postid HAVING COUNT(DISTINCT tagid) = ${i}) 
       ORDER BY creationDate DESC;`
       
-      con.query(queryFilters, (error, result) => {
+      con.query(queryFilters, (error, resultPosts) => {
         if (error) throw error;
     
-        res.render('posts', { posts: result });
+        con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+          if (error) throw error; 
+  
+          res.render('posts', { posts: resultPosts, tags: resultTags });
+        });
       });
     }
     else{
-      con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, result) => {
-        if (error) throw error;
-    
-        res.render('posts', { posts: result });
+      con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, resultPosts) => {
+        if (error) throw error; 
+  
+        con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+          if (error) throw error; 
+  
+          res.render('posts', { posts: resultPosts, tags: resultTags });
+        });
       });
     }
   });

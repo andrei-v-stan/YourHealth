@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Your Mind</title>
-        <link rel="stylesheet" href="css/index.css" type="text/css">
+        <link rel="stylesheet" href="../css/index.css" type="text/css">
     </head>
 <body>
     
@@ -75,19 +75,21 @@
         <button type="submit">Logout</button>
       </form>
     <button onclick="getLocation()">Get Location</button>
+    <br>
+    <input type="text" id="searchTag" placeholder="Search...">
     <form action="/posts" method="POST">
-        <input type="checkbox" name="filters" value="sfw">
-        <label for="sfw"> SFW</label><br>
-        <input type="checkbox" name="filters" value="nsfw">
-        <label for="nsfw"> NSFW</label><br>
-        <input type="checkbox" name="filters" value="depression">
-        <label for="depression"> Depression</label><br>
+        <div class="tagScrollList" id="tagBoxes">
+            <% tags.forEach((tag) => { %>
+                <label><input type="checkbox" name="filters" value="<%= tag.title %>"><%= tag.title %></label>
+              <% }); %>
+        </div>
         <button type="submit">Submit</button>
-        </form>
+      </form>
+
     <h1>Results</h1>
     <% posts.forEach((post) => { %>
         <h2><%= post.title %></h2>
-        <p><%= post.content %></p>
+        <p><a href="/posts/<%= post.id %>"><%= post.content %></a></p>
       <% }); %>
 
   <script src="../js/index.js"></script>
