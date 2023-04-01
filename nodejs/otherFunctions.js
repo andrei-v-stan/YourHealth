@@ -237,4 +237,89 @@ appRouter.get('/posts/:id', (req, res) => {
 
 
 
+appRouter.route('/users/:id')
+  .get((req, res) => {
+    const userId = parseInt(req.params.id);
+    if (userId == req.params.id && req.params.id[0] != '0') {
+
+      con.query('SELECT MAX(id) FROM usercreds', (error, result) => {
+        if (error) throw error;
+        
+      const userMax = result[0]['MAX(id)'];
+      if (0 < userId && userId <= userMax) {
+        con.query('SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC', [userId], (err, resultPosts) => {
+          if (err) {
+            throw err;
+          }
+          con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+            if (error) throw error; 
+    
+            res.render('user', { posts: resultPosts, tags: resultTags, userId });
+          });
+        });
+      }
+      else {
+        res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
+      }
+     });
+  
+    }
+    else {
+      res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
+    }
+  })
+
+  .post((req, res) => {
+    const userId = parseInt(req.params.id);
+    let reqFilters;
+    let queryFilters;
+    let strFilters = '';
+    var i;
+  
+    if (req.body && req.body.filters) {
+      if(typeof(req.body.filters) == 'string')  {
+        strFilters = `'` + req.body.filters + `'`;
+        i = 1;
+      }
+      else {
+        reqFilters = Array.from(new Set(req.body.filters));
+        reqFilters = Object.entries(reqFilters).map(([key, value]) => `${value}`);
+        for (i=0; i<reqFilters.length; i++) {
+          strFilters = strFilters + `'` + reqFilters[i] + `',`
+        }
+        strFilters = strFilters.slice(0, -1);
+      }
+
+      queryFilters = `SELECT * FROM posts WHERE (id IN (
+          SELECT postid FROM tagpostid WHERE tagid IN (
+          SELECT id FROM tags WHERE title IN (${strFilters}))
+          GROUP BY postid HAVING COUNT(DISTINCT tagid) = ${i}) 
+          AND authorID=${userId})
+        ORDER BY creationDate DESC;`
+      
+      con.query(queryFilters, (error, resultPosts) => {
+        if (error) throw error;
+    
+        con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+          if (error) throw error; 
+  
+          res.render('user', { posts: resultPosts, tags: resultTags, userId });
+        });
+      });
+    }
+    else{
+      con.query('SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC', [userId], (error, resultPosts) => {
+        if (error) throw error; 
+  
+        con.query('SELECT * FROM tags ORDER BY title ASC;', (error, resultTags) => {
+          if (error) throw error; 
+  
+          res.render('user', { posts: resultPosts, tags: resultTags, userId });
+        });
+      });
+    }
+  });
+
+
+
 module.exports = appRouter;

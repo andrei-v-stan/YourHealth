@@ -1,12 +1,3 @@
-Near future:
-* Filter the posts based on the tags:
-   - Allow to write a filter tag
-   - If no tags, show all posts based on date
-* Backend profile section:
-   - /user/id
-   - filter to show only posts by the user (id.author)
-
-
 
 
 
