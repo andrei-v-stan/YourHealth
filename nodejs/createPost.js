@@ -62,13 +62,13 @@ appRouter.post('/create_post', (req, res) => {
           return res.status(500).send(errorHtml);
         }
 
-        conn.query(queryInsertPost, [titlePost, contentPost, req.cookies.accountID], (error, results) => {
+        conn.query(queryInsertPost, [titlePost, contentPost, req.cookies.accountID], (error, result) => {
           if (error) {
             console.log('[Error]: appRouter.get() -> conn.query(queryInsertPost)');
             console.error(error);
             return conn.rollback(() => res.status(500).send(errorHtml));
           }
-          postId = results.insertId;
+          postId = result.insertId;
           conn.commit(err => {
             if (err) {
               console.log('[Error]: appRouter.get() -> conn.commit() <- For the first commit (conn.query(queryInsertPost))');
@@ -79,16 +79,16 @@ appRouter.post('/create_post', (req, res) => {
         });
 
         if (noTags == false) {
-          conn.query(queryGetPostId, [req.cookies.accountID], (error, results) => {
+          conn.query(queryGetPostId, [req.cookies.accountID], (error, result) => {
             if (error) {
               console.log('[Error]: appRouter.get() -> conn.query(queryGetPostId)');
               console.error(error);
               return conn.rollback(() => res.status(500).send(errorHtml));
             }
 
-            postId = results[0]['MAX(id)'];
+            postId = result[0]['MAX(id)'];
             for (i=0; i<newTags.length; i++) {
-              conn.query(queryInsertTags, [newTags[i], newTags[i]], (error, results) => {
+              conn.query(queryInsertTags, [newTags[i], newTags[i]], (error, result) => {
                 if (error) {
                   console.log('[Error]: appRouter.get() -> conn.query(queryInsertTags)');
                   console.error(error);
@@ -98,7 +98,7 @@ appRouter.post('/create_post', (req, res) => {
             }
 
               for (i=0; i<newTags.length; i++) {
-                conn.query(queryInsertPostTag, [postId, newTags[i]], (error, results) => {
+                conn.query(queryInsertPostTag, [postId, newTags[i]], (error, result) => {
                   if (error) {
                     console.log('[Error]: appRouter.get() -> conn.query(queryInsertPostTag)');
                     console.error(error);

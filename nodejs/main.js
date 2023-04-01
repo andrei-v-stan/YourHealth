@@ -13,8 +13,6 @@ app.use(cookieParser());
 app.set('views', path.join(__dirname, '../ejs'));
 app.set('view engine', 'ejs');
 
-
-
 const otherFunctionsRouter = require('./otherFunctions');
 app.use('/', otherFunctionsRouter);
 
@@ -25,6 +23,9 @@ app.use('/', testFunctionsRouter);
 const createPostRouter = require('./createPost');
 app.use('/', createPostRouter);
 
+app.use((req, res) => {
+  res.status(404).send('404: Page not found');
+});
 
 
 app.listen(3000, () => {
