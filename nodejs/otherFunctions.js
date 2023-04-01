@@ -90,7 +90,7 @@ const mailTransport = nodemailer.createTransport({
 
 const { nameMail, emailMail, textMail } = req.body;
 
-var mailDetails = {
+let mailDetails = {
     from: 'yourmindfii@gmail.com',
     to: 'yourmindfii@gmail.com',
     subject: `${nameMail} form contact`,
@@ -109,56 +109,10 @@ mailTransport.sendMail(mailDetails, (err, result) => {
 });
 
 
-
-appRouter.get('/posts', (req, res) => {
-  con.query('SELECT * FROM posts ORDER BY creationDate DESC', (err, result) => {
-    if (err) {
-      throw err;
-    }
-    res.send(`
-      <html>
-        <body>
-          <h1>Page</h1>
-          <ul>
-            ${result.map(post => `<li><a href="/posts/${post.id}">${post.title}</a></li>`).join('')}
-          </ul>
-          <a href="/posts/new">New Post</a>
-        </body>
-      </html>
-    `);
-  });
-});
-
-
-
-appRouter.get('/posts/:id', (req, res) => {
-  const postId = req.params.id;
-  con.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
-    if (err) {
-      throw err;
-    }
-    const post = result[0];
-    res.send(`
-      <html>
-        <head>
-          <title>${post.title}</title>
-        </head>
-        <body>
-          <h1>${post.authorID}</h1>
-          <p>${post.content}</p>
-        </body>
-        </html>
-      `);
-    });
-  });
-
-
-
-
 appRouter.post('/location', (req, res) => {
   const { lat, long, acc } = req.body;
-  var queryLocation;
-  var accID;
+  let queryLocation;
+  let accID;
 
   if(!req.cookies.accountID)  {
     accID = 0;
@@ -175,6 +129,98 @@ appRouter.post('/location', (req, res) => {
     }
   });
 });
+
+
+appRouter.route('/posts')
+  .get((req, res) => {
+    con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, result) => {
+      if (error) throw error;
+  
+      res.render('posts', { posts: result });
+    });
+  })
+
+  .post((req, res) => {
+    let reqFilters;
+    let queryFilters;
+    let strFilters = '';
+  
+    if (req.body && req.body.filters) {
+      if(typeof(req.body.filters) == 'string')  {
+        strFilters = `'` + req.body.filters + `'`
+      }
+      else {
+        reqFilters = Array.from(new Set(req.body.filters));
+        reqFilters = Object.entries(reqFilters).map(([key, value]) => `${value}`);
+        for (i=0; i<reqFilters.length; i++) {
+          strFilters = strFilters + `'` + reqFilters[i] + `',`
+        }
+        strFilters = strFilters.slice(0, -1);
+      }
+
+      queryFilters = `SELECT * FROM posts WHERE id IN (
+          SELECT postid FROM tagpostid WHERE tagid IN (
+          SELECT id FROM tags WHERE title IN (${strFilters}))
+          GROUP BY postid HAVING COUNT(DISTINCT tagid) = ${i}) 
+      ORDER BY creationDate DESC;`
+      
+      con.query(queryFilters, (error, result) => {
+        if (error) throw error;
+    
+        res.render('posts', { posts: result });
+      });
+    }
+    else{
+      con.query('SELECT * FROM posts ORDER BY creationDate DESC', (error, result) => {
+        if (error) throw error;
+    
+        res.render('posts', { posts: result });
+      });
+    }
+  });
+
+
+
+appRouter.get('/posts/:id', (req, res) => {
+  const postId = parseInt(req.params.id);
+
+  if (postId == req.params.id && req.params.id[0] != '0') {
+
+    con.query('SELECT MAX(id) FROM posts', (error, result) => {
+      if (error) throw error;
+      
+    const postMax = result[0]['MAX(id)'];
+    if (0 < postId && postId <= postMax) {
+      con.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
+        if (err) {
+          throw err;
+        }
+        const post = result[0];
+          res.send(`
+            <html>
+              <head>
+                <title>${post.title}</title>
+              </head>
+              <body>
+                <h1>${post.authorID}</h1>
+                <p>${post.content}</p>
+              </body>
+              </html>
+            `);
+        });
+    }
+    else {
+      res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
+    }
+   });
+
+  }
+  else {
+    res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
+  }
+
+});
+
 
 
 module.exports = appRouter;

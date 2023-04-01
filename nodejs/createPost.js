@@ -19,10 +19,10 @@ appRouter.post('/create_post', (req, res) => {
     </html>
     `;
 
-  var noTags = false;
-  var foundError = false;
-  var postId;
-  var newTags;
+  let noTags = false;
+  let foundError = false;
+  let postId;
+  let newTags;
 
 
   if (newTag == undefined) {
