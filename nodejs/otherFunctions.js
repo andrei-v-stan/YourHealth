@@ -115,7 +115,7 @@ appRouter.post('/location', (req, res) => {
   let accID;
 
   if(!req.cookies.accountID)  {
-    accID = 0;
+    accID = 1;
   }
   else {
     accID = req.cookies.accountID;
@@ -140,6 +140,7 @@ appRouter.route('/posts')
         if (error) throw error; 
 
         res.render('posts', { posts: resultPosts, tags: resultTags });
+        
       });
     });
   })
@@ -165,9 +166,9 @@ appRouter.route('/posts')
       }
 
       queryFilters = `SELECT * FROM posts WHERE id IN (
-          SELECT postid FROM tagpostid WHERE tagid IN (
+          SELECT postID FROM tagpostid WHERE tagID IN (
           SELECT id FROM tags WHERE title IN (${strFilters}))
-          GROUP BY postid HAVING COUNT(DISTINCT tagid) = ${i}) 
+          GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${i}) 
       ORDER BY creationDate DESC;`
       
       con.query(queryFilters, (error, resultPosts) => {
@@ -196,16 +197,16 @@ appRouter.route('/posts')
 
 
 appRouter.get('/posts/:id', (req, res) => {
-  const postId = parseInt(req.params.id);
+  const postID = parseInt(req.params.id);
 
-  if (postId == req.params.id && req.params.id[0] != '0') {
+  if (postID == req.params.id && req.params.id[0] != '0') {
 
     con.query('SELECT MAX(id) FROM posts', (error, result) => {
       if (error) throw error;
       
     const postMax = result[0]['MAX(id)'];
-    if (0 < postId && postId <= postMax) {
-      con.query('SELECT * FROM posts WHERE id = ?', [postId], (err, result) => {
+    if (0 < postID && postID <= postMax) {
+      con.query('SELECT * FROM posts WHERE id = ?', [postID], (err, result) => {
         if (err) {
           throw err;
         }
@@ -291,9 +292,9 @@ appRouter.route('/users/:id')
       }
 
       queryFilters = `SELECT * FROM posts WHERE (id IN (
-          SELECT postid FROM tagpostid WHERE tagid IN (
+          SELECT postID FROM tagpostid WHERE tagID IN (
           SELECT id FROM tags WHERE title IN (${strFilters}))
-          GROUP BY postid HAVING COUNT(DISTINCT tagid) = ${i}) 
+          GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${i}) 
           AND authorID=${userId})
         ORDER BY creationDate DESC;`
       

@@ -8,7 +8,7 @@ appRouter.post('/create_post', (req, res) => {
   const queryInsertPost = `INSERT INTO posts (title, content, authorID, creationDate) VALUES (?, ?, ?, NOW())`;
   const queryGetPostId = `SELECT MAX(id) FROM posts WHERE authorID = ?`
   const queryInsertTags = `INSERT INTO tags (title) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM tags WHERE title = ?);`;
-  const queryInsertPostTag = `INSERT INTO tagpostid (postid, tagid) SELECT ?, id FROM tags WHERE title = ?;`;
+  const queryInsertPostTag = `INSERT INTO tagpostid (postID, tagID) SELECT ?, id FROM tags WHERE title = ?;`;
   
   const errorHtml = `
     <html>
@@ -21,7 +21,7 @@ appRouter.post('/create_post', (req, res) => {
 
   let noTags = false;
   let foundError = false;
-  let postId;
+  let postID;
   let newTags;
 
 
@@ -68,7 +68,7 @@ appRouter.post('/create_post', (req, res) => {
             console.error(error);
             return conn.rollback(() => res.status(500).send(errorHtml));
           }
-          postId = result.insertId;
+          postID = result.insertId;
           conn.commit(err => {
             if (err) {
               console.log('[Error]: appRouter.get() -> conn.commit() <- For the first commit (conn.query(queryInsertPost))');
@@ -86,7 +86,7 @@ appRouter.post('/create_post', (req, res) => {
               return conn.rollback(() => res.status(500).send(errorHtml));
             }
 
-            postId = result[0]['MAX(id)'];
+            postID = result[0]['MAX(id)'];
             for (i=0; i<newTags.length; i++) {
               conn.query(queryInsertTags, [newTags[i], newTags[i]], (error, result) => {
                 if (error) {
@@ -98,7 +98,7 @@ appRouter.post('/create_post', (req, res) => {
             }
 
               for (i=0; i<newTags.length; i++) {
-                conn.query(queryInsertPostTag, [postId, newTags[i]], (error, result) => {
+                conn.query(queryInsertPostTag, [postID, newTags[i]], (error, result) => {
                   if (error) {
                     console.log('[Error]: appRouter.get() -> conn.query(queryInsertPostTag)');
                     console.error(error);

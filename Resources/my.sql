@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS mydb;
+CREATE SCHEMA IF NOT EXISTS `mydb` ;
 USE mydb;
 
 CREATE TABLE IF NOT EXISTS userCreds (
@@ -9,18 +11,8 @@ CREATE TABLE IF NOT EXISTS userCreds (
 	);
 
 INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('', '', '');
-UPDATE usercreds SET id = 0 WHERE id = 1;
 
-CREATE TABLE IF NOT EXISTS posts (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  content TEXT NOT NULL,
-  authorID INT NOT NULL,
-  FOREIGN KEY (authorID) REFERENCES usercreds(id),
-  creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS userlocs (
+CREATE TABLE IF NOT EXISTS userLocs (
   accountID INT NOT NULL,
   FOREIGN KEY (accountID) REFERENCES usercreds(id),
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -30,14 +22,63 @@ CREATE TABLE IF NOT EXISTS userlocs (
   recordingStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE TABLE IF NOT EXISTS posts (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  authorID INT NOT NULL,
+  FOREIGN KEY (authorID) REFERENCES usercreds(id),
+  voteCount INT DEFAULT 0, 
+  creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS postLikes (
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
+  userID INT NOT NULL,
+  FOREIGN KEY (userID) REFERENCES usercreds(id),
+  vote INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  parentID INT NOT NULL,
+  authorID INT NOT NULL,
+  FOREIGN KEY (authorID) REFERENCES usercreds(id),
+  content TEXT NOT NULL,
+  voteCount INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS commentLikes (
+  commentID INT NOT NULL PRIMARY KEY,
+  FOREIGN KEY (commentID) REFERENCES comments(id),
+  commLevel INT NOT NULL,
+  userID INT NOT NULL,
+  FOREIGN KEY (userID) REFERENCES usercreds(id),
+  vote INT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS tags (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS tagpostid (
-  postid INT NOT NULL,
-  FOREIGN KEY (postid) REFERENCES posts(id),
-  tagid INT NOT NULL,
-  FOREIGN KEY (tagid) REFERENCES tags(id)
+CREATE TABLE IF NOT EXISTS tagPostID (
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
+  tagID INT NOT NULL,
+  FOREIGN KEY (tagID) REFERENCES tags(id)
 );
+
+
+
+
+
+
+INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('asd', 'asd123', 'asd@gmail.com');
+INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 1', 'Post 1 content', '2');
+INSERT INTO tags (`title`) VALUE ('post 1');
+INSERT INTO tags (`title`) VALUE ('1 post');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','1');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','2');

@@ -1,8 +1,3 @@
-
-
-
-
-
 Web app constitution:
 
  - A homepage with posts (similar to Reddit)
