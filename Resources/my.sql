@@ -82,3 +82,17 @@ INSERT INTO tags (`title`) VALUE ('post 1');
 INSERT INTO tags (`title`) VALUE ('1 post');
 INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','1');
 INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','2');
+
+INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('asd2', 'asd123', 'asd2@gmail.com');
+INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 2', 'Post 2 content', '3');
+INSERT INTO tags (`title`) VALUE ('post 2');
+INSERT INTO tags (`title`) VALUE ('2 post');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('2','3');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('2','4');
+
+INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 3', 'Post 3 content', '3');
+INSERT INTO tags (`title`) VALUE ('post 3');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','5');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','2');
+
+INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 4', 'Post 4 content', '2');

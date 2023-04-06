@@ -14,7 +14,7 @@
 
     <h1>Hello World</h1>
     <input type="text" id="searchTag" placeholder="Search...">
-    <form action="/users/<%= userId %>" method="POST">
+    <form action="/users/<%= userID %>" method="POST">
         <div class="tagScrollList" id="tagBoxes">
             <% tags.forEach((tag) => { %>
                 <label><input type="checkbox" name="filters" value="<%= tag.title %>"><%= tag.title %></label>
