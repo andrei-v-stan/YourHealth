@@ -9,7 +9,6 @@ appRouter.get('/cookies', (req, res) => {
 
 
 appRouter.get('/test', (req, res) => {
-    console.log(req.body);
     res.render('posts', { posts: 0 });
 });
 

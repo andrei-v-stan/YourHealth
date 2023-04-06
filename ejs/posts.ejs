@@ -87,13 +87,16 @@
       </form>
 
     <h1>Results</h1>
+    <p> <%= posts[0].id %></p>
     <% posts.forEach((post) => { %>
         <h2><%= post.title %></h2>
         <p><a href="/posts/<%= post.id %>"><%= post.content %></a></p>
-      <% }); %>
+        <button id="<%= post.id %>-L" type="button" onclick="voteQuery(<%= post.id %>,1)">Like</button>
+        <button id="<%= post.id %>-D" type="button" onclick="voteQuery(<%= post.id %>,0)">Dislike</button>
+    <% }); %>
 
   <script src="../js/index.js"></script>
-  <script src="../js/sql.js"></script>
   <script src="../js/other.js"></script>
+  <script src="../js/jquery-3.6.4.min.js"></script>
 </body>
 </html>

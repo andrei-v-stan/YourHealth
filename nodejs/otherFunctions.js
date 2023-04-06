@@ -1,5 +1,6 @@
 
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 const { con } = require('./sql');
 const express = require('express');
@@ -70,6 +71,13 @@ appRouter.post('/login', (req, res) => {
 
 appRouter.post('/logout', (req, res) => {
   const cookies = Object.keys(req.cookies);
+  const stringCookies = cookies.join(',') + '\n';
+  fs.appendFile('./Resources/Cookies.json', stringCookies, (err) => {
+    if (err) {
+      console.log('[Error]: appRouter.post(/logout) -> fs.appendFile(...)');
+      console.error(err);
+    }
+  });
   cookies.forEach(cookieName => {
     res.clearCookie(cookieName);
   });
@@ -284,7 +292,7 @@ appRouter.route('/users/:id')
           if (0 < userID && userID <= userMax) {
             con.query('SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC', [userID], (err, resultPosts) => {
               if (error) {
-                console.log('[Error]: appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC)');
+                console.log('[Error]: appRouter.get(/users/:id) -> con.query(SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC)');
                 console.log(err);
               }
               else {
@@ -341,13 +349,13 @@ appRouter.route('/users/:id')
 
       con.query(queryFilters, (error, resultPosts) => {
         if (error) {
-          console.log('[Error]: appRouter.route.(/users).post -> con.query(queryFilters)');
+          console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryFilters)');
           console.log(err);
         }
         else {
           con.query(queryAllTags, (error, resultTags) => {
             if (error) {
-              console.log('[Error]: appRouter.route.(/users).post -> con.query(queryAllTags)');
+              console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllTags)');
               console.log(err);
             }
             else {
@@ -360,19 +368,108 @@ appRouter.route('/users/:id')
     else {  
       con.query(queryAllPostsByUser, [userID], (error, resultPosts) => {
         if (error) {
-          console.log('[Error]: appRouter.route.(/users).post -> con.query(queryAllPostsByUser)');
+          console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllPostsByUser)');
           console.log(err);
         }
         else {
           con.query(queryAllTags, (error, resultTags) => {
             if (error) {
-              console.log('[Error]: appRouter.route.(/users).post -> con.query(queryAllTags)');
+              console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllTags)');
               console.log(err);
             }
             else {
               res.render('user', { posts: resultPosts, tags: resultTags, userID });
             }
           });
+        }
+      });
+    }
+  });
+
+
+
+appRouter.post('/voteQuery', (req, res) => {
+  const {postID, vote} = req.body;
+
+  if (!req.cookies.accountID) {
+    res.render('statusHandler', { statusMessage: 'You need to be signed in to like a post' });
+  }
+  else {
+    con.query('SELECT COUNT(*) FROM postlikes WHERE (postID=? AND userID=?)', [postID,req.cookies.accountID], (error, result) => {
+      if (error) {
+        console.log('[Error]: appRouter.post.(voteQuery) -> con.query(WHERE (postID=? AND userID=?))');
+        console.log(error);
+      }
+      else {
+        let currentVote = 0;
+
+        const votes = result[0]['COUNT(*)'];
+        if (votes >= 1) {
+          con.query(`UPDATE postlikes SET vote=? WHERE (postID=? AND userID=?)`, [vote,postID,req.cookies.accountID], (error, result) => {
+            if (error) {
+              console.log('[Error]: appRouter.post.(voteQuery) -> con.query(UPDATE postlikes SET vote)');
+              console.log(error);
+            }
+          });
+          if (vote == 0) {
+            currentVote = -2;
+          }
+          else if (vote == 1) {
+            currentVote = 2;
+          }
+        }
+        else {
+          con.query('INSERT INTO postlikes (`postID`, `userID`, `vote`) VALUES (?,?,?)', [postID,req.cookies.accountID,vote], (error, result) => {
+            if (error) {
+              console.log('[Error]: appRouter.post.(voteQuery) -> con.query(INSERT INTO postlikes)');
+              console.log(error);
+            }
+          });
+          if (vote == 0) {
+            currentVote = -1;
+          }
+          else if (vote == 1) {
+            currentVote = 1;
+          }
+        }
+        
+        con.query(`SELECT COUNT(*) FROM postlikes WHERE (vote=1 AND postID=${postID})`, (error, resV1) => {
+          if (error) {
+            console.log('[Error]: appRouter.post.(voteQuery) -> con.query(postlikes WHERE vote=1)');
+            console.log(error);
+          }
+          else {
+            con.query(`SELECT COUNT(*) FROM postlikes WHERE (vote=0 AND postID=${postID})`, (error, resV0) => {
+              if (error) {
+                console.log('[Error]: appRouter.post.(voteQuery) -> con.query(postlikes WHERE vote=0)');
+                console.log(error);
+              }
+              else {
+                const voteCt = currentVote + resV1[0]['COUNT(*)'] - resV0[0]['COUNT(*)'];
+                con.query(`UPDATE posts SET voteCount=${voteCt} WHERE id=${postID}`, (error, result) => {
+                  if (error) {
+                    console.log('[Error]: appRouter.post.(voteQuery) -> con.query(UPDATE posts SET voteCount)');
+                    console.log(error);
+                  }
+                });
+              }
+            });
+            }
+          });
+
+          if (vote == 1) {
+            res.send({
+              cookie: 'likedPosts',
+              post: postID
+            });
+          }
+          else if (vote == 0) {
+            res.send({
+              cookie: 'dislikedPosts',
+              post: postID
+            });
+          }
+
         }
       });
     }
