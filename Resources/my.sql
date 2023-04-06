@@ -96,3 +96,8 @@ INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','5');
 INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','2');
 
 INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 4', 'Post 4 content', '2');
+
+INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 5', 'Post 5 content', '2');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','5');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','2');
+INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','1');
