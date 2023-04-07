@@ -23,6 +23,9 @@ app.use('/', testFunctionsRouter);
 const createPostRouter = require('./createPost');
 app.use('/', createPostRouter);
 
+const votePostRouter = require('./votePost');
+app.use('/', votePostRouter);
+
 app.use((req, res) => {
   res.status(404).send('404: Page not found');
 });

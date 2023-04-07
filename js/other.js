@@ -39,9 +39,8 @@ function startCountdown() {
     }, 3000000);
   }
 
-
   function createAndSet() {
-    let tagId = 0
+	var tagId = 0;
     const newTagField = document.createElement("input");
     tagId = tagId + 1;
     newTagField.setAttribute("id", "tag-" + tagId);
@@ -78,67 +77,4 @@ searchTagField.addEventListener('keyup', () => {
     }
   });
 });
-
-function getCookie(name) {
-  const cookieString = document.cookie;
-  const cookies = cookieString.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring(name.length + 1, cookie.length);
-    }
-  }
-  return null;
-}
-
-
-function voteQuery(postID,vote) {
-  const dataX = {
-    postID: postID,
-    vote: vote
-  };
-  jQuery.ajax({
-    type: 'POST',
-    url: '/voteQuery',
-    data: dataX,
-    success: function(response) {
-      if (typeof(response)=="string") {
-        $('body').html(response);
-      }
-      else {
-        let cookieType = response.cookie;
-        if (cookieType == "likedPosts") {
-          if(!getCookie('likedPosts')) {
-            const cookiePostL = response.post + '-L'
-            document.cookie = `${cookieType}=${cookiePostL}; path=/;`;
-          }
-          else {
-            let cookiePost =  getCookie('likedPosts') + ',' + response.post + '-L';
-            document.cookie = `${cookieType}=${cookiePost}; path=/;`;
-          }
-        }
-        else if (cookieType == "dislikedPosts") {
-          if(!getCookie('dislikedPosts')) {
-            const cookiePostD = response.post + '-D'
-            document.cookie = `${cookieType}=${cookiePostD}; path=/;`;
-          }
-          else {
-            let cookiePost =  getCookie('dislikedPosts') + ',' + response.post + '-D';
-            document.cookie = `${cookieType}=${cookiePost}; path=/;`;
-          }
-        }
-      }
-    }
-  });
-}
-
-window.addEventListener("load", disableAllButtons);
-function disableAllButtons() {
-  const listIds = getCookie('likedPosts') + ',' + getCookie('dislikedPosts')
-  const arrayIds = listIds.split(",");
-  arrayIds.forEach(id => {
-    let buttonElem = document.getElementById(id);
-    buttonElem.disabled = true;
-  });
-}
 
