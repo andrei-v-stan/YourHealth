@@ -13,22 +13,25 @@ app.use(cookieParser());
 app.set('views', path.join(__dirname, '../ejs'));
 app.set('view engine', 'ejs');
 
+
+
+const genPagesRouter = require('./genPages');
+app.use('/', genPagesRouter);
+const accLogRouter = require('./accLog');
+app.use('/', accLogRouter);
 const otherFunctionsRouter = require('./otherFunctions');
 app.use('/', otherFunctionsRouter);
-
-const testFunctionsRouter = require('./testFunctions');
-app.use('/', testFunctionsRouter);
-
-
 const createPostRouter = require('./createPost');
 app.use('/', createPostRouter);
-
 const votePostRouter = require('./votePost');
 app.use('/', votePostRouter);
+
+
 
 app.use((req, res) => {
   res.status(404).send('404: Page not found');
 });
+
 
 
 app.listen(3000, () => {
