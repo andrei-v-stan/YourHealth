@@ -30,7 +30,7 @@ appRouter.post('/votePost', (req, res) => {
   const {postID, vote} = req.body;
 
   if (!req.cookies.accountID) {
-    res.status(401).send(res.render('statusHandler', { statusMessage: 'You need to be signed in to like a post' }));
+    res.send({code: 401});
   }
   else {
   con.getConnection((err, conn) => {
@@ -53,7 +53,7 @@ appRouter.post('/votePost', (req, res) => {
           console.log('[Error]: appRouter.post.(voteQuery) -> con.query(WHERE (postID=? AND userID=?))');
           console.log(error);
         }
-        if (!resCheck || resCheck == 0 || resCheck == []) {
+        if (resCheck.length == 0) {
           conn.query('INSERT INTO postlikes (`postID`, `userID`, `vote`) VALUES (?,?,?)', [postID,req.cookies.accountID,vote], (error, result) => {
             if (error) {
               console.log('[Error]: appRouter.post.(voteQuery) -> con.query(INSERT INTO postlikes)');
@@ -105,8 +105,7 @@ appRouter.post('/votePost', (req, res) => {
 
        });
      });
-
-     res.status(200).redirect('/posts');
+     res.send({code: 200});
 
     }
 

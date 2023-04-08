@@ -9,11 +9,11 @@ function setVotes(resLog,voteVal) {
     let accDislikes = "";
     con.query(`SELECT postID FROM postlikes WHERE (userID=${resLog[0]['id']} AND vote=${voteVal})`, (err, resDislikes) => {
       if (err) {
-        console.log('[Error]: appRouter.post(/login) -> con.query(...)');
+        console.log('[Error]: appRouter.post(/login) -> setVotes() -> con.query(...)');
         console.error(err);
         reject(err);
       } 
-      else if (!resDislikes == []) {
+      else if (resLog.length > 0) {
         for (i=0; i<resDislikes.length; i++) {
           accDislikes = accDislikes + resDislikes[i]['postID'] + "_";
         }
@@ -36,7 +36,7 @@ appRouter.post('/login', async (req, res) => {
           console.error(err);
           res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
       } 
-      else if (resLog[0]['id'] == []) {
+      else if (resLog.length == 0) {
           res.status(401).send(res.render('statusHandler', { statusMessage: 'Invalid email or password' }));
       } 
       else {
@@ -57,6 +57,7 @@ appRouter.post('/signup', (req, res) => {
   const querySignUp = `INSERT INTO usercreds (username, password, email) VALUES (?, ?, ?)`;
   const queryAccEmail = `SELECT 1 FROM usercreds WHERE email = ? LIMIT 1`;
   const queryAccUsername = `SELECT 1 FROM usercreds WHERE username = ? LIMIT 1`;
+  const queryAccId = `SELECT id FROM usercreds WHERE (username=? AND password=? AND email=?)`;
 
   con.query(queryAccUsername, [username], (error, result) => {
     if (error) {
@@ -79,7 +80,16 @@ appRouter.post('/signup', (req, res) => {
               res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
             }
             else {
-              res.status(200).send(res.render('statusHandler', { statusMessage: 'Account created successfully' }));
+              con.query(queryAccId, [username, password, email], (error, resID) => {
+                if (error) {
+                  console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccId)');
+                  console.error(error);
+                  res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+                }
+                else {
+                  res.redirect(`/json/${resID[0]['id']}`);
+                }
+              });
             }
           });
         }

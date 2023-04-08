@@ -1,5 +1,6 @@
 
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 const { con } = require('./sql');
 const express = require('express');
@@ -58,15 +59,40 @@ appRouter.post('/location', (req, res) => {
 });
 
 
-appRouter.get('/cookies', (req, res) => {
-  res.send(Object.entries(req.cookies));
-}); 
+appRouter.get('/json/:accountID', (req, res) => {
+  const accountID = JSON.stringify(req.params);
+  let accountDetails = [];
 
+  fs.readFile('./nodejs/accData.json', (error, fileData) => {
+    if (error) {
+      console.log('[Error]: appRouter.get(/json/:accountID) -> fs.readFile(accData.json)');
+      console.error(error);
+      res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+    } 
+    else {
+      const strFileData = fileData.toString();
+      if (strFileData) {
+        accountDetails = JSON.parse(strFileData).accountDetails;
+      }
+      accountDetails.push({ accountID: req.params.accountID });
 
-appRouter.get('/test', (req, res) => {
-  res.render('posts', { posts: 0 });
+      fs.writeFile('./nodejs/accData.json', JSON.stringify({ accountDetails: accountDetails }, null, 2), (error) => {
+        if (error) {
+          console.log('[Error]: appRouter.post(/save-json/:accountID) -> fs.writeFile(accData.json)');
+          console.error(error);
+          res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+        } else {
+          res.status(200).send(res.render('statusHandler', { statusMessage: 'Account created successfully' }));
+        }
+      });
+    }
+  });
 });
 
+
+
+appRouter.get('/voteJson', (req, res) => {
+});
 
 
 module.exports = appRouter;
