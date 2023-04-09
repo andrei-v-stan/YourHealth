@@ -2,13 +2,39 @@
 <html>
     <head>
         <title>Your Mind</title>
-        <link rel="stylesheet" href="css/index.css" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/login.css" type="text/css">
     </head>
 <body>
 
-<h1>index</h1>
+  <h1>index</h1>
 
-  <script src="js/index.js"></script>
-  <script src="js/other.js"></script>
+  <button id="loginButton">Login</button>
+  <div id="loginBackground"></div>
+
+  <div id="loginPopupTop">
+    <h2>Your ✰ Mind</h2>
+  </div>
+
+	<div id="loginPopup">
+		<h2>Login Form</h2>
+		<form>
+			<input type="text" id="username" name="username" placeholder="Username">
+			<input type="password" id="password" name="password" placeholder="Password">
+			<input type="submit" value="Login">
+		</form>
+		<a href="#">Forgot Password?</a>
+	</div>
+
+  <div id="loginPopupBottom">
+		<h2>Login Form</h2>
+    <div id="loginPopupBotButton">
+      <h2>Signup</h2>
+    </div>
+	</div>
+
+
+
+  <script src="js/login.js"></script>
 </body>
 </html>

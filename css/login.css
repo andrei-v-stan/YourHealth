@@ -1,0 +1,174 @@
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color:rgb(62, 86, 125);
+}
+
+
+#loginBackground {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #ffffffb1;
+	z-index: 9998;
+}
+
+
+#loginPopupTop {
+    display: none;
+	position: fixed;
+    top: 0;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    max-width: 200px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 25px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+}
+#loginPopupTop h2 {
+    position: relative;
+    top: 35px;
+    text-align: center;
+    vertical-align: 30px;
+    font-size: 35px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+#loginPopup {
+    display: none;
+	position: fixed;
+    top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+    font-size: 24px;
+}
+#loginPopup h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+}
+#loginPopup form {
+	display: flex;
+	flex-direction: column;
+}
+#loginPopup label {
+	margin-bottom: 5px;
+}
+#loginPopup input[type="text"],
+#loginPopup input[type="password"],
+#loginPopup input[type="submit"] {
+    font-size: 20px;
+	padding: 25px 5px 25px 5px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: none;
+}
+#loginPopup input[type="submit"] {
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 20px 0;
+    margin: auto;
+	cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    font-size: 25px;
+} 
+#loginPopup a {
+    position: relative;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+
+#loginPopupTop {
+    display: none;
+	position: fixed;
+    top: 0;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    max-width: 200px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 25px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+}
+#loginPopupTop h2 {
+    position: relative;
+    top: 35px;
+    text-align: center;
+    vertical-align: 30px;
+    font-size: 35px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+#loginPopupBottom {
+    display: none;
+	position: fixed;
+    top: 80%;
+	left: 50%;
+    height: 35px;
+	transform: translate(-50%, -50%);
+    width: calc(80% - 100px);
+    min-width: 250px;
+    max-width: 400px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+    font-size: 24px;
+}
+#loginPopupBottom h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+    margin-top: -5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#loginPopupBotButton {
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 5px;
+    margin: auto;
+	cursor: pointer;
+    margin-top: -10px;
+    border-radius: 15px;
+    position: relative;
+    top: -20px;
+}
+#loginPopupBotButton h2 {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+}
