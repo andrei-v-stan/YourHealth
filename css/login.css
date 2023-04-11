@@ -6,48 +6,81 @@ html, body {
 }
 
 
-#loginBackground {
+
+
+
+#loginBackground, #signupBackground, #recoveryBackground {
 	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #ffffffb1;
-	z-index: 9998;
+	z-index: 1;
+}
+#loginBackground {
+	background-color: #cdeaffb1;
+}
+#signupBackground {
+	background-color: #eccdffb1;
+}
+#recoveryBackground {
+	background-color: #cdffe0b1;
 }
 
 
-#loginPopupTop {
+
+
+
+#loginPopupTop, #signupPopupTop, #recoveryPopupTop {
     display: none;
 	position: fixed;
     top: 0;
-	left: 50%;
-	transform: translate(-50%, -50%);
-    width: calc(100% - 100px);
-    max-width: 200px;
-	background-color: #fff;
-	padding: 20px;
-    margin: 0 auto;
-	border-radius: 25px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	z-index: 9999;
-}
-#loginPopupTop h2 {
-    position: relative;
-    top: 35px;
+    left: 0;
+    width: 100%;
+    padding: 5px;
     text-align: center;
-    vertical-align: 30px;
-    font-size: 35px;
-    white-space: nowrap;
-    overflow: hidden;
+	z-index: 2;
 }
+#loginPopupTop {
+    background-color: #3b6998;
+}
+#signupPopupTop {
+    background-color: #663b98;
+}
+#recoveryPopupTop {
+    background-color: #3b9841;
+}
+
+
+#loginPopupTop button, #signupPopupTop button, #recoveryPopupTop button {
+    color: #000000;
+    font-size: 32px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+#loginPopupTop button {
+    background-color: #5c8de8;
+}
+#signupPopupTop button {
+    background-color: #885ce8;
+}
+#recoveryPopupTop button {
+    background-color: #68e85c;
+}
+
+
+
+
+
 
 
 #loginPopup {
     display: none;
 	position: fixed;
-    top: 40%;
+    top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
     width: calc(100% - 100px);
@@ -58,7 +91,7 @@ html, body {
     margin: 0 auto;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	z-index: 9999;
+	z-index: 2;
     font-size: 24px;
 }
 #loginPopup h2 {
@@ -66,109 +99,266 @@ html, body {
     font-size: 35px;
     position: relative;
 }
+#loginPopup h3 {
+    text-align: center;
+    font-size: 22px;
+    position: relative;
+}
+#loginPopup h3 > a {
+    text-align: center;
+    font-size: 22px;
+    position: relative;
+    text-decoration: none;
+    color: #007bff;
+}
 #loginPopup form {
 	display: flex;
 	flex-direction: column;
 }
-#loginPopup label {
-	margin-bottom: 5px;
-}
 #loginPopup input[type="text"],
 #loginPopup input[type="password"],
 #loginPopup input[type="submit"] {
+    font-size: 20px;
+	padding: 25px 5px 25px 50px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: none;
+
+    background-size: 35px 35px;
+    background-position: left 5px center;
+    background-repeat: no-repeat; 
+}
+#loginPopup input[type="text"]{
+    background-image: url('../Resources/login/user.png');
+}
+#loginPopup input[type="password"]{
+    background-image: url('../Resources/login/lock.png');
+}
+
+#loginPopup input[type="submit"] {
+    display: block;
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 20px 0;
+    margin: 15px auto 20px;
+    border-radius: 15px;
+    font-size: 25px;
+} 
+#loginPopup input[type="checkbox"] {
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid #003b7b;
+    position: relative;
+    margin-right: 10px;
+}
+#loginPopup input[type="checkbox"]:checked {
+    background-color: #007bff;
+    background-image: url('../Resources/login/checkmark.png');
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#loginPopup label[for="rememberMe"] {
+    display: flex;
+    align-items: center;
+}
+#loginPopup > #forgot {
+    display: flex;
+    margin: 20px auto;
+    text-decoration: none;
+    color: #007bff;
+}
+
+
+
+
+
+
+
+#signupPopup {
+    display: none;
+	position: fixed;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+    font-size: 24px;
+}
+#signupPopup h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+}
+#signupPopup form {
+	display: flex;
+	flex-direction: column;
+}
+#signupPopup input[type="text"],
+#signupPopup input[type="password"],
+#signupPopup input[type="submit"] {
     font-size: 20px;
 	padding: 25px 5px 25px 5px;
 	margin-bottom: 10px;
 	border-radius: 5px;
 	border: none;
 }
-#loginPopup input[type="submit"] {
+#signupPopup input[type="submit"] {
+    display: block;
 	background-color: #007bff;
 	color: #fff;
     width: 80%;
     padding: 20px 0;
-    margin: auto;
-	cursor: pointer;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin: 15px auto 20px;
     border-radius: 15px;
     font-size: 25px;
 } 
-#loginPopup a {
-    position: relative;
-    font-size: 20px;
-    text-decoration: none;
-}
 
 
-#loginPopupTop {
+
+
+
+
+#recoveryMenuPopup {
     display: none;
 	position: fixed;
-    top: 0;
+    top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
     width: calc(100% - 100px);
-    max-width: 200px;
-	background-color: #fff;
-	padding: 20px;
-    margin: 0 auto;
-	border-radius: 25px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	z-index: 9999;
-}
-#loginPopupTop h2 {
-    position: relative;
-    top: 35px;
-    text-align: center;
-    vertical-align: 30px;
-    font-size: 35px;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-
-#loginPopupBottom {
-    display: none;
-	position: fixed;
-    top: 80%;
-	left: 50%;
-    height: 35px;
-	transform: translate(-50%, -50%);
-    width: calc(80% - 100px);
-    min-width: 250px;
-    max-width: 400px;
+    min-width: 300px;
+    max-width: 500px;
 	background-color: #fff;
 	padding: 20px;
     margin: 0 auto;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	z-index: 9999;
+	z-index: 2;
     font-size: 24px;
 }
-#loginPopupBottom h2 {
+#recoveryMenuPopup h2 {
     text-align: center;
     font-size: 35px;
     position: relative;
-    margin-top: -5px;
-    white-space: nowrap;
-    overflow: hidden;
 }
-#loginPopupBotButton {
+#recoveryMenuPopup h3 {
+    text-align: center;
+    font-size: 25px;
+    position: relative;
+}
+#recoveryMenuPopup button {
+    display: block;
 	background-color: #007bff;
 	color: #fff;
     width: 80%;
-    padding: 5px;
-    margin: auto;
-	cursor: pointer;
-    margin-top: -10px;
+    padding: 20px 0;
+    margin: 15px auto 20px;
     border-radius: 15px;
-    position: relative;
-    top: -20px;
-}
-#loginPopupBotButton h2 {
-    text-align: center;
     font-size: 25px;
-    margin-top: 10px;
-    white-space: nowrap;
-    overflow: hidden;
+} 
+
+
+
+#recoverPasswordPopup {
+    display: none;
+	position: fixed;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+    font-size: 24px;
 }
+#recoverPasswordPopup h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+}
+#recoverPasswordPopup form {
+	display: flex;
+	flex-direction: column;
+}
+#recoverPasswordPopup input[type="text"],
+#recoverPasswordPopup input[type="password"],
+#recoverPasswordPopup input[type="submit"] {
+    font-size: 20px;
+	padding: 25px 5px 25px 5px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: none;
+}
+#recoverPasswordPopup input[type="submit"] {
+    display: block;
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 20px 0;
+    margin: 15px auto 20px;
+    border-radius: 15px;
+    font-size: 25px;
+} 
+
+
+
+#contactFormPopup {
+    display: none;
+	position: fixed;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+    font-size: 24px;
+}
+#contactFormPopup h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+}
+#contactFormPopup form {
+	display: flex;
+	flex-direction: column;
+}
+#contactFormPopup input[type="text"],
+#contactFormPopup input[type="password"],
+#contactFormPopup input[type="submit"] {
+    font-size: 20px;
+	padding: 25px 5px 25px 5px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: none;
+}
+#contactFormPopup input[type="submit"] {
+    display: block;
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 20px 0;
+    margin: 15px auto 20px;
+    border-radius: 15px;
+    font-size: 25px;
+} 

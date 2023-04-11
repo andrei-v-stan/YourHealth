@@ -9,30 +9,79 @@
 
   <h1>index</h1>
 
-  <button id="loginButton">Login</button>
+  <button id="loginButton" onclick="loginPopup()">Login</button>
+
   <div id="loginBackground"></div>
+  <div id="signupBackground"></div>
+  <div id="recoveryBackground"></div>
 
   <div id="loginPopupTop">
-    <h2>Your ✰ Mind</h2>
+    <button>Your ✰ Mind</button>
+  </div>
+  <div id="signupPopupTop">
+    <button>Your ✰ Mind</button>
+  </div>
+  <div id="recoveryPopupTop">
+    <button>Your ✰ Mind</button>
   </div>
 
+
 	<div id="loginPopup">
-		<h2>Login Form</h2>
-		<form>
+		<h2>Log In</h2>
+		<form id="loginForm">
 			<input type="text" id="username" name="username" placeholder="Username">
 			<input type="password" id="password" name="password" placeholder="Password">
-			<input type="submit" value="Login">
-		</form>
-		<a href="#">Forgot Password?</a>
+      <label for="rememberMe">
+        <input type="checkbox" id="rememberMe" name="rememberMe">
+        Remember Me
+    </label>
+    </form>
+		<a onclick="recoveryMenuPopup()" id="forgot">Forgot account details?</a>
+    <input type="submit" form="loginForm" onclick="test('loginForm')">
+    <h3>New to Your Mind? <a onclick="signupPopup()"> Sign up here!</a></h3>
 	</div>
 
-  <div id="loginPopupBottom">
-		<h2>Login Form</h2>
-    <div id="loginPopupBotButton">
-      <h2>Signup</h2>
-    </div>
+  <div id="signupPopup">
+    <button onclick="loginPopup()"> Go back </button>
+		<h2>Sign Up</h2>
+		<form id="signupForm">
+			<input type="text" id="signupUsername" name="username" placeholder="Username">
+			<input type="password" id="signupPassword" name="password" placeholder="Password">
+      <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
+      <input type="email" id="signupEmail" name="email" placeholder="Email address">
+      <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address">
+    </form>
+    <input type="submit" form="signupForm" onclick="test('signupForm')">
 	</div>
 
+  <div id="recoveryMenuPopup">
+    <button onclick="loginPopup()"> Go back </button>
+		<h2>Recovery</h2>
+    <button onclick="recoverPasswordPopup()">Forgot Password</button>
+    <hr>
+    <h3>Need some additional help?</h3>
+    <button onclick="contactFormPopup()">Contact Form</button>
+	</div>
+
+  <div id="recoverPasswordPopup">
+    <button onclick="recoveryMenuPopup()"> Go back </button>
+		<h2>Enter your email address and wait for further instructions</h2>
+    <form id="recoverPasswordForm">
+			<input type="email" id="recoveryEmail" name="recoveryEmail" placeholder="Email address">
+    </form>
+    <input type="submit" form="recoverPasswordForm" onclick="test('recoverPasswordForm')">
+	</div>
+
+  <div id="contactFormPopup">
+    <button onclick="recoveryMenuPopup()"> Go back </button>
+		<h2>Complete the forum below and our staff will respond ASAP</h2>
+    <form id="contactForm">
+      <input type="text" id="nameMail" name="nameMail" placeholder="Full name" required>
+      <input type="emailMail" id="emailMail" name="emailMail" placeholder="Email address" required>
+      <textarea id="textMail" name="textMail" rows="5" placeholder="Message text" required></textarea>
+    </form>
+    <input type="submit" form="contactForm" onclick="test('contactForm')">
+	</div>
 
 
   <script src="js/login.js"></script>
