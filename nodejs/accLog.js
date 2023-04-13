@@ -4,6 +4,95 @@ const appRouter = express.Router();
 
 
 
+appRouter.post('/signupUsernameCheck', (req, res) => {
+  const queryCheck = `SELECT id FROM usercreds WHERE username="${req.body.username}"`;
+    con.query(queryCheck, (error, resCheck) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/signupUsernameCheck) -> con.query(queryCheck)');
+        console.error(error);
+        res.send({code: 500});
+      }
+      else if (resCheck.length == 0) {
+        res.send({code: 200});
+      }
+      else {
+        res.send({code: 401});
+      }
+    });
+});
+
+appRouter.post('/signupEmailCheck', (req, res) => {
+  const queryCheck = `SELECT id FROM usercreds WHERE email="${req.body.email}"`;
+    con.query(queryCheck, (error, resCheck) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/signupEmailCheck) -> con.query(queryCheck)');
+        console.error(error);
+        res.send({code: 500});
+      }
+      else if (resCheck.length == 0) {
+        res.send({code: 200});
+      }
+      else {
+        res.send({code: 401});
+      }
+    });
+});
+
+
+
+appRouter.post('/signup', (req, res) => {
+  const { username, password, email } = req.body;
+  const querySignUp = `INSERT INTO usercreds (username, password, email) VALUES (?, ?, ?)`;
+  const queryAccEmail = `SELECT 1 FROM usercreds WHERE email = ? LIMIT 1`;
+  const queryAccUsername = `SELECT 1 FROM usercreds WHERE username = ? LIMIT 1`;
+  const queryAccId = `SELECT id FROM usercreds WHERE (username=? AND password=? AND email=?)`;
+
+  con.query(queryAccUsername, [username], (error, result) => {
+    if (error) {
+      console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccUsername)');
+      console.error(error);
+      res.send({code: 500});
+    }
+      con.query(queryAccEmail, [email], (error, result) => {
+        if (error) {
+          console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccEmail)');
+          console.error(error);
+          res.send({code: 500});
+        }
+          con.query(querySignUp, [username, password, email], (error, result) => {
+            if (error) {
+              console.log('[Error]: appRouter.post(/signup) -> con.query(querySignUp)');
+              console.error(error);
+              res.send({code: 500});
+            }
+            else {
+              con.query(queryAccId, [username, password, email], (error, resID) => {
+                if (error) {
+                  console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccId)');
+                  console.error(error);
+                  res.send({code: 500});
+                }
+                else {
+                  res.send({code: 200, accID: resID[0]['id']});
+                }
+              });
+            }
+          });
+      });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 function setVotes(resLog,voteVal) {
   return new Promise((resolve, reject) => {
     let accDislikes = "";
@@ -50,59 +139,6 @@ appRouter.post('/login', async (req, res) => {
   });
 });
 
-
-
-appRouter.post('/signup', (req, res) => {
-  const { username, password, email } = req.body;
-  const querySignUp = `INSERT INTO usercreds (username, password, email) VALUES (?, ?, ?)`;
-  const queryAccEmail = `SELECT 1 FROM usercreds WHERE email = ? LIMIT 1`;
-  const queryAccUsername = `SELECT 1 FROM usercreds WHERE username = ? LIMIT 1`;
-  const queryAccId = `SELECT id FROM usercreds WHERE (username=? AND password=? AND email=?)`;
-
-  con.query(queryAccUsername, [username], (error, result) => {
-    if (error) {
-      console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccUsername)');
-      console.error(error);
-      res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
-    }
-    if (result == 0) {
-      con.query(queryAccEmail, [email], (error, result) => {
-        if (error) {
-          console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccEmail)');
-          console.error(error);
-          res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
-        }
-        if (result == 0) {
-          con.query(querySignUp, [username, password, email], (error, result) => {
-            if (error) {
-              console.log('[Error]: appRouter.post(/signup) -> con.query(querySignUp)');
-              console.error(error);
-              res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
-            }
-            else {
-              con.query(queryAccId, [username, password, email], (error, resID) => {
-                if (error) {
-                  console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccId)');
-                  console.error(error);
-                  res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
-                }
-                else {
-                  res.redirect(`/json/${resID[0]['id']}`);
-                }
-              });
-            }
-          });
-        }
-        else {
-          res.status(500).send(res.render('statusHandler', { statusMessage: 'The email address is already in use' }));
-        }
-      });
-    }
-    else {
-      res.status(500).send(res.render('statusHandler', { statusMessage: 'The username is already in use' }));
-    }
-  });
-});
 
 
 

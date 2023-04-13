@@ -67,7 +67,7 @@ appRouter.get('/json/:accountID', (req, res) => {
     if (error) {
       console.log('[Error]: appRouter.get(/json/:accountID) -> fs.readFile(accData.json)');
       console.error(error);
-      res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+      res.send({code: 500});
     } 
     else {
       const strFileData = fileData.toString();
@@ -80,9 +80,9 @@ appRouter.get('/json/:accountID', (req, res) => {
         if (error) {
           console.log('[Error]: appRouter.post(/save-json/:accountID) -> fs.writeFile(accData.json)');
           console.error(error);
-          res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+          res.send({code: 500});
         } else {
-          res.status(200).send(res.render('statusHandler', { statusMessage: 'Account created successfully' }));
+          res.send({code: 200});
         }
       });
     }
