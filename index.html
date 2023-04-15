@@ -31,15 +31,15 @@
 	<div id="loginPopup">
 		<h2>Log In</h2>
 		<form id="loginForm">
-			<input type="text" id="username" name="username" placeholder="Username">
-			<input type="password" id="password" name="password" placeholder="Password">
-      <label for="rememberMe">
-        <input type="checkbox" id="rememberMe" name="rememberMe">
+			<input type="text" id="loginUsername" name="username" placeholder="Username">
+			<input type="password" id="loginPassword" name="password" placeholder="Password">
+      <label for="loginRememberMe">
+        <input type="checkbox" id="loginRememberMe" name="loginRememberMe">
         Remember Me
     </label>
     </form>
 		<a onclick="recoveryMenuPopup()" id="forgot">Forgot account details?</a>
-    <input type="submit" form="loginForm" onclick="test('loginForm')">
+    <input type="submit" form="loginForm" onclick="loginForm()">
     <h3>New to Your Mind? <a onclick="signupPopup()"> Sign up here!</a></h3>
 	</div>
 
@@ -73,9 +73,9 @@
     <button onclick="recoveryMenuPopup()"> Go back </button>
 		<h2>Enter your email address and wait for further instructions</h2>
     <form id="recoverPasswordForm">
-			<input type="email" id="recoveryEmail" name="recoveryEmail" placeholder="Email address">
+			<input type="email" id="recoveryEmail" name="email" placeholder="Email address">
     </form>
-    <input type="submit" form="recoverPasswordForm" onclick="test('recoverPasswordForm')">
+    <input type="submit" form="recoverPasswordForm" onclick="recoverPasswordForm()">
 	</div>
 
   <div id="contactFormPopup">

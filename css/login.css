@@ -161,7 +161,7 @@ html, body {
     background-position: center;
     background-repeat: no-repeat;
 }
-#loginPopup label[for="rememberMe"] {
+#loginPopup label[for="loginrememberMe"] {
     display: flex;
     align-items: center;
 }

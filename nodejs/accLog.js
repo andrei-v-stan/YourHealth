@@ -100,7 +100,33 @@ function setVotes(resLog,voteVal) {
 
 
 
-appRouter.post('/login', async (req, res) => {
+
+appRouter.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const queryLogin = `SELECT id FROM usercreds WHERE ((email = ? OR username = ?) AND password = ?)`;
+
+  con.query(queryLogin, [username, username, password], (error, resID) => {
+    if (error) {
+      console.log('[Error]: appRouter.post(/login) -> con.query(queryLogin)');
+      console.error(error);
+      res.send({code: 500});
+    }
+
+    if (resID.length == 0) {
+      res.send({code: 401});
+    }
+    else {
+      res.send({code: 200, accID: resID[0]['id']});
+    }
+  });
+});
+
+
+
+
+
+
+appRouter.post('/login+', async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   con.query('SELECT id FROM usercreds WHERE ((email = ? AND password = ?) OR (username = ? AND password = ?))',
   [emailLogin, passwordLogin,emailLogin, passwordLogin], async (err, resLog) => {

@@ -17,81 +17,85 @@ const contactFormPop = document.getElementById('contactFormPopup');
 
 
 loginBack.addEventListener('click', () => {
-    removeLoginPopup();
-	document.body.style.overflow = 'auto';
+  removeLoginPopup();
+  document.body.style.overflow = 'auto';
 });
 
 signupBack.addEventListener('click', () => {
-    removeSignupPopup();
-    loginPopup();
-	document.body.style.overflow = 'auto';
+  removeSignupPopup();
+  loginPopup();
+  document.body.style.overflow = 'auto';
 });
 
 recoveryBack.addEventListener('click', () => {
-    removeRecoveryPopup();
-	loginPopup();
-    document.body.style.overflow = 'auto';
+  removeRecoveryPopup();
+  loginPopup();
+  document.body.style.overflow = 'auto';
 });
 
 
 function removeLoginPopup() {
-    loginBack.style.display = 'none';
-    loginPopTop.style.display = 'none';
-    loginPop.style.display = 'none';
+  loginBack.style.display = 'none';
+  loginPopTop.style.display = 'none';
+  loginPop.style.display = 'none';
 }
 
 function removeSignupPopup() {
-    signupBack.style.display = 'none';
-    signupPopTop.style.display = 'none';
-    signupPop.style.display = 'none';
+  signupBack.style.display = 'none';
+  signupPopTop.style.display = 'none';
+  signupPop.style.display = 'none';
 }
 
 function removeRecoveryPopup() {
-    recoveryBack.style.display = 'none';
-    recoveryPopT.style.display = 'none';
-    recoveryMenuPop.style.display = 'none';
-    recoverPassPop.style.display = 'none';
-    contactFormPop.style.display = 'none';
+  recoveryBack.style.display = 'none';
+  recoveryPopT.style.display = 'none';
+  recoveryMenuPop.style.display = 'none';
+  recoverPassPop.style.display = 'none';
+  contactFormPop.style.display = 'none';
 }
 
 
 function loginPopup() {
-    removeRecoveryPopup();
-    removeSignupPopup();
-    loginBack.style.display = 'block';
-    loginPopTop.style.display = 'block';
-    loginPop.style.display = 'block';
-	document.body.style.overflow = 'hidden';
+  if (localStorage.getItem("loginUser")) {
+    document.getElementById("loginUsername").value = localStorage.getItem("loginUser");
+    document.getElementById('loginRememberMe').checked = true;
+  }
+  removeRecoveryPopup();
+  removeSignupPopup();
+  loginBack.style.display = 'block';
+  loginPopTop.style.display = 'block';
+  loginPop.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 function signupPopup() {
-    removeLoginPopup();
-    signupBack.style.display = 'block';
-    signupPopTop.style.display = 'block';
-    signupPop.style.display = 'block';
-	document.body.style.overflow = 'hidden';
+  removeLoginPopup();
+  signupBack.style.display = 'block';
+  signupPopTop.style.display = 'block';
+  signupPop.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 function recoveryMenuPopup() {
-    recoverPassPop.style.display = 'none';
-    contactFormPop.style.display = 'none';
-    removeLoginPopup();
-    recoveryBack.style.display = 'block';
-    recoveryPopT.style.display = 'block';
-    recoveryMenuPop.style.display = 'block';
-	document.body.style.overflow = 'hidden';
+  recoverPassPop.style.display = 'none';
+  contactFormPop.style.display = 'none';
+  removeLoginPopup();
+  recoveryBack.style.display = 'block';
+  recoveryPopT.style.display = 'block';
+  recoveryMenuPop.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 function recoverPasswordPopup() {
-    recoveryMenuPop.style.display = 'none';
-    recoverPassPop.style.display = 'block';
-	document.body.style.overflow = 'hidden';
+  recoveryMenuPop.style.display = 'none';
+  recoverPassPop.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 function contactFormPopup() {
-    recoveryMenuPop.style.display = 'none';
-    contactFormPop.style.display = 'block';
-	document.body.style.overflow = 'hidden';
+  recoveryMenuPop.style.display = 'none';
+  contactFormPop.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 
 // ----- Popup functions (END) -----
@@ -424,7 +428,6 @@ function signupForm() {
     }
     else if (signupUsernameCheckAuto(1) == 1 && signupPasswordCheckAuto(1) == 1 && signupEmailCheckAuto(1) == 1) {
         Promise.all([signupUsernameCheck(1), signupEmailCheck(1)]).then(function(results) {
-          console.log(results[0] ,results[1] );
             if (results[0] === 1 && results[1] === 1) {
                 jQuery.ajax({
                     type: 'POST',
@@ -460,8 +463,103 @@ function signupForm() {
 
 // ----- Signup data entry (END) -----
 
+function loginForm() {
+  event.preventDefault();
+  const formData = new FormData(document.getElementById("loginForm"));
+  const formVar = {
+      "username": formData.get("username"),
+      "password": formData.get("password")
+  };
+
+  if (formData.get("loginRememberMe") == "on") {
+    localStorage.setItem("loginUser", formVar.username);
+  }
+  else {
+    localStorage.removeItem("loginUser");
+  }
+
+  jQuery.ajax({
+    type: 'POST',
+    url: '/login',
+    data: formVar,
+    success: function(response) {
+      const redirPopup = document.getElementById("redirectPopup");
+        if (response.code == 200) {
+          redirPopup.innerHTML = `Logged in successfully!<br>Redirecting...`;
+          redirPopup.style.display = "block";  
+          document.cookie = "accountID=" + response.accID + ";path=/";
+          setTimeout(function() {
+            window.location.href = "/posts";
+          }, 3000);
+        } 
+        else if (response.code == 401) {
+          redirPopup.innerHTML = `Invalid username or password<br>`;
+          redirPopup.style.display = "block"; 
+          setTimeout(function() {
+            redirPopup.innerHTML = ``;
+          redirPopup.style.display = "none"; 
+          }, 2000); 
+        } 
+        else {
+          redirPopup.innerHTML = `There has been an error while logging in to your account...<br>`;
+          redirPopup.style.display = "block";  
+        }
+      },
+    error: function() {
+      console.log("[Error]: There was an error receiving the response from /login")
+      alert('[Error]: Internal server error');
+    }
+  });
+}
 
 
+
+function recoverPasswordForm() {
+  event.preventDefault();
+  const formData = new FormData(document.getElementById("recoverPasswordForm"));
+  const formVar = {
+      "email": formData.get("email")
+  };
+
+  jQuery.ajax({
+    type: 'POST',
+    url: '/recoverPass',
+    data: formVar,
+    success: function(response) {
+      const redirPopup = document.getElementById("redirectPopup");
+        if (response.code == 200) {
+          redirPopup.innerHTML = `Email sent successfully!<br>Redirecting...`;
+          setTimeout(function() {
+            window.location.href = "/posts";
+          }, 3000);
+        } 
+        else if (response.code == 401) {
+          redirPopup.innerHTML = `There is no account registered with this email address<br>`;
+          redirPopup.style.display = "block"; 
+          setTimeout(function() {
+            redirPopup.innerHTML = ``;
+          redirPopup.style.display = "none"; 
+          }, 4000); 
+        }
+        else if (response.code == 402) {
+          redirPopup.innerHTML = `There has been an issue while sending the email<br>`;
+          redirPopup.style.display = "block"; 
+          setTimeout(function() {
+            redirPopup.innerHTML = ``;
+          redirPopup.style.display = "none"; 
+          }, 4000); 
+        }  
+        else {
+          redirPopup.innerHTML = `There has been an error while sending the email request...<br>`;
+          redirPopup.style.display = "block";  
+        }
+      },
+    error: function() {
+      console.log("[Error]: There was an error receiving the response from /recoverPass")
+      alert('[Error]: Internal server error');
+    }
+  });
+}
 
 
 
