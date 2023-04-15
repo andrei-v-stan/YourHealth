@@ -1,4 +1,6 @@
 
+// ----- Popup functions (START)  ----- >>
+
 const loginBack = document.getElementById('loginBackground');
 const loginPopTop = document.getElementById('loginPopupTop');
 const loginPop = document.getElementById('loginPopup');
@@ -92,52 +94,232 @@ function contactFormPopup() {
 	document.body.style.overflow = 'hidden';
 }
 
+// ----- Popup functions (END) -----
 
 
 
+// ----- Auto input checks (START) -----
 
-
-
-
-
-
-async function signupUsernameCheckAuto(usage) {
-    try {
-      const result = await signupUsernameCheck(usage);
-      console.log(result);
-    } catch (error) {
-      console.error(error);
+function ctOnes(vector) {
+  let count = 0;
+  for (i = 0; i < vector.length; i++) {
+    if (vector[i] == 1) {
+      count++;
     }
   }
+  return count;
+}
+
+function signupUsernameCheckAuto(usage) {
+  let valid = 1;
+  const usernameInput = document.getElementById("signupUsername");
+  const errorBubble = document.getElementById("signupUsernameError");
+
+  const errors = signupUsernameRules(usernameInput.value);
+  errorBubble.innerHTML = "";
+
+  if (ctOnes(errors) == 0) {
+    usernameInput.style.backgroundColor = "#fff";
+    errorBubble.innerHTML = "";
+    errorBubble.style.display = "none";
+  }
+  else {
+    usernameInput.style.backgroundColor = "#dc6e6e";
+    if (errors[0] == 1) {
+      errorBubble.innerHTML = `Your username must have between 6 and 128 characters<br>`;
+    }
+    if (errors[1] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your username cannot contain characters outside of alphanumeric characters and "- . _"<br>`;
+    }
+    if (errors[2] == 1) {
+      errorBubble.inner
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your username cannot start/end with non-alphanumeric characters<br>`;
+    }
+    if (errors[3] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your username must contain at least 2 alphanumeric characters<br>`;
+    }
+    errorBubble.style.display = "block";
+    valid = 0;
+  }
+  if (usage == 1) {
+    return valid;
+  }
+}
+
+function signupPasswordCheckAuto(usage) {
+  let valid = 1;
+  const passwordInput = document.getElementById("signupPassword");
+  const errorBubble = document.getElementById("signupPasswordError");
+
+  const errors = signupPasswordRules(passwordInput.value);
+  errorBubble.innerHTML = "";
+  
+  if (ctOnes(errors) == 0) {
+    passwordInput.style.backgroundColor = "#fff";
+    errorBubble.innerHTML = "";
+    errorBubble.style.display = "none";
+  }
+  else {
+    passwordInput.style.backgroundColor = "#dc6e6e";
+    if (errors[0] == 1) {
+      errorBubble.innerHTML = `Your password must have between 8 and 128 characters<br>`;
+    }
+    if (errors[1] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password cannot contain characters outside the EN-US keyboard or spaces<br>`;
+    }
+    if (errors[2] == 1) {
+      errorBubble.inner
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 uppercase letter<br>`;
+    }
+    if (errors[3] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 lowercase letter<br>`;
+    }
+    if (errors[4] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 number<br>`;
+    }
+    errorBubble.style.display = "block";
+    valid = 0;
+  }
+  if (usage == 1) {
+    return valid;
+  }
+}
+
+function signupEmailCheckAuto(usage) {
+  let valid = 1;
+  const emailInput = document.getElementById("signupEmail");
+  const errorBubble = document.getElementById("signupEmailError");
+
+  const errors = signupEmailRules(emailInput.value);
+  errorBubble.innerHTML = "";
+  
+  if (ctOnes(errors) == 0) {
+    emailInput.style.backgroundColor = "#fff";
+    errorBubble.innerHTML = "";
+    errorBubble.style.display = "none";
+  }
+  else {
+    emailInput.style.backgroundColor = "#dc6e6e";
+    if (errors[0] == 1) {
+      errorBubble.innerHTML = `Please enter a valid email address<br>`;
+    }
+    errorBubble.style.display = "block";
+    valid = 0;
+  }
+  if (usage == 1) {
+    return valid;
+  }
+}
+
+// ----- Auto input checks (END) -----
 
 
 
+// ----- Input rules (START) -----
+
+function signupUsernameRules(username) {
+  const regex = new RegExp("^(?=[a-zA-Z0-9])[a-zA-Z0-9._-]{4,126}(?<=[a-zA-Z0-9])$");
+  
+  let errors = [0,0,0,0];
+  if (username.length < 6 || username.length > 128) {
+      errors[0] = 1;
+  }
+
+  var regexp;
+  if (regex.test(username) == false) {
+      regexp = /[^a-zA-Z0-9._-]/;
+      if (regexp.test(username) == true) {
+          errors[1] = 1;
+      }
+      regexp = /^[a-zA-Z0-9].*[a-zA-Z0-9]$/;
+      if (regexp.test(username) == false) {
+          errors[2] = 1;
+      }
+      regexp = /^(?=.*[a-zA-Z0-9].*[a-zA-Z0-9]).+$/;
+      if (regexp.test(username) == false) {
+          errors[3] = 1;
+      }
+  }
+
+  return errors;
+}
+
+function signupPasswordRules(password) {
+  const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\x21-\x7E]{8,128}$/;
+  
+  let errors = [0,0,0,0,0]
+  if (regex.test(password) == false) {
+      var regexp;
+      if (password.length < 8 || password.length > 128) {
+        errors[0] = 1;
+      }
+      regexp = /[^\x21-\x7E]/;
+      if (regexp.test(password) == true) {
+        errors[1] = 1;
+      }
+      regexp = /[A-Z]/;
+      if (regexp.test(password) == false) {
+        errors[2] = 1;
+      }
+      regexp = /[a-z]/;
+      if (regexp.test(password) == false) {
+        errors[3] = 1;
+      }
+      regexp = /[0-9]/;
+      if (regexp.test(password) == false) {
+        errors[4] = 1;
+      }
+  }
+  return errors;
+}
+
+function signupEmailRules(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,250}$/;
+  
+  errors = [0];
+  if (regex.test(email) == false) {
+      error[0] = 1;
+  }
+  return errors;
+}
+
+// ----- Input rules (END) -----
+
+
+
+// ----- Username & Email check using DB (START) -----
 
 function signupUsernameCheck(usage) {
+  event.preventDefault();
+  let valid = 1;
+  const usernameInput = document.getElementById("signupUsername");
+  const errorBubble = document.getElementById("signupUsernameError");
+
     return new Promise((resolve, reject) => {
-      const inputData = document.getElementById("signupUsername");
       jQuery.ajax({
         type: "POST",
         url: "/signupUsernameCheck",
         data: {
-          username: inputData.value,
+          username: usernameInput.value,
         },
         success: function (response) {
           if (response.code == 200) {
-            if (usage == 0) {
-              alert("The username is free");
-            } 
-            else if (usage == 1) {
-              resolve(1);
-            }
-          } else if (response.code == 401) {
-            alert("The username is taken");
+            usernameInput.style.backgroundColor = "#5ca25a";
+            errorBubble.innerHTML = "";
+            errorBubble.style.display = "none";            
           } 
-          else if (response.code == 402) {
-            alert("The username cannot be empty");
+          else if (response.code == 401) {
+            usernameInput.style.backgroundColor = "#dce376";
+            errorBubble.innerHTML = `The username is currently taken<br>`;
+            errorBubble.style.display = "block";  
+            valid = 0;
           } 
           else {
             reject("[Error]: There was an internal error in (/signupUsernameCheck)");
+          }
+
+          if (usage == 1) {
+            resolve(valid);
           }
         },
         error: function () {
@@ -149,30 +331,35 @@ function signupUsernameCheck(usage) {
   }
   
   function signupEmailCheck(usage) {
+    let valid = 1;
+    const emailInput = document.getElementById("signupEmail");
+    const errorBubble = document.getElementById("signupEmailError");
+
     return new Promise((resolve, reject) => {
-      const inputData = document.getElementById("signupEmail");
       jQuery.ajax({
         type: "POST",
         url: "/signupEmailCheck",
         data: {
-          email: inputData.value,
+          email: emailInput.value,
         },
         success: function (response) {
           if (response.code == 200) {
-            if (usage == 0) {
-              alert("The email is free");
-            } else if (usage == 1) {
-              resolve(1);
-            }
+            emailInput.style.backgroundColor = "#5ca25a";
+            errorBubble.innerHTML = "";
+            errorBubble.style.display = "none";            
           } 
           else if (response.code == 401) {
-            alert("The email is taken");
-          } 
-          else if (response.code == 402) {
-            alert("The email cannot be empty");
-          } 
+            emailInput.style.backgroundColor = "#dce376";
+            errorBubble.innerHTML = `The email is currently in use<br>`;
+            errorBubble.style.display = "block";  
+            valid = 0;
+          }
           else {
             reject("[Error]: There was an internal error in (/signupEmailCheck)");
+          }
+
+          if (usage == 1) {
+            resolve(valid);
           }
         },
         error: function () {
@@ -183,6 +370,11 @@ function signupUsernameCheck(usage) {
     });
   }
 
+// ----- Username & Email check using DB (END) -----
+
+
+
+// ----- Signup data entry (START) -----
 
   function jsonCreation(accID) {
     jQuery.ajax({
@@ -191,29 +383,25 @@ function signupUsernameCheck(usage) {
       data: {},
       success: function(response) {
           if (response.code == 200) {
-            alert("Account created");
+            console.log("Account created");
           } 
           else if (response.code == 500) {
-            alert("Internal error");
+            console.log("Internal error");
           }
           else {
-                alert("[Error]: There was an internal error in (/json/:accountID)");
+            console.log("[Error]: There was an internal error in (/json/:accountID)");
           } 
         },
       error: function() {
         console.log("[Error]: There was an error receiving the response from /json/:accountID")
-        alert('[Error]: Internal server error');
       }
     });
   }
 
 
-
-
-
-function signupForm(formID, event) {
+function signupForm() {
     event.preventDefault();
-    const formData = new FormData(document.getElementById(formID));
+    const formData = new FormData(document.getElementById("signupForm"));
     const formVar = {
         "username": formData.get("username"),
         "password": formData.get("password"),
@@ -221,32 +409,42 @@ function signupForm(formID, event) {
         "email": formData.get("email"),
         "emailConfirm": formData.get("emailConfirm")
     };
-    console.log(formVar);
 
-    sUR = signupUsernameRules(formVar.username);
-    sPR = signupPasswordRules(formVar.password, formVar.passwordConfirm);
-    sER = signupEmailRules(formVar.email, formVar.emailConfirm);
+    const passwordErrorBubble = document.getElementById("signupPasswordError");
+    const emailErrorBubble = document.getElementById("signupEmailError");
+    console.log(signupUsernameCheckAuto(1) == 1 && signupPasswordCheckAuto(1) == 1 && signupEmailCheckAuto(1) == 1);
 
-    if (sUR === 1 && sPR === 1 && sER === 1) {
-        sUC = signupUsernameCheck(1);
-        sEC = signupEmailCheck(1);
-
-        Promise.all([sUC, sEC]).then(function(results) {
+    if (formData.get("password") != formData.get("passwordConfirm")) {
+      passwordErrorBubble.innerHTML = `The passwords do not match<br>`;
+      passwordErrorBubble.style.display = "block";  
+    }
+    else if (formData.get("email") != formData.get("emailConfirm")) {
+      emailErrorBubble.innerHTML = `The email addresses do not match<br>`;
+      emailErrorBubble.style.display = "block";  
+    }
+    else if (signupUsernameCheckAuto(1) == 1 && signupPasswordCheckAuto(1) == 1 && signupEmailCheckAuto(1) == 1) {
+        Promise.all([signupUsernameCheck(1), signupEmailCheck(1)]).then(function(results) {
+          console.log(results[0] ,results[1] );
             if (results[0] === 1 && results[1] === 1) {
                 jQuery.ajax({
                     type: 'POST',
                     url: '/signup',
                     data: formVar,
                     success: function(response) {
+                      const redirPopup = document.getElementById("redirectPopup");
                         if (response.code == 200) {
-                            jsonCreation(response.accID);
+                          redirPopup.innerHTML = `Account created successfully!<br>Redirecting...`;
+                          redirPopup.style.display = "block";  
+                          jsonCreation(response.accID);
+                          document.cookie = "accountID=" + response.accID + ";path=/";
+                          setTimeout(function() {
+                            window.location.href = "/posts";
+                          }, 3000);
                         } 
-                        else if (response.code == 500) {
-                            alert("Internal error");
-                        }
                         else {
-                            alert("[Error]: There was an internal error in (/signup)");
-                        } 
+                          redirPopup.innerHTML = `There has been an error while creating your account...<br>`;
+                          redirPopup.style.display = "block";  
+                        }
                       },
                     error: function() {
                       console.log("[Error]: There was an error receiving the response from /signup")
@@ -260,6 +458,7 @@ function signupForm(formID, event) {
 
 }
 
+// ----- Signup data entry (END) -----
 
 
 
@@ -268,81 +467,3 @@ function signupForm(formID, event) {
 
 
 
-
-function signupUsernameRules(username) {
-    const regex = new RegExp("^(?=[a-zA-Z0-9])[a-zA-Z0-9._-]{4,126}(?<=[a-zA-Z0-9])$");
-    
-    var valid = 1;
-    if (username.length < 6 || username.length > 128) {
-        console.log("Invalid username length");
-        valid = 0;
-    }
-
-    var regexp;
-    if (regex.test(username) == false) {
-        regexp = /[^a-zA-Z0-9._-]/;
-        if (regexp.test(username) == true) {
-            console.log("Invalid characters in username");
-        }
-        regexp = /^[a-zA-Z0-9].*[a-zA-Z0-9]$/;
-        if (regexp.test(username) == false) {
-            console.log("The username cannot start/end with non-alphanumeric characters");
-        }
-        regexp = /^(?=.*[a-zA-Z0-9].*[a-zA-Z0-9]).+$/;
-        if (regexp.test(username) == false) {
-            console.log("The username must have at least 2 alphanumeric characters");
-        }
-        valid = 0;
-    }
-    
-    return valid;
-}
-
-function signupPasswordRules(password, passwordCon) {
-    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])[!@#$%^&*(){}\[\]`~\-_=+;:'"<>,.\/?\\|A-Za-z\d]{8,128}$/;
-    
-    var valid = 1;
-    if (password != passwordCon) {
-        console.log("The two passwords introduced do not match");
-        valid = 0
-    }
-    else if (regex.test(password) == false) {
-        var regexp;
-        if (password.length < 8 || password.length > 128) {
-            console.log("Invalid password length");
-        }
-        regexp = /[^!@#$%^&*(){}\[\]`~\-_=+;:'"<>,.\/?\\|A-Za-z\d]/;
-        if (regexp.test(username) == true) {
-            console.log("Invalid characters in password");
-        }
-        regexp = /[A-Z]/;
-        if (regexp.test(password) == false) {
-            console.log("Your password has to include at least one upper case letter");
-        }
-        regexp = /[a-z]/;
-        if (regexp.test(password) == false) {
-            console.log("Your password has to include at least one lower case letter");
-        }
-        regexp = /[0-9]/;
-        if (regexp.test(password) == false) {
-            console.log("Your password has to include at least one number");
-        }
-        valid = 0;
-    }
-    return valid;
-}
-
-function signupEmailRules(email, emailCon) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    var valid = 1;
-    if (email != emailCon) {
-        console.log("The two emails introduced do not match");
-        valid = 0
-    }
-    else if (regex.test(email) == false) {
-        console.log("PLease enter a valid email address");
-        valid = 0;
-    }
-    return valid;
-}

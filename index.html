@@ -11,6 +11,8 @@
 
   <button id="loginButton" onclick="loginPopup()">Login</button>
 
+  <div id="redirectPopup"></div>
+
   <div id="loginBackground"></div>
   <div id="signupBackground"></div>
   <div id="recoveryBackground"></div>
@@ -45,14 +47,17 @@
     <button onclick="loginPopup()"> Go back </button>
 		<h2>Sign Up</h2>
 		<form id="signupForm">
-			<input type="text" id="signupUsername" name="username" placeholder="Username" required>
-      <button onclick="signupUsernameCheckAuto(0)">Check username availability</button> 
-			<input type="password" id="signupPassword" name="password" placeholder="Password">
+      <div id="signupUsernameError"></div>
+			<input type="text" id="signupUsername" name="username" placeholder="Username" oninput="signupUsernameCheckAuto()">
+      <button onclick="signupUsernameCheck()">Check username availability</button> 
+			<div id="signupPasswordError"></div>
+      <input type="password" id="signupPassword" name="password" placeholder="Password" oninput="signupPasswordCheckAuto()">
       <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
-      <input type="email" id="signupEmail" name="email" placeholder="Email address">
+      <div id="signupEmailError"></div>
+      <input type="email" id="signupEmail" name="email" placeholder="Email address" oninput="signupEmailCheckAuto()">
       <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address">
     </form>
-    <input type="submit" form="signupForm" onclick="signupForm('signupForm', event);">
+    <input type="submit" form="signupForm" onclick="signupForm()">
 	</div>
 
   <div id="recoveryMenuPopup">

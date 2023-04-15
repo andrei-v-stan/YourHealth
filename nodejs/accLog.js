@@ -43,42 +43,26 @@ appRouter.post('/signupEmailCheck', (req, res) => {
 appRouter.post('/signup', (req, res) => {
   const { username, password, email } = req.body;
   const querySignUp = `INSERT INTO usercreds (username, password, email) VALUES (?, ?, ?)`;
-  const queryAccEmail = `SELECT 1 FROM usercreds WHERE email = ? LIMIT 1`;
-  const queryAccUsername = `SELECT 1 FROM usercreds WHERE username = ? LIMIT 1`;
   const queryAccId = `SELECT id FROM usercreds WHERE (username=? AND password=? AND email=?)`;
 
-  con.query(queryAccUsername, [username], (error, result) => {
+  con.query(querySignUp, [username, password, email], (error, result) => {
     if (error) {
-      console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccUsername)');
+      console.log('[Error]: appRouter.post(/signup) -> con.query(querySignUp)');
       console.error(error);
       res.send({code: 500});
     }
-      con.query(queryAccEmail, [email], (error, result) => {
+    else {
+      con.query(queryAccId, [username, password, email], (error, resID) => {
         if (error) {
-          console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccEmail)');
+          console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccId)');
           console.error(error);
           res.send({code: 500});
         }
-          con.query(querySignUp, [username, password, email], (error, result) => {
-            if (error) {
-              console.log('[Error]: appRouter.post(/signup) -> con.query(querySignUp)');
-              console.error(error);
-              res.send({code: 500});
-            }
-            else {
-              con.query(queryAccId, [username, password, email], (error, resID) => {
-                if (error) {
-                  console.log('[Error]: appRouter.post(/signup) -> con.query(queryAccId)');
-                  console.error(error);
-                  res.send({code: 500});
-                }
-                else {
-                  res.send({code: 200, accID: resID[0]['id']});
-                }
-              });
-            }
-          });
+        else {
+          res.send({code: 200, accID: resID[0]['id']});
+        }
       });
+    }
   });
 });
 
