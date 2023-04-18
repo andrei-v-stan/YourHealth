@@ -82,11 +82,17 @@
     <button onclick="recoveryMenuPopup()"> Go back </button>
 		<h2>Complete the forum below and our staff will respond ASAP</h2>
     <form id="contactForm">
-      <input type="text" id="nameMail" name="nameMail" placeholder="Full name" required>
-      <input type="emailMail" id="emailMail" name="emailMail" placeholder="Email address" required>
-      <textarea id="textMail" name="textMail" rows="5" placeholder="Message text" required></textarea>
+      <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
+      <input type="email" id="contactEmail" name="email" placeholder="Email address" required>
+      <select id="contactTopic" name="topic">
+        <option value="0">Please select a topic</option>
+        <option value="1">Account recovery</option>
+        <option value="2">Bug report</option>
+        <option value="3">Other</option>
+      </select>
+      <textarea id="contactMessage" name="message" rows="5" placeholder="Message text" required></textarea>
     </form>
-    <input type="submit" form="contactForm" onclick="test('contactForm')">
+    <input type="submit" form="contactForm" onclick="mailContactForm()">
 	</div>
 
 

@@ -538,10 +538,73 @@ function recoverPasswordForm() {
           redirPopup.style.display = "block"; 
           setTimeout(function() {
             redirPopup.innerHTML = ``;
-          redirPopup.style.display = "none"; 
+            redirPopup.style.display = "none"; 
           }, 4000); 
         }
         else if (response.code == 402) {
+          redirPopup.innerHTML = `There has been an issue while sending the email<br>`;
+          redirPopup.style.display = "block"; 
+          setTimeout(function() {
+            redirPopup.innerHTML = ``;
+            redirPopup.style.display = "none"; 
+          }, 4000); 
+        }  
+        else {
+          redirPopup.innerHTML = `There has been an error while sending the email request...<br>`;
+          redirPopup.style.display = "block";  
+        }
+      },
+    error: function() {
+      console.log("[Error]: There was an error receiving the response from /recoverPass")
+      alert('[Error]: Internal server error');
+    }
+  });
+}
+
+
+
+function mailContactForm() {
+  event.preventDefault();
+  const formData = new FormData(document.getElementById("contactForm"));
+  
+  let mailTopic = parseInt(formData.get("topic"));
+  switch (mailTopic) {
+    case 1:
+      mailTopic = "Account recovery";
+      break;
+    case 2:
+      mailTopic = "Bug report";
+      break;
+    case 3:
+      mailTopic = "Other";
+      break;
+    default:
+      mailTopic = "Topic not selected";
+      break;
+  }
+  
+
+  const formVar = {
+      "contactName": formData.get("fullname"),
+      "emailAddr": formData.get("email"),
+      "contactTopic": mailTopic,
+      "emailMessage": formData.get("message")
+  };
+
+  jQuery.ajax({
+    type: 'POST',
+    url: '/mailContactForm',
+    data: formVar,
+    success: function(response) {
+      const redirPopup = document.getElementById("redirectPopup");
+        if (response.code == 200) {
+          redirPopup.innerHTML = `Email sent successfully!<br>Redirecting...`;
+          redirPopup.style.display = "block"; 
+          setTimeout(function() {
+            window.location.href = "/posts";
+          }, 3000);
+        } 
+        else if (response.code == 500) {
           redirPopup.innerHTML = `There has been an issue while sending the email<br>`;
           redirPopup.style.display = "block"; 
           setTimeout(function() {
@@ -560,8 +623,4 @@ function recoverPasswordForm() {
     }
   });
 }
-
-
-
-
 

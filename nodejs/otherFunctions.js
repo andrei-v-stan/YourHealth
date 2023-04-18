@@ -185,14 +185,11 @@ appRouter.post('/recoverPass', (req, res) => {
 
 
 appRouter.get('/recoverPassword/:Code', (req, res) => {
-  const genCode = JSON.stringify(req.params);
-  console.log(genCode);
-
 });
 
 
 
-appRouter.post('/mail', (req, res) => {
+appRouter.post('/mailContactForm', (req, res) => {
   const mailTransport = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -201,22 +198,24 @@ appRouter.post('/mail', (req, res) => {
       }
   });
   
-  const { nameMail, emailMail, textMail } = req.body;
+  const { contactName, emailAddr, contactTopic, emailMessage } = req.body;
   
   let mailDetails = {
-      from: 'yourmindfii@gmail.com',
+      from: `${emailAddr}`,
       to: 'yourmindfii@gmail.com',
-      subject: `${nameMail} form contact`,
-      html: `<p>From: ${emailMail} <br> Message: ${textMail}</p>`
+      subject: `[${contactTopic}]`,
+      html: `<p>From: ${contactName}</p> <br>
+             <p>Email: ${emailAddr}</p> <br><br>
+             <p>Message: ${emailMessage}</p>`
   };
   
-  mailTransport.sendMail(mailDetails, (err, result) => {
-      if (err) {
+  mailTransport.sendMail(mailDetails, (error, result) => {
+      if (error) {
         console.log('[Error]: appRouter.post(/mail) -> mailTransport.sendmail()');
-        console.log(err);
-        res.status(500).send(res.render('statusHandler', { statusMessage: 'There has been an internal server error' }));
+        console.log(error);
+        res.send({code: 500});
       } else {
-        res.status(200).send(res.render('statusHandler', { statusMessage: 'Email sent successfully' }));
+        res.send({code: 200});
       }
     });
   });
