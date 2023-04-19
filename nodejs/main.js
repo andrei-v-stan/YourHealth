@@ -19,6 +19,8 @@ const genPagesRouter = require('./genPages');
 app.use('/', genPagesRouter);
 const accLogRouter = require('./accLog');
 app.use('/', accLogRouter);
+const mailJsonRouter = require('./mailJson');
+app.use('/', mailJsonRouter);
 const otherFunctionsRouter = require('./otherFunctions');
 app.use('/', otherFunctionsRouter);
 const createPostRouter = require('./createPost');

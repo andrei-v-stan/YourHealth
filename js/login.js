@@ -416,7 +416,6 @@ function signupForm() {
 
     const passwordErrorBubble = document.getElementById("signupPasswordError");
     const emailErrorBubble = document.getElementById("signupEmailError");
-    console.log(signupUsernameCheckAuto(1) == 1 && signupPasswordCheckAuto(1) == 1 && signupEmailCheckAuto(1) == 1);
 
     if (formData.get("password") != formData.get("passwordConfirm")) {
       passwordErrorBubble.innerHTML = `The passwords do not match<br>`;
@@ -529,6 +528,7 @@ function recoverPasswordForm() {
       const redirPopup = document.getElementById("redirectPopup");
         if (response.code == 200) {
           redirPopup.innerHTML = `Email sent successfully!<br>Redirecting...`;
+          redirPopup.style.display = "block"; 
           setTimeout(function() {
             window.location.href = "/posts";
           }, 3000);
@@ -624,3 +624,103 @@ function mailContactForm() {
   });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+function changePasswordCheck() {
+  let valid = 1;
+  const passwordInput = document.getElementById("changePassword");
+  const errorBubble = document.getElementById("changePasswrordError");
+  const errors = signupPasswordRules(passwordInput.value);
+
+  
+  if (ctOnes(errors) == 0) {
+    passwordInput.style.backgroundColor = "#fff";
+    errorBubble.innerHTML = "";
+    errorBubble.style.display = "none";
+  }
+  else {
+    passwordInput.style.backgroundColor = "#dc6e6e";
+    if (errors[0] == 1) {
+      errorBubble.innerHTML = `Your password must have between 8 and 128 characters<br>`;
+    }
+    if (errors[1] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password cannot contain characters outside the EN-US keyboard or spaces<br>`;
+    }
+    if (errors[2] == 1) {
+      errorBubble.inner
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 uppercase letter<br>`;
+    }
+    if (errors[3] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 lowercase letter<br>`;
+    }
+    if (errors[4] == 1) {
+      errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 number<br>`;
+    }
+    errorBubble.style.display = "block";
+    valid = 0;
+  }
+    
+  return valid;
+}
+
+
+function changePasswordForm(passCode,codeEmail) {
+  event.preventDefault();
+  const formData = new FormData(document.getElementById("changePasswordForm"));
+  const formVar = {
+      "password": formData.get("password"),
+      "email": codeEmail,
+      "genCode": passCode
+  };
+  const redirPopup = document.getElementById("redirectPopup");
+
+  if (formVar.password != formData.get("passwordConfirm")) {
+      redirPopup.innerHTML = `The passwords do not match<br>`;
+      redirPopup.style.display = "block"; 
+      setTimeout(function() {
+        redirPopup.innerHTML = ``;
+        redirPopup.style.display = "none"; 
+      }, 4000); 
+  }
+  else if (changePasswordCheck() == 1) {
+      jQuery.ajax({
+          type: 'POST',
+          url: '/changePass',
+          data: formVar,
+          success: function(response) {
+              if (response.code == 200) {
+                redirPopup.innerHTML = `Password changed successfully!<br>Redirecting...`;
+                redirPopup.style.display = "block"; 
+                setTimeout(function() {
+                  window.location.href = "/posts";
+                }, 3000);
+              } 
+              else if (response.code == 500) {
+                redirPopup.innerHTML = `There has been an issue while changing your password<br>`;
+                redirPopup.style.display = "block"; 
+                setTimeout(function() {
+                  redirPopup.innerHTML = ``;
+                  redirPopup.style.display = "none"; 
+                }, 4000); 
+              }  
+              else {
+                redirPopup.innerHTML = `There has been an error while changing your password...<br>`;
+                redirPopup.style.display = "block";  
+              }
+            },
+          error: function() {
+            console.log("[Error]: There was an error receiving the response from /changePass")
+            alert('[Error]: Internal server error');
+          }
+        });
+    }
+}
