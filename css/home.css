@@ -1,0 +1,256 @@
+
+html, body {
+    width: 99%;
+    height: 100%;
+    background-color:rgb(62, 86, 125);
+}
+
+
+
+
+
+#createPostBackground {
+	display: none;
+	position: fixed;
+    background-color: #cdeaffb1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+
+
+#createPostPopupTop {
+    display: none;
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+	z-index: 2;
+}
+#createPostPopupTop {
+    background-color: #3b6998;
+}
+
+#createPostPopupTop button {
+    color: #000000;
+    font-size: 32px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+#createPostPopupTop button {
+    background-color: #5c8de8;
+}
+
+
+
+
+
+#createPostPopup {
+    display: none;
+	position: fixed;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+    font-size: 24px;
+}
+#createPostPopup h2 {
+    text-align: center;
+    font-size: 35px;
+    position: relative;
+}
+#createPostPopup h3 {
+    text-align: center;
+    font-size: 22px;
+    position: relative;
+}
+#createPostPopup h3 > a {
+    text-align: center;
+    font-size: 22px;
+    position: relative;
+    text-decoration: none;
+    color: #007bff;
+}
+#createPostPopup form {
+	display: flex;
+	flex-direction: column;
+}
+#createPostPopup input[type="text"],
+#createPostPopup input[type="password"],
+#createPostPopup input[type="submit"] {
+    font-size: 20px;
+	padding: 25px 5px 25px 50px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	border: none;
+
+    background-size: 35px 35px;
+    background-position: left 5px center;
+    background-repeat: no-repeat; 
+}
+#createPostPopup input[type="submit"] {
+    display: block;
+	background-color: #007bff;
+	color: #fff;
+    width: 80%;
+    padding: 20px 0;
+    margin: 15px auto 20px;
+    border-radius: 15px;
+    font-size: 25px;
+} 
+
+
+
+
+  #redirectPopup {
+    display: none;
+	position: fixed;
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    min-width: 300px;
+    max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+    margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 3;
+    font-size: 24px;
+}
+#redirectPopup::before {
+    content: "";
+}
+
+
+.homeTopNavbar {
+    background-color: #553278;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.homeNavPosts button {
+    margin: 0 10px;
+    padding: 20px 15px;
+    font-size: 16px;
+    color: #77a180;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+    font-size: 20px;
+    line-height: 5px;
+  }
+.homeTopNavbar button img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+    object-fit: contain;
+    margin-top: -15px;
+  }
+  
+
+
+.homeNavPosts {
+    display: flex;
+    position: fixed;
+    height: 30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: #553278;
+    padding: 0 15px 10px;
+    margin-top: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .homeNavPosts button {
+    margin: 0 10px;
+    padding: 20px 15px;
+    font-size: 16px;
+    color: #77a180;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+    font-size: 20px;
+    line-height: 5px;
+  }
+  
+  .homeNavPosts button:hover {
+    background-color: #fff !important;
+    border-bottom: none;
+    border-radius: 20px;
+  }
+
+  .homeNavPosts button span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .homeNavPosts button img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+    object-fit: contain;
+    margin-top: -15px;
+  }
+
+  #sortPostsDropdown {
+    left: 10px;
+  }
+
+  #filterPostsDropdown {
+    right: 10px;
+  }
+  
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    transform: translateY(50px);
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  #postTags {
+    height: 70px;
+    overflow: auto;
+  }

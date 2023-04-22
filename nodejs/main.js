@@ -7,16 +7,23 @@ const { con } = require('./sql');
 const app = express();
 
 app.use(express.static(__dirname + '/../../YourMind'));
+app.set('views', path.join(__dirname, '../ejs'));
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.set('views', path.join(__dirname, '../ejs'));
-app.set('view engine', 'ejs');
+
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
 
 
 
 const genPagesRouter = require('./genPages');
 app.use('/', genPagesRouter);
+const homePagesRouter = require('./homePages');
+app.use('/', homePagesRouter);
 const accLogRouter = require('./accLog');
 app.use('/', accLogRouter);
 const mailJsonRouter = require('./mailJson');

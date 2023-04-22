@@ -1,15 +1,67 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <title>Your Mind</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/login.css" type="text/css">
+        <link rel="stylesheet" href="css/home.css" type="text/css">
+
     </head>
+
 <body>
 
+  <nav class="homeTopNavbar">
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/home.png">
+    </button>
+    <button id="" onclick="createPostPopup()">
+      <img id="" src="../Resources/navbar/create.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/notifications.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/messages.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/profile.png">
+    </button>
+
+    <button id="loginButton" onclick="loginPopup()">Login</button>
+    <button id="loginButton" onclick="logoutPOST()">Logout</button>
+  </nav>
+  
   <h1>index</h1>
 
-  <button id="loginButton" onclick="loginPopup()">Login</button>
+  <nav class="homeNavPosts">
+    <button id="sortPostsButton" onclick="toggleSort()">
+      <span id="sortPostsButtonText">Sort</span>
+      <img id="sortPostsButtonImage" src="../Resources/navbar/sort.png" style="display: none;">
+    </button>
+    <div id="sortPostsDropdown" class="dropdown-content">
+      <button id="#" onclick="sortPosts('recommendedPosts')">Recommended</button>
+      <button id="#" onclick="sortPosts('hotPosts')">Hot (most liked past 24h)</button>
+      <button id="#" onclick="sortPosts('newPosts')">New (sort the posts on date)</button>
+      <button id="#" onclick="sortPosts('oldPosts')">Old (sort the posts on date)</button>
+      <button id="#" onclick="sortPosts('topPosts')">Top (sort the posts on likes)</button>
+      <button id="#" onclick="sortPosts('bottomPosts')">Bottom (sort the posts on likes)</button>
+    </div>
+    <button id="createPostButton" onclick="createPostPopup()">
+      <span id="createPostButtonText">Create</span>
+    </button>
+    <button id="filterPostsButton" onclick="toggleFilter()">
+      <span id="filterPostsButtonText">Filter</span>
+      <img id="filterPostsButtonImage" src="../Resources/navbar/filter.png" style="display: none;">
+    </button>
+    <div id="filterPostsDropdown" class="dropdown-content">
+      <input type="text" id="searchTag" placeholder="Search...">
+      <div id="postTags"></div>
+      <button id="#" onclick="checkFilters()">Filter posts</button>
+    </div>
+  </nav>
+
+
 
   <div id="redirectPopup"></div>
 
@@ -96,7 +148,54 @@
 	</div>
 
 
-  <script src="js/login.js"></script>
-  <script src="js/jquery-3.6.4.min.js"></script>
+
+
+  <div id="createPostBackground"></div>
+  <div id="createPostPopupTop">
+      <button>Your ✰ Mind</button>
+  </div>
+
+  <div id="createPostPopup">
+      <h2>Enter the post details:</h2>
+        <form id="createPostForm" action="/create_post" method="post">
+          <label for="title">Title:</label>
+          <input type="text" name="titlePost" id="titlePost"><br>
+        
+          <label for="content">Content:</label>
+          <textarea name="contentPost" id="contentPost"></textarea><br>
+      
+          <button id="addTagButton" type="button" onclick="createAndSet()">Add a new Tag</button><br>
+      
+          <br>
+          <input type="submit" value="Create Post" style="margin-top: 10px;">
+        </form>
+      <input type="submit" form="createPostForm" onclick="x()">
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<button onclick="getLocation()">Get Location</button>
+<br>
+
+
+<h1>Results</h1>
+<div id="resultedPosts">
+  <p>Resulted posts</p>
+</div>
+
+
+<script src="js/login.js"></script>
+<script src="js/jquery-3.6.4.min.js"></script>
+<script src="js/home.js"></script>
+
 </body>
 </html>

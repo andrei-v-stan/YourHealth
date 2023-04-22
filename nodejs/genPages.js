@@ -49,6 +49,8 @@ appRouter.route('/posts')
         strFilters = strFilters.slice(0, -1);
       }
 
+      console.log(req.body.filters,'\n',strFilters,'\n',i);
+
       const queryFilters = `SELECT * FROM posts WHERE id IN (
           SELECT postID FROM tagpostid WHERE tagID IN (
           SELECT id FROM tags WHERE title IN (${strFilters}))
