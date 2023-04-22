@@ -2,6 +2,18 @@ const createPostBack = document.getElementById('createPostBackground');
 const createPostPopTop = document.getElementById('createPostPopupTop');
 const createPostPop = document.getElementById('createPostPopup');
 
+const sPB = document.getElementById("sortPostsButton");
+const sPBT = document.getElementById("sortPostsButtonText");
+const sPBI = document.getElementById("sortPostsButtonImage");
+const SPD = document.getElementById("sortPostsDropdown");
+
+const fPB = document.getElementById("filterPostsButton");
+const fPBT = document.getElementById("filterPostsButtonText");
+const fPBI = document.getElementById("filterPostsButtonImage");
+const fPD = document.getElementById("filterPostsDropdown");
+
+
+
 if (createPostBack !== null) {
     createPostBack.addEventListener('click', () => {
         createPostBack.style.display = 'none';
@@ -22,6 +34,14 @@ function createPostPopup() {
     createPostPopTop.style.display = 'block';
     createPostPop.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    sPBT.style.display = "flex";
+    sPB.style.backgroundColor = "#553278";
+    sPBI.style.display = "none";
+    SPD.style.display = "none";
+    fPBT.style.display = "flex";
+    fPB.style.backgroundColor = "#553278";
+    fPBI.style.display = "none";
+    fPD.style.display = "none";
 }
 
 
@@ -49,43 +69,49 @@ function createAndSet() {
 
 
   function toggleSort() {
-    const button = document.getElementById("sortPostsButton");
-    const buttonText = document.getElementById("sortPostsButtonText");
-    const buttonImage = document.getElementById("sortPostsButtonImage");
-    const dropdown = document.getElementById("sortPostsDropdown");
   
-    if (buttonImage.style.display == "none") {
-      buttonText.style.display = "none";
-      button.style.backgroundColor = "white";
-      buttonImage.style.display = "flex";
-      dropdown.style.display = "block";
+    if (sPBI.style.display == "none") {
+      if (fPBI.style.display != "none") {
+        fPBT.style.display = "flex";
+        fPB.style.backgroundColor = "#553278";
+        fPBI.style.display = "none";
+        fPD.style.display = "none";
+      }
+      sPBT.style.display = "none";
+      sPB.style.backgroundColor = "white";
+      sPBI.style.display = "flex";
+      SPD.style.display = "block";
     } 
     else {
-      buttonText.style.display = "flex";
-      button.style.backgroundColor = "#553278";
-      buttonImage.style.display = "none";
-      dropdown.style.display = "none";
+      sPBT.style.display = "flex";
+      sPB.style.backgroundColor = "#553278";
+      sPBI.style.display = "none";
+      SPD.style.display = "none";
     }
   }
   
   function toggleFilter() {
-    const button = document.getElementById("filterPostsButton");
-    const buttonText = document.getElementById("filterPostsButtonText");
-    const buttonImage = document.getElementById("filterPostsButtonImage");
-    const dropdown = document.getElementById("filterPostsDropdown");
-  
-    if (buttonImage.style.display == "none") {
-      buttonText.style.display = "none";
-      button.style.backgroundColor = "white";
-      buttonImage.style.display = "flex";
-      dropdown.style.display = "block";
+
+
+    if (fPBI.style.display == "none") {
+      if (sPBI.style.display != "none") {
+        sPBT.style.display = "flex";
+        sPB.style.backgroundColor = "#553278";
+        sPBI.style.display = "none";
+        SPD.style.display = "none";
+        
+      }
+      fPBT.style.display = "none";
+      fPB.style.backgroundColor = "white";
+      fPBI.style.display = "flex";
+      fPD.style.display = "block";
       getFilters();
     } 
     else {
-      buttonText.style.display = "flex";
-      button.style.backgroundColor = "#553278";
-      buttonImage.style.display = "none";
-      dropdown.style.display = "none";
+      fPBT.style.display = "flex";
+      fPB.style.backgroundColor = "#553278";
+      fPBI.style.display = "none";
+      fPD.style.display = "none";
     }
   }
 
@@ -230,9 +256,25 @@ searchTagBar.addEventListener("input", function() {
 });
 
 
+function gpsPos(position) {
+  const lat = position.coords.latitude;
+  const long = position.coords.longitude;
+  const acc = position.coords.accuracy;
+  setInterval(() => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/location');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ lat, long, acc }));
+  }, 3000000);
+}
 
 
 window.onload = function() {
-  sortPosts('recommendedPosts');
   localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
+  sortPosts('recommendedPosts');
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(gpsPos);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
 };
