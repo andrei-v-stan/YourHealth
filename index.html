@@ -40,12 +40,12 @@
       <img id="sortPostsButtonImage" src="../Resources/navbar/sort.png" style="display: none;">
     </button>
     <div id="sortPostsDropdown" class="dropdown-content">
-      <button id="#" onclick="sortPosts('recommendedPosts')">Recommended</button>
-      <button id="#" onclick="sortPosts('hotPosts')">Hot (most liked past 24h)</button>
-      <button id="#" onclick="sortPosts('newPosts')">New (sort the posts on date)</button>
-      <button id="#" onclick="sortPosts('oldPosts')">Old (sort the posts on date)</button>
-      <button id="#" onclick="sortPosts('topPosts')">Top (sort the posts on likes)</button>
-      <button id="#" onclick="sortPosts('bottomPosts')">Bottom (sort the posts on likes)</button>
+      <button id="#" onclick="sortPosts('recommendedPosts','')">Recommended</button>
+      <button id="#" onclick="sortPosts('hotPosts','')">Hot (most liked past 24h)</button>
+      <button id="#" onclick="sortPosts('newPosts','')">New (sort the posts on date)</button>
+      <button id="#" onclick="sortPosts('oldPosts','')">Old (sort the posts on date)</button>
+      <button id="#" onclick="sortPosts('topPosts','')">Top (sort the posts on likes)</button>
+      <button id="#" onclick="sortPosts('bottomPosts','')">Bottom (sort the posts on likes)</button>
     </div>
     <button id="createPostButton" onclick="createPostPopup()">
       <span id="createPostButtonText">Create</span>
@@ -59,6 +59,16 @@
       <div id="postTags"></div>
       <button id="#" onclick="checkFilters()">Filter posts</button>
     </div>
+  </nav>
+
+  <nav id="homeNavSection" style="display: flex;">
+    <button id="displayPostsButton" onclick="displayPosts()">
+      <img id="displayPostsButtonImageCompact" src="../Resources/navbar/compact.png" style="display: flex;">
+      <img id="displayPostsButtonImageCard" src="../Resources/navbar/card.png" style="display: none;">
+    </button>
+    <button id="clearFiltersButton" onclick="clearFilters()">
+      <span id="clearFiltersButtonText">Clear</span>
+    </button>
   </nav>
 
 
@@ -174,17 +184,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-<button onclick="getLocation()">Get Location</button>
-<br>
 
 
 <h1>Results</h1>

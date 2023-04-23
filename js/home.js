@@ -12,6 +12,7 @@ const fPBT = document.getElementById("filterPostsButtonText");
 const fPBI = document.getElementById("filterPostsButtonImage");
 const fPD = document.getElementById("filterPostsDropdown");
 
+const hNS = document.getElementById("homeNavSection");
 
 
 if (createPostBack !== null) {
@@ -77,12 +78,14 @@ function createAndSet() {
         fPBI.style.display = "none";
         fPD.style.display = "none";
       }
+      hNS.style.display = "none";
       sPBT.style.display = "none";
       sPB.style.backgroundColor = "white";
       sPBI.style.display = "flex";
       SPD.style.display = "block";
     } 
     else {
+      hNS.style.display = "flex";
       sPBT.style.display = "flex";
       sPB.style.backgroundColor = "#553278";
       sPBI.style.display = "none";
@@ -98,9 +101,9 @@ function createAndSet() {
         sPBT.style.display = "flex";
         sPB.style.backgroundColor = "#553278";
         sPBI.style.display = "none";
-        SPD.style.display = "none";
-        
+        SPD.style.display = "none";    
       }
+      hNS.style.display = "none";
       fPBT.style.display = "none";
       fPB.style.backgroundColor = "white";
       fPBI.style.display = "flex";
@@ -108,6 +111,7 @@ function createAndSet() {
       getFilters();
     } 
     else {
+      hNS.style.display = "flex";
       fPBT.style.display = "flex";
       fPB.style.backgroundColor = "#553278";
       fPBI.style.display = "none";
@@ -117,12 +121,20 @@ function createAndSet() {
 
 
 
-  function sortPosts(sortingMethod) {
+  function sortPosts(sortingMethod, displayMethod) {
+    if (sortingMethod != '') {
+      localStorage.setItem("postSorting", sortingMethod);
+    }
+    if (displayMethod != '')
+    {
+      localStorage.setItem("postDisplay", displayMethod);
+    }
+
     jQuery.ajax({
       type: 'GET',
       url: `/sortPosts`,
       data: {
-        "sortMethod": sortingMethod,
+        "sortMethod": localStorage.getItem("postSorting"),
         "filters": JSON.parse(localStorage.getItem(JSON.stringify("postFilters")))
       },
       success: function(response) {
@@ -132,14 +144,34 @@ function createAndSet() {
               let container = document.getElementById('resultedPosts');
               container.innerHTML = '';
 
-              posts.forEach((post) => {
+              const displayMe = localStorage.getItem("postDisplay");
+
+              if (displayMe == 'compact') {
+                posts.forEach((post) => {
+                  let postElement = document.createElement('div');
+                  postElement.innerHTML = ` <h2>${post.title}</h2>
+                                            <p><a href="/posts/${post.id}">${post.content}</a></p>
+                                            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
+                                            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>`;
+                  container.appendChild(postElement);
+                });
+              }
+              else if (displayMe == 'card') {
+                posts.forEach((post) => {
+                  let postElement = document.createElement('div');
+                  postElement.innerHTML = ` <h2>${post.title}</h2>
+                                            <p><a href="/posts/${post.id}">${post.content}</a></p>
+                                            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
+                                            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>
+                                            <br><br><br><br>`;
+                  container.appendChild(postElement);
+                });
+              }
+              else {
                 let postElement = document.createElement('div');
-                postElement.innerHTML = ` <h2>${post.title}</h2>
-                                          <p><a href="/posts/${post.id}">${post.content}</a></p>
-                                          <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
-                                          <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>`;
+                postElement.innerHTML = `<h2>${displayMe} is not a valid display method</h2>`;
                 container.appendChild(postElement);
-              });
+              }
             }
 
           } 
@@ -200,40 +232,30 @@ function checkFilters() {
   }
 
   localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(filters));
-
-  jQuery.ajax({
-    type: 'GET',
-    url: `/filteredPosts`,
-    data: filters,
-    success: function(response) {
-        if (response.code == 200) {
-          posts = response.posts;
-          if (typeof posts !== 'undefined') {
-            let container = document.getElementById('resultedPosts');
-            container.innerHTML = '';
-            posts.forEach((post) => {
-              let postElement = document.createElement('div');
-              postElement.innerHTML = ` <h2>${post.title}</h2>
-                                        <p><a href="/posts/${post.id}">${post.content}</a></p>
-                                        <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
-                                        <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>`;
-              container.appendChild(postElement);
-            });
-          }
-        } 
-        else if (response.code == 500) {
-        }  
-        else {
-        }
-      },
-    error: function() {
-      console.log("[Error]: There was an error receiving the response from /changePass")
-      alert('[Error]: Internal server error');
-    }
-  });
+  sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
 }
 
 
+function clearFilters() {
+  localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
+  sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
+}
+
+
+function displayPosts() {
+  const displayCompact = document.getElementById("displayPostsButtonImageCompact");
+  const displayCard = document.getElementById("displayPostsButtonImageCard");
+  if (displayCompact.style.display == 'flex') {
+    displayCompact.style.display = 'none';
+    displayCard.style.display = 'flex';
+    sortPosts('','card');
+  }
+  else if (displayCompact.style.display == 'none') {
+    displayCard.style.display = 'none';
+    displayCompact.style.display = 'flex';
+    sortPosts('','compact');
+  }
+}
 
 
 
@@ -271,7 +293,10 @@ function gpsPos(position) {
 
 window.onload = function() {
   localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
-  sortPosts('recommendedPosts');
+  localStorage.setItem("postSorting", 'recommendedPosts');
+  localStorage.setItem("postDisplay", 'compact');
+  sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(gpsPos);
   } else {

@@ -132,7 +132,7 @@ html, body {
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	z-index: 3;
-    font-size: 24px;
+  font-size: 24px;
 }
 #redirectPopup::before {
     content: "";
@@ -172,7 +172,7 @@ html, body {
   
 
 
-.homeNavPosts {
+.homeNavPosts, #homeNavSection {
     display: flex;
     position: fixed;
     height: 30px;
@@ -185,8 +185,12 @@ html, body {
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   }
+
+  #homeNavSection {
+    margin-top: 75px;
+  }
   
-  .homeNavPosts button {
+  .homeNavPosts button, #homeNavSection button {
     margin: 0 10px;
     padding: 20px 15px;
     font-size: 16px;
@@ -200,7 +204,7 @@ html, body {
     line-height: 5px;
   }
   
-  .homeNavPosts button:hover {
+  .homeNavPosts button:hover, #homeNavSection button:hover {
     background-color: #fff !important;
     border-bottom: none;
     border-radius: 20px;
@@ -212,7 +216,7 @@ html, body {
     justify-content: center;
   }
 
-  .homeNavPosts button img {
+  .homeNavPosts button img, #homeNavSection button img {
     display: flex;
     flex-direction: column;
     justify-content: center;

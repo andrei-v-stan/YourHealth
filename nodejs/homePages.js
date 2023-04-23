@@ -6,7 +6,7 @@ const appRouter = express.Router();
 
 appRouter.get('/sortPosts',(req, res) => {
 
-    if (Object.keys(req.query.filters).length === 0) {
+    if (req.query.filters === undefined || req.query.filters === null || Object.keys(req.query.filters).length === 0) {
       let queryAllPosts = '';
 
       switch(req.query.sortMethod) {
@@ -112,53 +112,61 @@ appRouter.get('/sortPosts',(req, res) => {
 
 
 
-
-
-
-
-
-
-  appRouter.get('/filteredPosts',(req, res) => {
-
-    if (Object.keys(req.query).length === 0) {
-      const queryAllPosts = 'SELECT * FROM posts ORDER BY creationDate DESC';
-      con.query(queryAllPosts, (error, resultPosts) => {
+  appRouter.get('/posts/:id', (req, res) => {
+    const postID = parseInt(req.params.id);
+  
+    if (postID == req.params.id && req.params.id[0] != '0') {
+      con.query('SELECT MAX(id) FROM posts', (error, result) => {
         if (error) {
-          console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryFilters)');
-          console.log(error);
+          console.log('[Error]: appRouter.get(/posts/:id) -> con.query(SELECT MAX(id) FROM posts)');
+          console.log(err);
         }
         else {
-          res.send({code: 200, posts: resultPosts});
-        }
-      });
-    }
-    else {
-      let strFilters = '';
-      let sizeFilters = 0;
-  
-      Object.keys(req.query).forEach(function(key) {
-        strFilters += `'${req.query[key]}',`;
-        sizeFilters += 1;
-      });
-      strFilters = strFilters.slice(0, -1);
-  
-      const queryFilters = 
-        `SELECT * FROM posts WHERE id IN (
-        SELECT postID FROM tagpostid WHERE tagID IN (
-        SELECT id FROM tags WHERE title IN (${strFilters}))
-        GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${sizeFilters}) 
-        ORDER BY creationDate DESC;`;
-  
-        con.query(queryFilters, (error, resultPosts) => {
-          if (error) {
-            console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryFilters)');
-            console.log(error);
+          const postMax = result[0]['MAX(id)'];
+          if (0 < postID && postID <= postMax) {
+            con.query('SELECT * FROM posts WHERE id = ?', [postID], (err, result) => {
+              if (error) {
+                console.log('[Error]: appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE id = ?)');
+                console.log(err);
+              }
+              else {
+                const post = result[0];
+                res.send(`
+                  <html>
+                    <head>
+                      <title>${post.title}</title>
+                    </head>
+                    <body>
+                      <h1>${post.authorID}</h1>
+                      <p>${post.content}</p>
+                    </body>
+                    </html>
+                  `);
+              }
+            });
           }
           else {
-            res.send({code: 200, posts: resultPosts});
+            res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
           }
-        });
+        }   
+     });
+    }
+    else {
+      res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
     }
   });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = appRouter;
