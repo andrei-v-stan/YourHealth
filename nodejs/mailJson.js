@@ -9,33 +9,34 @@ const appRouter = express.Router();
 
 
 
- appRouter.get('/json/:accountID', (req, res) => {
-    const accountID = JSON.stringify(req.params);
-    let accountDetails = [];
-
+ appRouter.get('/json/addGetID/:id', (req, res) => {
+    const accID = req.params.id;
+    console.log(accID);
+ 
     fs.readFile('./nodejs/accData.json', (error, fileData) => {
-        if (error) {
+      if (error) {
         console.log('[Error]: appRouter.get(/json/:accountID) -> fs.readFile(accData.json)');
         console.error(error);
         res.send({code: 500});
-        } 
-        else {
-        const strFileData = fileData.toString();
-        if (strFileData) {
-            accountDetails = JSON.parse(strFileData).accountDetails;
-        }
-        accountDetails.push({ accountID: req.params.accountID });
-
+      }
+  
+      let accountDetails = JSON.parse(fileData).accountDetails;
+      if (accountDetails.some(obj => obj.accountID == accID)) {
+        res.send({code: 200, accID});
+      } 
+      else {
+        accountDetails.push({ accountID: accID, "upVotes": 0, "downVotes": 0 });
         fs.writeFile('./nodejs/accData.json', JSON.stringify({ accountDetails: accountDetails }, null, 2), (error) => {
-            if (error) {
+          if (error) {
             console.log('[Error]: appRouter.post(/save-json/:accountID) -> fs.writeFile(accData.json)');
             console.error(error);
             res.send({code: 500});
-            } else {
-            res.send({code: 200});
-            }
+          } 
+          else {
+            res.send({code: 200, accID});
+          }
         });
-        }
+      }
     });
  });
   

@@ -59,13 +59,45 @@ appRouter.post('/signup', (req, res) => {
           res.send({code: 500});
         }
         else {
-          res.send({code: 200, accID: resID[0]['id']});
+          res.redirect(`/json/addGetID/${resID[0]['id']}`);
         }
       });
     }
   });
 });
 
+
+
+appRouter.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const queryLogin = `SELECT id FROM usercreds WHERE ((email = ? OR username = ?) AND password = ?)`;
+
+  con.query(queryLogin, [username, username, password], (error, resID) => {
+    if (error) {
+      console.log('[Error]: appRouter.post(/login) -> con.query(queryLogin)');
+      console.error(error);
+      res.send({code: 500});
+    }
+
+    if (resID.length == 0) {
+      res.send({code: 401});
+    }
+    else {
+      res.redirect(`/json/addGetID/${resID[0]['id']}`);
+    }
+  });
+});
+
+
+
+
+appRouter.post('/logout', (req, res) => {
+  const cookies = Object.keys(req.cookies);
+  cookies.forEach(cookieName => {
+    res.clearCookie(cookieName);
+  });
+  res.status(200).send(res.render('statusHandler', { statusMessage: 'Logged out successfully' }));
+});
 
 
 
@@ -100,32 +132,6 @@ function setVotes(resLog,voteVal) {
 
 
 
-
-appRouter.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const queryLogin = `SELECT id FROM usercreds WHERE ((email = ? OR username = ?) AND password = ?)`;
-
-  con.query(queryLogin, [username, username, password], (error, resID) => {
-    if (error) {
-      console.log('[Error]: appRouter.post(/login) -> con.query(queryLogin)');
-      console.error(error);
-      res.send({code: 500});
-    }
-
-    if (resID.length == 0) {
-      res.send({code: 401});
-    }
-    else {
-      res.send({code: 200, accID: resID[0]['id']});
-    }
-  });
-});
-
-
-
-
-
-
 appRouter.post('/login+', async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   con.query('SELECT id FROM usercreds WHERE ((email = ? AND password = ?) OR (username = ? AND password = ?))',
@@ -152,13 +158,7 @@ appRouter.post('/login+', async (req, res) => {
 
 
 
-appRouter.post('/logout', (req, res) => {
-  const cookies = Object.keys(req.cookies);
-  cookies.forEach(cookieName => {
-    res.clearCookie(cookieName);
-  });
-  res.status(200).send(res.render('statusHandler', { statusMessage: 'Logged out successfully' }));
-});
+
 
 
 

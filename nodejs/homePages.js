@@ -110,6 +110,27 @@ appRouter.get('/sortPosts',(req, res) => {
       });
   })
 
+  
+  appRouter.get('/getVotes',(req, res) => {
+    const queryLikedPosts = `SELECT postID FROM postlikes WHERE userID = ${req.cookies.accountID} AND vote = 1`;
+    const queryDislikedPosts = `SELECT postID FROM postlikes WHERE userID = ${req.cookies.accountID} AND vote = -1`;
+
+    con.query(queryLikedPosts, (error, resLikes) => {
+        if (error) {
+          console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllTags)');
+          console.log(err);
+        }
+        con.query(queryDislikedPosts, (error, resDislikes) => {
+          if (error) {
+            console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllTags)');
+            console.log(err);
+          }
+          res.send({code: 200, likedPostsIDs: resLikes.map(item => item.postID), dislikedPostsIDs: resDislikes.map(item => item.postID)});
+        });
+      });
+  })
+
+
 
 
   appRouter.get('/posts/:id', (req, res) => {

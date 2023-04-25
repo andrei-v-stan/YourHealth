@@ -121,71 +121,131 @@ function createAndSet() {
 
 
 
+
+
+
+  function getVotes(accountID) {
+    return new Promise(function(resolve, reject) {
+      jQuery.ajax({
+        type: 'GET',
+        url: `/getVotes`,
+        data: accountID,
+        success: function(response) {
+            if (response.code == 200) {
+              resolve ([response.likedPostsIDs,response.dislikedPostsIDs]);
+            } 
+            else if (response.code == 500) {
+              reject(new Error('Internal server error'));
+            } 
+            else {
+              reject(new Error('Unknown error occurred'));
+            }
+          },
+        error: function() {
+          console.log("[Error]: There was an error receiving the response from /changePass")
+          reject('[Error]: Internal server error');
+        }
+      });
+    });
+  }
+
+  function getPosts(accountID) {
+    return new Promise(function(resolve, reject) {
+      jQuery.ajax({
+        type: 'GET',
+        url: `/sortPosts`,
+        data: {
+          "sortMethod": localStorage.getItem("postSorting"),
+          "filters": JSON.parse(localStorage.getItem(JSON.stringify("postFilters")))
+        },
+        success: function(response) {
+          if (response.code == 200) {
+            resolve(response.posts);
+          } else if (response.code == 500) {
+            reject(new Error('Internal server error'));
+          } else {
+            reject(new Error('Unknown error occurred'));
+          }
+        },
+        error: function() {
+          console.log("[Error]: There was an error receiving the response from /changePass");
+          reject(new Error('Internal server error'));
+        }
+      });
+    });
+  }
+
+
+
   function sortPosts(sortingMethod, displayMethod) {
     if (sortingMethod != '') {
       localStorage.setItem("postSorting", sortingMethod);
     }
-    if (displayMethod != '')
-    {
+    if (displayMethod != '') {
       localStorage.setItem("postDisplay", displayMethod);
     }
-
-    jQuery.ajax({
-      type: 'GET',
-      url: `/sortPosts`,
-      data: {
-        "sortMethod": localStorage.getItem("postSorting"),
-        "filters": JSON.parse(localStorage.getItem(JSON.stringify("postFilters")))
-      },
-      success: function(response) {
-          if (response.code == 200) {
-            posts = response.posts;
-            if (typeof posts !== 'undefined') {
-              let container = document.getElementById('resultedPosts');
-              container.innerHTML = '';
-
-              const displayMe = localStorage.getItem("postDisplay");
-
-              if (displayMe == 'compact') {
-                posts.forEach((post) => {
-                  let postElement = document.createElement('div');
-                  postElement.innerHTML = ` <h2>${post.title}</h2>
-                                            <p><a href="/posts/${post.id}">${post.content}</a></p>
-                                            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
-                                            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>`;
-                  container.appendChild(postElement);
-                });
-              }
-              else if (displayMe == 'card') {
-                posts.forEach((post) => {
-                  let postElement = document.createElement('div');
-                  postElement.innerHTML = ` <h2>${post.title}</h2>
-                                            <p><a href="/posts/${post.id}">${post.content}</a></p>
-                                            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)">Like</button>
-                                            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)">Dislike</button>
-                                            <br><br><br><br>`;
-                  container.appendChild(postElement);
-                });
-              }
-              else {
-                let postElement = document.createElement('div');
-                postElement.innerHTML = `<h2>${displayMe} is not a valid display method</h2>`;
-                container.appendChild(postElement);
-              }
-            }
-
-          } 
-          else if (response.code == 500) {
-          }  
-          else {
+  
+    Promise.all([
+      new Promise((resolve, reject) => {
+        if (document.cookie != "") {
+          const cookies = document.cookie.split(";");
+          getVotes(cookies[0].split("=")[1])
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+        } else {
+          resolve([[], []]);
+        }
+      }),
+      getPosts()
+    ])
+    .then(([votes, posts]) => {
+      const likedPosts = votes[0];
+      const dislikedPosts = votes[1];
+  
+      if (typeof posts !== 'undefined') {
+        let container = document.getElementById('resultedPosts');
+        container.innerHTML = '';
+  
+        const displayMe = localStorage.getItem("postDisplay");
+  
+        posts.forEach((post) => {
+          let postElement = document.createElement('div');
+          let likedPost = '';
+          let dislikedPost = '';
+  
+          if (likedPosts.indexOf(post.id) != -1) {
+            likedPost = 'style="color: blue"';
+          } else if (dislikedPosts.indexOf(post.id) != -1) {
+            dislikedPost = 'style="color: red"';
           }
-        },
-      error: function() {
-        console.log("[Error]: There was an error receiving the response from /changePass")
-        alert('[Error]: Internal server error');
+          if (displayMe == 'compact') {
+            postElement.innerHTML = ` <h2>${post.title}</h2>
+            <p><a href="/posts/${post.id}">${post.content}</a></p>
+            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)" ${likedPost}>Like</button>
+            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)"  ${dislikedPost}>Dislike</button>`;
+          } else if (displayMe == 'card') {
+            postElement.innerHTML = ` <h2>${post.title}</h2>
+            <p><a href="/posts/${post.id}">${post.content}</a></p>
+            <button id="${post.id}_LikeButton" type="button" onclick="voteFunction(${post.id},1)" ${likedPost}>Like</button>
+            <button id="${post.id}_DislikeButton" type="button" onclick="voteFunction(${post.id},-1)"  ${dislikedPost}>Dislike</button>
+            <br><br><br><br>`;
+          } else {
+            postElement.innerHTML = `<h2>${displayMe} is not a valid display method</h2>`;
+          }
+          container.appendChild(postElement);
+        });
       }
+    })
+    .catch((error) => {
+      console.log('[Error]: Failed to get votes or posts', error);
     });
-}
+  }
+
+
 
 function getFilters() {
   jQuery.ajax({
@@ -220,6 +280,7 @@ function getFilters() {
 }
 
 
+const cFB = document.getElementById("clearFiltersButton");
 
 function checkFilters() {
   const inputs = document.getElementById("postTags").querySelectorAll("input[type='checkbox'][name='filters']");
@@ -231,12 +292,20 @@ function checkFilters() {
     }
   }
 
+  if (Object.keys(filters).length > 0) {
+    cFB.style.display = "flex";
+  }
+  else if (Object.keys(filters).length == 0) {
+    cFB.style.display = "none";
+  }
+
   localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(filters));
   sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
 }
 
 
 function clearFilters() {
+  cFB.style.display = "none";
   localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
   sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
 }
@@ -288,6 +357,86 @@ function gpsPos(position) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({ lat, long, acc }));
   }, 3000000);
+}
+
+
+
+
+
+
+
+
+function updateCookies(voteVal) {
+
+  let cookiesArr = document.cookie.split(";");
+  const accountIDVal = cookiesArr[0].split("=")[1];
+
+  jQuery.ajax({
+    type: 'GET',
+    url: '/voteJson',
+    data: {
+      "accountID": accountIDVal,
+      "vote": voteVal
+    },
+    success: function(response) {
+        if (response.code == 200) {
+          console.log('yay');
+        } 
+      },
+    error: function() {
+      console.log("[Error]: There was an error receiving the response from /voteJson in updateCookies()")
+      alert('[Error]: Internal server error');
+    }
+  });
+}
+
+
+
+
+function voteFunction(postIDVal,voteVal) {
+  jQuery.ajax({
+    type: 'POST',
+    url: '/votePost',
+    data: {
+      "postID": postIDVal,
+      "vote": voteVal
+    },
+    success: function(response) {
+        if (response.code == 200) {
+          let x = document.getElementById(`${postIDVal}_LikeButton`);
+          let y = document.getElementById(`${postIDVal}_DislikeButton`);
+
+          if (voteVal == 1) {
+            if (x.style.color == '') {
+              x.style.color = 'blue';
+              y.style.color = '';
+            }
+            else {
+              x.style.color = '';
+            }
+          }
+          else if (voteVal == -1) {
+            if (y.style.color == '') {
+              y.style.color = 'red';
+              x.style.color = '';
+            }
+            else {
+              y.style.color = '';
+            }
+          }
+
+
+          updateCookies(voteVal);
+        } 
+        else if (response.code == 401) {
+          alert('You need to be signed in to like a post');
+        } 
+      },
+    error: function() {
+      console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()")
+      alert('[Error]: Internal server error');
+    }
+  });
 }
 
 

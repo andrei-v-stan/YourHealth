@@ -380,29 +380,6 @@ function signupUsernameCheck(usage) {
 
 // ----- Signup data entry (START) -----
 
-  function jsonCreation(accID) {
-    jQuery.ajax({
-      type: 'GET',
-      url: `/json/${accID}`,
-      data: {},
-      success: function(response) {
-          if (response.code == 200) {
-            console.log("Account created");
-          } 
-          else if (response.code == 500) {
-            console.log("Internal error");
-          }
-          else {
-            console.log("[Error]: There was an internal error in (/json/:accountID)");
-          } 
-        },
-      error: function() {
-        console.log("[Error]: There was an error receiving the response from /json/:accountID")
-      }
-    });
-  }
-
-
 function signupForm() {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signupForm"));
@@ -437,7 +414,6 @@ function signupForm() {
                         if (response.code == 200) {
                           redirPopup.innerHTML = `Account created successfully!<br>Redirecting...`;
                           redirPopup.style.display = "block";  
-                          jsonCreation(response.accID);
                           document.cookie = "accountID=" + response.accID + ";path=/";
                           setTimeout(function() {
                             window.location.href = "/posts";
