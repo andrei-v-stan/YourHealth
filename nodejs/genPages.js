@@ -2,9 +2,10 @@ const { con } = require('./sql');
 const express = require('express');
 const appRouter = express.Router();
 
+const path = require('path');
 
 
-appRouter.route('/posts')
+appRouter.route('/testing')
   .get((req, res) => {
     const queryAllPosts = 'SELECT * FROM posts ORDER BY creationDate DESC';
     const queryAllTags = 'SELECT * FROM tags ORDER BY title ASC';
@@ -99,50 +100,85 @@ appRouter.route('/posts')
 
 
 
+  appRouter.get('/posts/:id', (req, res) => {
+    const postID = req.params.id;
 
-appRouter.get('/posts/:id', (req, res) => {
-  const postID = parseInt(req.params.id);
-
-  if (postID == req.params.id && req.params.id[0] != '0') {
-    con.query('SELECT MAX(id) FROM posts', (error, result) => {
-      if (error) {
-        console.log('[Error]: appRouter.get(/posts/:id) -> con.query(SELECT MAX(id) FROM posts)');
-        console.log(err);
-      }
-      else {
-        const postMax = result[0]['MAX(id)'];
-        if (0 < postID && postID <= postMax) {
-          con.query('SELECT * FROM posts WHERE id = ?', [postID], (err, result) => {
-            if (error) {
-              console.log('[Error]: appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE id = ?)');
-              console.log(err);
-            }
-            else {
-              const post = result[0];
-              res.send(`
-                <html>
-                  <head>
-                    <title>${post.title}</title>
-                  </head>
-                  <body>
-                    <h1>${post.authorID}</h1>
-                    <p>${post.content}</p>
-                  </body>
-                  </html>
-                `);
-            }
-          });
+    if (/[^0-9]/.test(postID) || /^0/.test(postID) || req.url.length > `/posts/${postID}`.length) {
+      res.render('statusHandler', { statusMessage: 'This post does not exist' });
+    }
+    else {
+      con.query('SELECT * FROM posts WHERE id=?', postID, (error, result) => {
+        if (error) {
+          console.log('[Error]: appRouter.post(/posts/:id) -> con.query(SELECT * FROM posts WHERE id=?)');
+          console.error(error);
+          res.send({code: 500});
+        }
+        if (Object.keys(result).length == 0) {
+            res.render('statusHandler', { statusMessage: 'This post does not exist' });
         }
         else {
-          res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
+          res.sendFile(path.join(__dirname, '../html', 'postDetails.html'));
         }
-      }   
-   });
-  }
-  else {
-    res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
-  }
-});
+      });
+    }
+  });
+
+
+
+  appRouter.get('/getPostDetails', (req, res) => {
+    const postID = req.query.postID;
+
+    con.query('SELECT * FROM posts WHERE id=?', postID, (error, resPostDetails) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(SELECT * FROM posts WHERE id=?)');
+        console.error(error);
+        res.send({code: 500});
+      }
+      if (Object.keys(resPostDetails).length == 0) {
+          res.render('statusHandler', { statusMessage: 'This post does not exist' });
+      }
+      else {
+        con.query('SELECT * FROM comments WHERE postID=?', postID, (error, resComments) => {
+          if (error) {
+            console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(SELECT * FROM posts WHERE id=?)');
+            console.error(error);
+            res.send({code: 500});
+          }
+
+          else {
+            res.send({code: 200, post: resPostDetails[0], comments: resComments});
+          }
+        });
+      }
+    });
+  });
+
+
+
+  appRouter.get('/submitComment', (req, res) => {
+    const { postID, parentID, parentType, authorID, content } = req.query;
+    const queryPostComment = `INSERT INTO comments (postID, parentID, parentType, authorID, content) VALUES (?, ?, ?, ?, ?)`;
+
+    con.query(queryPostComment, [postID, parentID, parentType, authorID, content, '0'], (error, result) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/submitComment) -> con.query(queryPostComment)');
+        console.error(error);
+        res.send({code: 500});
+      }
+      else {
+        res.send({code: 200});
+      }
+    });
+  });
+
+
+
+
+
+
+
+
+
 
 
 

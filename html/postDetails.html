@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Your Mind</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/login.css" type="text/css">
+        <link rel="stylesheet" href="../css/home.css" type="text/css">
+        <link rel="stylesheet" href="../css/postDetails.css" type="text/css">
+    </head>
+
+<body>
+
+  <nav class="homeTopNavbar">
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/home.png">
+    </button>
+    <button id="" onclick="createPostPopup()">
+      <img id="" src="../Resources/navbar/create.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/notifications.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/messages.png">
+    </button>
+    <button id="" onclick="toggleSort()">
+      <img id="" src="../Resources/navbar/profile.png">
+    </button>
+
+    <button id="loginButton" onclick="loginPopup()">Login</button>
+    <button id="loginButton" onclick="logoutPOST()">Logout</button>
+  </nav>
+  
+  <h1>index</h1>
+
+
+  <div id="redirectPopup"></div>
+
+  <div id="loginBackground"></div>
+  <div id="signupBackground"></div>
+  <div id="recoveryBackground"></div>
+
+  <div id="loginPopupTop">
+    <button>Your ✰ Mind</button>
+  </div>
+  <div id="signupPopupTop">
+    <button>Your ✰ Mind</button>
+  </div>
+  <div id="recoveryPopupTop">
+    <button>Your ✰ Mind</button>
+  </div>
+
+
+	<div id="loginPopup">
+		<h2>Log In</h2>
+		<form id="loginForm">
+			<input type="text" id="loginUsername" name="username" placeholder="Username">
+			<input type="password" id="loginPassword" name="password" placeholder="Password">
+      <label for="loginRememberMe">
+        <input type="checkbox" id="loginRememberMe" name="loginRememberMe">
+        Remember Me
+    </label>
+    </form>
+		<a onclick="recoveryMenuPopup()" id="forgot">Forgot account details?</a>
+    <input type="submit" form="loginForm" onclick="loginForm()">
+    <h3>New to Your Mind? <a onclick="signupPopup()"> Sign up here!</a></h3>
+	</div>
+
+  <div id="signupPopup">
+    <button onclick="loginPopup()"> Go back </button>
+		<h2>Sign Up</h2>
+		<form id="signupForm">
+      <div id="signupUsernameError"></div>
+			<input type="text" id="signupUsername" name="username" placeholder="Username" oninput="signupUsernameCheckAuto()">
+      <button onclick="signupUsernameCheck()">Check username availability</button> 
+			<div id="signupPasswordError"></div>
+      <input type="password" id="signupPassword" name="password" placeholder="Password" oninput="signupPasswordCheckAuto()">
+      <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
+      <div id="signupEmailError"></div>
+      <input type="email" id="signupEmail" name="email" placeholder="Email address" oninput="signupEmailCheckAuto()">
+      <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address">
+    </form>
+    <input type="submit" form="signupForm" onclick="signupForm()">
+	</div>
+
+  <div id="recoveryMenuPopup">
+    <button onclick="loginPopup()"> Go back </button>
+		<h2>Recovery</h2>
+    <button onclick="recoverPasswordPopup()">Forgot Password</button>
+    <hr>
+    <h3>Need some additional help?</h3>
+    <button onclick="contactFormPopup()">Contact Form</button>
+	</div>
+
+  <div id="recoverPasswordPopup">
+    <button onclick="recoveryMenuPopup()"> Go back </button>
+		<h2>Enter your email address and wait for further instructions</h2>
+    <form id="recoverPasswordForm">
+			<input type="email" id="recoveryEmail" name="email" placeholder="Email address">
+    </form>
+    <input type="submit" form="recoverPasswordForm" onclick="recoverPasswordForm()">
+	</div>
+
+  <div id="contactFormPopup">
+    <button onclick="recoveryMenuPopup()"> Go back </button>
+		<h2>Complete the forum below and our staff will respond ASAP</h2>
+    <form id="contactForm">
+      <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
+      <input type="email" id="contactEmail" name="email" placeholder="Email address" required>
+      <select id="contactTopic" name="topic">
+        <option value="0">Please select a topic</option>
+        <option value="1">Account recovery</option>
+        <option value="2">Bug report</option>
+        <option value="3">Other</option>
+      </select>
+      <textarea id="contactMessage" name="message" rows="5" placeholder="Message text" required></textarea>
+    </form>
+    <input type="submit" form="contactForm" onclick="mailContactForm()">
+	</div>
+
+
+
+
+  <div id="createPostBackground"></div>
+  <div id="createPostPopupTop">
+      <button>Your ✰ Mind</button>
+  </div>
+
+  <div id="createPostPopup">
+      <h2>Enter the post details:</h2>
+        <form id="createPostForm" action="/create_post" method="post">
+          <label for="title">Title:</label>
+          <input type="text" name="titlePost" id="titlePost"><br>
+        
+          <label for="content">Content:</label>
+          <textarea name="contentPost" id="contentPost"></textarea><br>
+      
+          <button id="addTagButton" type="button" onclick="createAndSet()">Add a new Tag</button><br>
+      
+          <br>
+          <input type="submit" value="Create Post" style="margin-top: 10px;">
+        </form>
+      <input type="submit" form="createPostForm" onclick="x()">
+  </div>
+
+
+
+
+
+<h1>Results</h1>
+<div id="resultedPost">
+  <p>Resulted posts</p>
+</div>
+
+
+<script src="../js/jquery-3.6.4.min.js"></script>
+<script src="../js/login.js"></script>
+<script src="../js/home.js"></script>
+<script src="../js/postDetails.js"></script>
+
+</body>
+</html>

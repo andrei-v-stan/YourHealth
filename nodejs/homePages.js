@@ -35,7 +35,7 @@ appRouter.get('/sortPosts',(req, res) => {
       con.query(queryAllPosts, (error, resultPosts) => {
         if (error) {
           console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllPosts)');
-          console.log(err);
+          console.log(error);
         }
         else {
           res.send({code: 200, posts: resultPosts});
@@ -118,12 +118,12 @@ appRouter.get('/sortPosts',(req, res) => {
     con.query(queryLikedPosts, (error, resLikes) => {
         if (error) {
           console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllTags)');
-          console.log(err);
+          console.log(error);
         }
         con.query(queryDislikedPosts, (error, resDislikes) => {
           if (error) {
             console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllTags)');
-            console.log(err);
+            console.log(error);
           }
           res.send({code: 200, likedPostsIDs: resLikes.map(item => item.postID), dislikedPostsIDs: resDislikes.map(item => item.postID)});
         });

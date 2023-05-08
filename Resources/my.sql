@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS postLikes (
 
 CREATE TABLE IF NOT EXISTS comments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
   parentID INT NOT NULL,
+  parentType VARCHAR(10) NOT NULL,
   authorID INT NOT NULL,
   FOREIGN KEY (authorID) REFERENCES usercreds(id),
   content TEXT NOT NULL,
@@ -53,7 +56,6 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE TABLE IF NOT EXISTS commentLikes (
   commentID INT NOT NULL PRIMARY KEY,
   FOREIGN KEY (commentID) REFERENCES comments(id),
-  commLevel INT NOT NULL,
   userID INT NOT NULL,
   FOREIGN KEY (userID) REFERENCES usercreds(id),
   vote INT NOT NULL
