@@ -140,35 +140,41 @@ html, body {
 
 
 .homeTopNavbar {
-    background-color: #553278;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
+  background-color: #553278;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
-.homeNavPosts button {
-    margin: 0 10px;
-    padding: 20px 15px;
-    font-size: 16px;
-    color: #77a180;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: all 0.3s ease-in-out;
-    font-size: 20px;
-    line-height: 5px;
-  }
+
+.homeTopNavbar button {
+  padding: 20px 15px;
+  font-size: 16px;
+  color: #77a180;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 20px;
+  line-height: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+.homeTopNavbar button:hover {
+  background-color: red;
+}
+
 .homeTopNavbar button img {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 32px;
-    width: 32px;
-    object-fit: contain;
-    margin-top: -15px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+}
   
 
 

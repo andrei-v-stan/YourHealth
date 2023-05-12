@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+
+  <style>
+    text {
+      font: 20px sans-serif;
+	  fill: white;
+    }
+  </style>
+    
+	<rect width="100" height="80" x="0" y="0" fill="#140226"/>
+	<text x="10" y="45"> #140226 </text>
+	<rect width="100" height="80" x="100" y="0" fill="#240840"/>
+	<text x="110" y="45"> #240840 </text>
+	<rect width="100" height="80" x="200" y="0" fill="#361259"/>
+	<text x="210" y="45"> #361259 </text>
+	<rect width="100" height="80" x="300" y="0" fill="#492073"/>
+	<text x="310" y="45"> #492073 </text>
+	<rect width="100" height="80" x="400" y="0" fill="#5f318c"/>
+	<text x="410" y="45"> #5f318c </text>
+	<rect width="100" height="80" x="500" y="0" fill="#7646a6"/>
+	<text x="510" y="45"> #7646a6 </text>
+	<rect width="100" height="80" x="600" y="0" fill="#8f60bf"/>
+	<text x="610" y="45"> #8f60bf </text>
+	<rect width="100" height="80" x="700" y="0" fill="#ab7ed9"/>
+	<text x="710" y="45"> #ab7ed9 </text>
+	<rect width="100" height="80" x="800" y="0" fill="#c89df2"/>
+	<text x="810" y="45"> #c89df2 </text>
+
+	<rect width="100" height="80" x="0" y="90" fill="#080226"/>
+	<text x="10" y="135"> #080226 </text>
+	<rect width="100" height="80" x="100" y="90" fill="#110840"/>
+	<text x="110" y="135"> #110840 </text>
+	<rect width="100" height="80" x="200" y="90" fill="#1e1259"/>
+	<text x="210" y="135"> #1e1259 </text>
+	<rect width="100" height="80" x="300" y="90" fill="#2e2073"/>
+	<text x="310" y="135"> #2e2073 </text>
+	<rect width="100" height="80" x="400" y="90" fill="#40318c"/>
+	<text x="410" y="135"> #40318c </text>
+	<rect width="100" height="80" x="500" y="90" fill="#5646a6"/>
+	<text x="510" y="135"> #5646a6 </text>
+	<rect width="100" height="80" x="600" y="90" fill="#7060bf"/>
+	<text x="610" y="135"> #7060bf </text>
+	<rect width="100" height="80" x="700" y="90" fill="#8d7ed9"/>
+	<text x="710" y="135"> #8d7ed9 </text>
+	<rect width="100" height="80" x="800" y="90" fill="#ac9df2"/>
+	<text x="810" y="135"> #ac9df2 </text>
+	
+	<rect width="100" height="80" x="0" y="180" fill="#020526"/>
+	<text x="10" y="225"> #020526 </text>
+	<rect width="100" height="80" x="100" y="180" fill="#080c40"/>
+	<text x="110" y="225"> #080c40 </text>
+	<rect width="100" height="80" x="200" y="180" fill="#121759"/>
+	<text x="210" y="225"> #121759 </text>
+	<rect width="100" height="80" x="300" y="180" fill="#202773"/>
+	<text x="310" y="225"> #202773 </text>
+	<rect width="100" height="80" x="400" y="180" fill="#31398c"/>
+	<text x="410" y="225"> #31398c </text>
+	<rect width="100" height="80" x="500" y="180" fill="#464ea6"/>
+	<text x="510" y="225"> #464ea6 </text>
+	<rect width="100" height="80" x="600" y="180" fill="#6068bf"/>
+	<text x="610" y="225"> #6068bf </text>
+	<rect width="100" height="80" x="700" y="180" fill="#7e86d9"/>
+	<text x="710" y="225"> #7e86d9 </text>
+	<rect width="100" height="80" x="800" y="180" fill="#9da5f2"/>
+	<text x="810" y="225"> #9da5f2 </text>
+	
+	<rect width="100" height="80" x="0" y="270" fill="#020e26"/>
+	<text x="10" y="315"> #020e26 </text>
+	<rect width="100" height="80" x="100" y="270" fill="#081a40"/>
+	<text x="110" y="315"> #081a40 </text>
+	<rect width="100" height="80" x="200" y="270" fill="#122a59"/>
+	<text x="210" y="315"> #122a59 </text>
+	<rect width="100" height="80" x="300" y="270" fill="#203c73"/>
+	<text x="310" y="315"> #203c73 </text>
+	<rect width="100" height="80" x="400" y="270" fill="#314f8c"/>
+	<text x="410" y="315"> #314f8c </text>
+	<rect width="100" height="80" x="500" y="270" fill="#4666a6"/>
+	<text x="510" y="315"> #4666a6 </text>
+	<rect width="100" height="80" x="600" y="270" fill="#5f7fbf"/>
+	<text x="610" y="315"> #5f7fbf </text>
+	<rect width="100" height="80" x="700" y="270" fill="#7e9cd9"/>
+	<text x="710" y="315"> #7e9cd9 </text>
+	<rect width="100" height="80" x="800" y="270" fill="#9dbaf2"/>
+	<text x="810" y="315"> #9dbaf2 </text>
+
+	<rect width="100" height="80" x="0" y="360" fill="#021726"/>
+	<text x="10" y="405"> #021726 </text>
+	<rect width="100" height="80" x="100" y="360" fill="#082840"/>
+	<text x="110" y="405"> #082840 </text>
+	<rect width="100" height="80" x="200" y="360" fill="#123b59"/>
+	<text x="210" y="405"> #123b59 </text>
+	<rect width="100" height="80" x="300" y="360" fill="#205073"/>
+	<text x="310" y="405"> #205073 </text>
+	<rect width="100" height="80" x="400" y="360" fill="#31668c"/>
+	<text x="410" y="405"> #31668c </text>
+	<rect width="100" height="80" x="500" y="360" fill="#467ea6"/>
+	<text x="510" y="405"> #467ea6 </text>
+	<rect width="100" height="80" x="600" y="360" fill="#5f97bf"/>
+	<text x="610" y="405"> #5f97bf </text>
+	<rect width="100" height="80" x="700" y="360" fill="#7eb3d9"/>
+	<text x="710" y="405"> #7eb3d9 </text>
+	<rect width="100" height="80" x="800" y="360" fill="#9dcff2"/>
+	<text x="810" y="405"> #9dcff2 </text>
+	
+	<rect width="500" height="300" x="10" y="500" fill="#121759"/>
+	<text  x="25" y="540"> Percentage: 0 , 12 , 25 , 37 , 50 , 62 , 75 , 87 , 100 </text>
+	<text  x="25" y="600"> H: 205 , 220 , 235 , 250 , 270 </text>
+	<text  x="25" y="630"> S: 95 , 88 , 80 , 72 , 65 , 58 , 50 , 42 , 35 </text>
+	<text  x="25" y="660"> V: 15 , 25 , 35 , 45 , 55 , 65 , 75 , 85 , 95 </text>
+	<a href="https://g.co/kgs/f8Nr9Z"> 
+		<text  x="25" y="720"> Google color picker </text> 
+	</a>
+
+	
+	
+
+</svg>
