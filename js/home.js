@@ -247,39 +247,6 @@ function createAndSet() {
 
 
 
-function getFilters() {
-  jQuery.ajax({
-    type: 'GET',
-    url: `/getFilters`,
-    success: function(response) {
-        if (response.code == 200) {
-          tags = response.tags;
-          if (typeof tags !== 'undefined') {
-            let container = document.getElementById('postTags');
-            container.innerHTML = '';
-
-            tags.forEach((tag) => {
-              let tagElement = document.createElement('label');
-              tagElement.innerHTML = `<input type="checkbox" name="filters" value="${tag.title}">${tag.title}
-                                      <br>`;
-              container.appendChild(tagElement);
-            });
-          }
-
-        } 
-        else if (response.code == 500) {
-        }  
-        else {
-        }
-      },
-    error: function() {
-      console.log("[Error]: There was an error receiving the response from /changePass")
-      alert('[Error]: Internal server error');
-    }
-  });
-}
-
-
 const cFB = document.getElementById("clearFiltersButton");
 
 function checkFilters() {
@@ -328,7 +295,7 @@ function displayPosts() {
 
 
 
-
+/*
 
 const searchTagBar = document.getElementById("searchTag");
 
@@ -344,7 +311,7 @@ searchTagBar.addEventListener("input", function() {
       labels[i].style.display = "none";
     }
   }
-});
+});*/
 
 
 function gpsPos(position) {

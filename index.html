@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/login.css" type="text/css">
         <link rel="stylesheet" href="css/home.css" type="text/css">
+        <link rel="stylesheet" href="css/navbar.css" type="text/css">
 
     </head>
 
@@ -15,6 +16,7 @@
     <button id="" onclick="toggleSort()">
       <img id="" src="../Resources/navbar/home.png">
     </button>
+      <input id="topNavbarSearch" type="text" placeholder="Search..." class="searchBar" onclick="toggleSearch()">
     <button id="" onclick="createPostPopup()">
       <img id="" src="../Resources/navbar/create.png">
     </button>
@@ -31,9 +33,55 @@
     <button id="loginButton" onclick="loginPopup()">Login</button>
     <button id="loginButton" onclick="logoutPOST()">Logout</button>
   </nav>
-  
-  <h1>index</h1>
 
+  <div id="searchTopNavbar">
+    <div class="searchBox">
+      <input id="searchBoxInput" type="text" placeholder="Search...">
+      <button type="submit"></button>
+    </div>
+    
+    <select id="searchType" onchange="searchChange(this)">
+      <option class="firstOption" value="option0" disabled selected hidden>Search for</option>
+      <option value="option1">Title</option>
+      <option value="option2">Content</option>
+      <option value="option3">User</option>
+    </select>
+
+    <select id="searchType2" onchange="sortPosts(this.value, '')">
+      <option value="option0" disabled selected hidden>Sorting</option>
+      <option value="recommendedPosts">Suggested</option>
+      <option value="hotPosts">Hot <!--(most liked past 24h)--></option>
+      <option value="newPosts">New <!--(sort the posts on date)--></option>
+      <option value="oldPosts">Old <!--(sort the posts on date)--></option>
+      <option value="topPosts">Top <!--(sort the posts on likes)--></option>
+      <option value="bottomPosts">Bottom <!--(sort the posts on likes)--></option>
+    </select>
+
+    <div id="searchType3" onclick="showTags()">
+      <span>Tags</span>
+    </div>
+    <div id="dropdownTags">
+      <input type="text" id="searchTag" placeholder="Search..." oninput="filterTags()">
+      <button onclick="clearTags()">Clear Filters</button>
+      <div id="tagsContainer"></div>
+    </div>
+    <div id="chosenTags"></div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h1>index</h1>
+<!--
   <nav class="homeNavPosts">
     <button id="sortPostsButton" onclick="toggleSort()">
       <span id="sortPostsButtonText">Sort</span>
@@ -70,7 +118,7 @@
       <span id="clearFiltersButtonText">Clear</span>
     </button>
   </nav>
-
+-->
 
 
   <div id="redirectPopup"></div>
@@ -195,6 +243,7 @@
 <script src="js/login.js"></script>
 <script src="js/jquery-3.6.4.min.js"></script>
 <script src="js/home.js"></script>
+<script src="js/navBar.js"></script>
 
 </body>
 </html>

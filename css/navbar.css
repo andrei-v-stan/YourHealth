@@ -1,46 +1,248 @@
-.navbar {
-    background-color: #333;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
+
+.homeTopNavbar {
+  background-color: #1975c1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);
+}
+.homeTopNavbar button {
+  padding: 20px 15px;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+.homeTopNavbar button:hover {
+  background-color: #65ace7;
+}
+.homeTopNavbar button img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+}
+.homeTopNavbar .searchBar {
+  border-radius: 20px;
+  padding: 7px;
+  background-color: #acc7dc;
+  border: none;
+  outline: none;
+  height: 20px;
+  width: 200px;
+}
   
-  .navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
+.homeTopNavbar {
+  background-color: #1975c1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+
+#searchTopNavbar {
+  display: none;
+  background-color: #1975c1;
+  position: fixed;
+  top: 135px;
+  left: 50%;
+  height: auto;
+  min-width: 300px;
+  width: 60%;
+  padding: 20px 5px 0 5px;
+  border-radius: 15px;
+  overflow: hidden;
+  flex-wrap: wrap; 
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  overflow: visible;
+}
+#searchTopNavbar.active {
+  animation: slideSwingTop 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+@keyframes slideSwingTop {
+  0% {
+    transform: translate(-50%,-170px) rotateX(-90deg) scale(0.5);
+    opacity: 0;
   }
-  
-  .navbar a.active {
-    background-color: #4CAF50;
-    color: white;
+  100% {
+    transform: translate(-50%,-75px) rotateX(0) scale(1);
+    opacity: 1;
   }
-  
-  .search-box {
-    float: right;
-    display: block;
-    text-align: center;
-    padding: 14px 20px;
+}
+#searchTopNavbar.inactive {
+  animation: slideSwingDown 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+@keyframes slideSwingDown {
+  0% {
+    transform: translate(-50%,-75px) rotateX(0) scale(1);
+    opacity: 1;
   }
-  
-  .search-box input[type=text] {
-    padding: 6px;
-    margin-top: 8px;
-    font-size: 17px;
-    border: none;
+  100% {
+    transform: translate(-50%,-170px) rotateX(-90deg) scale(0.5);
+    opacity: 0;
   }
-  
-  .notification-badge {
-    position: absolute;
-    top: 0;
-    right: -10px;
-    background-color: red;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 50%;
-  }
+}
+
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(90% - 90px);
+}
+.searchBox input[type=text] {
+  height: 40px;
+  width: calc(100% - 100px);
+  padding: 10px 60px 10px 10px;
+  margin: 0 20px 0 10px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 18px;
+}
+.searchBox button[type=submit] {
+  width: 45px;
+  height: 45px;
+  background-image: url("../Resources/navbar/search.png");
+  background-color: transparent;
+  background-size: 45px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  margin: 0 20px 0 -70px;
+}
+
+
+#searchType {
+  height: 40px;
+  width: 90px;
+  margin: 0 10px 0;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+#searchType option:first-child {
+  font-size: 16px;
+}
+#searchType option:nth-child(n+2) {
+  font-size: 18px;
+}
+
+#searchType2, #searchType3 {
+  margin: 20px 10px 10px;
+}
+
+#searchType2 {
+  display: none;
+  height: 40px;
+  width: 120px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+#searchType3 {
+  display: none;
+  height: 40px;
+  width: 120px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #ffffff;
+  align-items: center;
+  justify-content: center;
+}
+#searchType3 span {
+  font-size: 20px;
+}
+
+
+#dropdownTags {
+  display: none;
+  flex-direction: column;
+  height: auto;
+  width: 120px;
+  margin: 0 10px 0;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #ffffff;
+  color: #333;
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  width: auto;
+  z-index: 3;
+}
+
+#tagsContainer {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  height: auto;
+  overflow: auto;
+  font-size: 20px;
+}
+#tagsContainer label {
+  background-color: #ffffff;
+}
+#tagsContainer label:hover {
+  transition: filter 0.5s ease-in-out;
+  filter: brightness(80%); 
+}
+#tagsContainer .checkedLabel {
+  background-color: #d56464;
+}
+#tagsContainer input[type="checkbox"] {
+  display: none;
+}
+
+#chosenTags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px 20px 15px;
+  width: 100%;
+}
+#chosenTags div {
+  display: inline-block;
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  padding: 3px 6px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+#chosenTags span {
+  color: #888;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 5px;
+}
