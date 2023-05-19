@@ -3,6 +3,114 @@ const express = require('express');
 const appRouter = express.Router();
 
 
+appRouter.get('/getPosts',(req,res) => {
+  const { inputDetails, searchingFor, sortMethod, tagFilters } = req.query;
+  console.log(inputDetails, searchingFor, sortMethod, tagFilters);
+
+  if (searchingFor == "postTitle" || searchingFor == "postContent") {
+    let queryData;
+    if (searchingFor == "postTitle") {
+      queryData = `WHERE LOWER(title) LIKE '%${inputDetails}%'` ;
+    }
+    else if (searchingFor == "postContent") {
+      queryData = `WHERE LOWER(content) LIKE '%${inputDetails}%'` ;
+    }
+
+    let queryAllPosts = '';
+    switch(sortMethod) {
+      case "recommendedPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY title ASC`;
+          break;
+      case "hotPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} WHERE creationDate >= NOW() - INTERVAL 1 DAY ORDER BY voteCount DESC`;
+          break;
+      case "newPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY creationDate DESC`;
+          break;
+      case "oldPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY creationDate ASC`;
+          break;
+      case "topPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY voteCount DESC`;
+          break;
+      case "bottomPosts":
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY voteCount ASC`;
+          break;
+      default:
+          queryAllPosts = `SELECT * FROM posts ${queryData} ORDER BY title DESC`;
+    }
+
+
+    if (tagFilters == undefined || tagFilters == "") {
+      con.query(queryAllPosts, (error, resultPosts) => {
+        if (error) {
+          console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllPosts)');
+          console.log(error);
+        }
+        else {
+          res.send({code: 200, posts: resultPosts});
+        }
+      });
+    }
+    else {
+      let givenTags = tagFilters.map(item => `'${item}'`).join(',')
+      let queryFilters = 
+      `SELECT * FROM posts WHERE id IN (
+      SELECT postID FROM tagpostid WHERE tagID IN (
+      SELECT id FROM tags WHERE title IN (${givenTags}))
+      GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${tagFilters.length})`;
+
+      switch(sortMethod) {
+        case "recommendedPosts":
+            queryFilters += ' ORDER BY title ASC';
+            break;
+        case "hotPosts":
+            queryFilters += ' AND creationDate >= NOW() - INTERVAL 1 DAY ORDER BY voteCount DESC';
+            break;
+        case "newPosts":
+            queryFilters += ' ORDER BY creationDate DESC';
+            break;
+        case "oldPosts":
+            queryFilters += ' ORDER BY creationDate ASC';
+            break;
+        case "topPosts":
+            queryFilters += ' ORDER BY voteCount DESC';
+            break;
+        case "bottomPosts":
+            queryFilters += ' ORDER BY voteCount ASC';
+            break;
+        default:
+            queryFilters += ' ORDER BY title DESC';
+      }
+
+      con.query(queryFilters, (error, resultPosts) => {
+        if (error) {
+          console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryFilters)');
+          console.log(error);
+        }
+        else {
+          res.send({code: 200, posts: resultPosts});
+        }
+      });
+    }
+
+  }
+  else if (searchingFor == "users") {
+
+  }
+  else {
+   // how... 
+  }
+
+
+});
+
+
+
+
+
+
+
 
 appRouter.get('/sortPosts',(req, res) => {
 

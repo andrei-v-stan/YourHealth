@@ -27,7 +27,6 @@ function toggleSearch() {
 }  
 
 
-
 function searchChange(searchType) {
     const options = searchType.options;
     if (options[0].value == "option0") {
@@ -35,20 +34,20 @@ function searchChange(searchType) {
     }
 
     const searchInput = document.getElementById('searchBoxInput');
-    const searchSorting = document.getElementById('searchType2');
-    const searchTags = document.getElementById('searchType3');
+    const searchSorting = document.getElementById('sortMethod');
+    const searchTags = document.getElementById('postsTags');
     switch (options[searchType.selectedIndex].value) {
-      case 'option1':
+      case 'postTitle':
         searchInput.placeholder = "Search for titles...";
         searchSorting.style.display = "flex";
         searchTags.style.display = "flex";
         break;
-      case 'option2':
+      case 'postContent':
         searchInput.placeholder = "Search for content...";
         searchSorting.style.display = "flex";
         searchTags.style.display = "flex";
         break;
-      case 'option3':
+      case 'users':
         searchInput.placeholder = "Search for users...";
         searchSorting.style.display = "none";
         searchTags.style.display = "none";
@@ -78,7 +77,7 @@ function filterTags() {
 
     
 function handleDropDownTags(event, dropdown) {
-    const dropdownButton = document.getElementById('searchType3');
+    const dropdownButton = document.getElementById('postsTags');
     if (!dropdownButton.contains(event.target) && !dropdown.contains(event.target)) {
       dropdown.style.display = "none";
       document.removeEventListener('click', handleDropDownTags);
@@ -98,7 +97,6 @@ function handleDropDownTags(event, dropdown) {
   }
 
 
-
 function toggleBoxSplit(action) {
     const tagsContainer = document.getElementById('chosenTags');
     const boxSplit = document.getElementById('tagBoxSplit');
@@ -112,7 +110,6 @@ function toggleBoxSplit(action) {
         tagsContainer.innerHTML = "";
     }
 }
-
 
 
 function checkLabel(labelID) {
@@ -159,7 +156,6 @@ function clearTags() {
 
 
 
-
 function getFilters() {
     jQuery.ajax({
         type: 'GET',
@@ -185,10 +181,86 @@ function getFilters() {
             }
         },
         error: function() {
-            console.log("[Error]: There was an error receiving the response from /changePass")
+            console.log("[Error]: There was an error receiving the response from /getFilters")
             alert('[Error]: Internal server error');
         }
     });
+}
+
+
+function handleSearchFor(event) {
+  const searchFor = document.getElementById('searchType');
+  searchFor.style.backgroundColor = "#ffffff";
+  searchFor.removeEventListener('change', handleSearchFor);
+}
+
+function handleInputDetails(event) {
+  const inputDetails = document.getElementById('searchBoxInput');
+  inputDetails.style.backgroundColor = "#ffffff";
+  inputDetails.removeEventListener('input', handleInputDetails);
+}
+
+function searchPosts() {
+  var searchFor = document.getElementById('searchType');
+  var inputDetails = document.getElementById('searchBoxInput');
+
+  if (searchFor.value == "" || inputDetails.value == "") {
+    if (searchFor.value == "") {
+      searchFor.style.backgroundColor = "#c47171";
+      searchFor.addEventListener('change', handleSearchFor);
+    }
+    else if (inputDetails.value == "") {
+      inputDetails.style.backgroundColor = "#c47171";
+      inputDetails.addEventListener('input', handleInputDetails);
+    }
+  }
+  else {
+    searchFor = searchFor.value;
+    inputDetails = inputDetails.value;
+    
+    let sortingMethod = document.getElementById('sortMethod').value;
+    if (sortingMethod == "") {
+      sortingMethod = "recommendedPosts";
+    }
+
+    let divTags = document.getElementById("chosenTags").getElementsByTagName("div");
+    let divIDs = [];
+    for (i = 1; i < divTags.length; i++) {
+      divIDs.push(divTags[i].id.split("_").slice(1).join(''));
+    }
+
+    getPosts(inputDetails.toLowerCase(),searchFor,sortingMethod,divIDs);
+  }
+}
+
+
+function getPosts(inputDetails,searchFor,sortingMethod,divIDs) {
+  return new Promise(function(resolve, reject) {
+    jQuery.ajax({
+      type: 'GET',
+      url: `/getPosts`,
+      data: {
+        "inputDetails": inputDetails,
+        "searchingFor": searchFor,
+        "sortMethod": sortingMethod,
+        "tagFilters": divIDs
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.code == 200) {
+          resolve(response.posts);
+        } else if (response.code == 500) {
+          reject(new Error('Internal server error'));
+        } else {
+          reject(new Error('Unknown error occurred'));
+        }
+      },
+      error: function() {
+        console.log("[Error]: There was an error receiving the response from /changePass");
+        reject(new Error('Internal server error'));
+      }
+    });
+  });
 }
 
 
@@ -203,11 +275,23 @@ function getFilters() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 window.onload = function() {
-    localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
-    localStorage.setItem("postSorting", 'recommendedPosts');
-    localStorage.setItem("postDisplay", 'compact');
-    sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
+    //localStorage.setItem(JSON.stringify("postFilters"), JSON.stringify(""));
+    //localStorage.setItem("postSorting", 'recommendedPosts');
+    //localStorage.setItem("postDisplay", 'compact');
+    //sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
   
     getFilters();
   };

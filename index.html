@@ -37,18 +37,18 @@
   <div id="searchTopNavbar">
     <div class="searchBox">
       <input id="searchBoxInput" type="text" placeholder="Search...">
-      <button type="submit"></button>
+      <button type="submit" onclick="searchPosts()"></button>
     </div>
     
     <select id="searchType" onchange="searchChange(this)">
-      <option class="firstOption" value="option0" disabled selected hidden>Search for</option>
-      <option value="option1">Title</option>
-      <option value="option2">Content</option>
-      <option value="option3">User</option>
+      <option class="firstOption" value="" disabled selected hidden>Search for</option>
+      <option value="postTitle">Title</option>
+      <option value="postContent">Content</option>
+      <option value="users">User</option>
     </select>
 
-    <select id="searchType2" onchange="sortPosts(this.value, '')">
-      <option value="option0" disabled selected hidden>Sorting</option>
+    <select id="sortMethod" onchange="sortPosts(this.value, '')">
+      <option value="" disabled selected hidden>Sorting</option>
       <option value="recommendedPosts">Suggested</option>
       <option value="hotPosts">Hot <!--(most liked past 24h)--></option>
       <option value="newPosts">New <!--(sort the posts on date)--></option>
@@ -57,7 +57,7 @@
       <option value="bottomPosts">Bottom <!--(sort the posts on likes)--></option>
     </select>
 
-    <div id="searchType3" onclick="showTags()">
+    <div id="postsTags" onclick="showTags()">
       <span>Tags</span>
     </div>
     <div id="dropdownTags">
@@ -243,7 +243,7 @@
 
 <script src="js/login.js"></script>
 <script src="js/jquery-3.6.4.min.js"></script>
-<script src="js/home.js"></script>
+<!-- <script src="js/home.js"></script> -->
 <script src="js/navBar.js"></script>
 
 </body>

@@ -151,11 +151,11 @@
   font-size: 18px;
 }
 
-#searchType2, #searchType3 {
+#sortMethod, #postsTags {
   margin: 20px 10px 10px;
 }
 
-#searchType2 {
+#sortMethod {
   display: none;
   height: 40px;
   width: 120px;
@@ -167,7 +167,7 @@
   background-color: #ffffff;
 }
 
-#searchType3 {
+#postsTags {
   display: none;
   height: 40px;
   width: 120px;
@@ -180,7 +180,7 @@
   align-items: center;
   justify-content: center;
 }
-#searchType3 span {
+#postsTags span {
   font-size: 20px;
 }
 
@@ -248,7 +248,7 @@
 }
 
 #chosenTags #tagBox_Clear {
-  background-color: #c45858;
+  background-color: #c47171;
   font-weight: 1000;
 }
 

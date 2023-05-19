@@ -413,6 +413,7 @@ window.onload = function() {
   localStorage.setItem("postDisplay", 'compact');
   sortPosts(localStorage.getItem("postSorting"),localStorage.getItem("postDisplay"));
 
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(gpsPos);
   } else {
