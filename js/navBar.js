@@ -1,9 +1,8 @@
 
-const topNavbarSearch = document.getElementById('topNavbarSearch');
-const searchTopNavbar = document.getElementById('searchTopNavbar');
-
 function handleTopNavbar(event) {
-    if (!event.target.closest('#searchTopNavbar') && !topNavbarSearch.contains(event.target)) {
+    const topNavbarSearch = document.getElementById('topNavbarSearch');
+    const searchTopNavbar = document.getElementById('searchTopNavbar');
+    if (!event.target.closest('#searchTopNavbar') && !topNavbarSearch.contains(event.target) && !event.target.closest('.tagBox')) {    
         document.getElementById('dropdownTags').style.display = "none";
         searchTopNavbar.classList.add('inactive');
         searchTopNavbar.addEventListener('animationend', function() {
@@ -16,6 +15,7 @@ function handleTopNavbar(event) {
   }
 
 function toggleSearch() {
+    const searchTopNavbar = document.getElementById('searchTopNavbar');
     if (!searchTopNavbar.classList.contains('active')) {
         searchTopNavbar.style.display = "flex";
         searchTopNavbar.classList.add('active');
@@ -25,9 +25,6 @@ function toggleSearch() {
         document.addEventListener('click', handleTopNavbar);
     }
 }  
-
-
-
 
 
 
@@ -99,7 +96,23 @@ function handleDropDownTags(event, dropdown) {
       });
     }
   }
-  
+
+
+
+function toggleBoxSplit(action) {
+    const tagsContainer = document.getElementById('chosenTags');
+    const boxSplit = document.getElementById('tagBoxSplit');
+    const clearBox = `<div id="tagBox_Clear" class="tagBox" onclick="clearTags()">Clear Tags</div>`;
+    if (tagsContainer.innerHTML.trim() == "" && action == "add") {
+        boxSplit.style.display = "flex";
+        tagsContainer.innerHTML += clearBox;
+    }
+    else if ((tagsContainer.innerHTML.trim() === clearBox || tagsContainer.innerHTML.trim() === "") && action === "remove") {
+        boxSplit.style.display = "none";
+        tagsContainer.innerHTML = "";
+    }
+}
+
 
 
 function checkLabel(labelID) {
@@ -108,11 +121,13 @@ function checkLabel(labelID) {
     if (label.classList.contains('checkedLabel')) {
         label.classList.remove('checkedLabel');
         document.getElementById(("tagBox_" + input.id.split("_").slice(1).join(''))).remove();
+        toggleBoxSplit("remove");
     }
     else {
+        toggleBoxSplit("add");
         label.classList.add('checkedLabel');
         document.getElementById('chosenTags').innerHTML += `
-        <div id="tagBox_${input.value}" onclick="removeTagBox(this)">
+        <div id="tagBox_${input.value}" class="tagBox" onclick="removeTagBox(this)">
             ${input.value}
             <span>&times;</span>
         </div>`;
@@ -126,12 +141,12 @@ function removeTagBox(tagBox) {
     if (label.classList.contains('checkedLabel')) {
         label.classList.remove('checkedLabel');
     }
+    toggleBoxSplit("remove");
 }
 
 function clearTags() {
     const tagsContainer = document.getElementById('tagsContainer');
     const labels = tagsContainer.querySelectorAll('label');
-  
     labels.forEach(label => {
       const input = label.querySelector('input');
       label.classList.remove('checkedLabel');
@@ -139,6 +154,7 @@ function clearTags() {
 
     const tagBoxesContainer = document.getElementById('chosenTags');
     tagBoxesContainer.innerHTML = '';  
+    toggleBoxSplit("remove");
 }
 
 
@@ -159,30 +175,6 @@ function getFilters() {
                         let tagElement = document.createElement('label');
                         tagElement.id = `dropdownTag-${tag.id}`;
                         tagElement.innerHTML = `<input id="ddElem_${tag.title}" type="checkbox" name="filters" value="${tag.title}" onclick="checkLabel('dropdownTag-${tag.id}')" >${tag.title}`;
-                        container.appendChild(tagElement);
-                    });
-                    tags.forEach((tag) => {
-                        let tagElement = document.createElement('label');
-                        tagElement.id = `dropdownTag-${tag.id}`;
-                        tagElement.innerHTML = `<input type="checkbox" name="filters" value="${tag.title}" onclick="checkLabel('dropdownTag-${tag.id}')" >${tag.title}`;
-                        container.appendChild(tagElement);
-                    });
-                    tags.forEach((tag) => {
-                        let tagElement = document.createElement('label');
-                        tagElement.id = `dropdownTag-${tag.id}`;
-                        tagElement.innerHTML = `<input type="checkbox" name="filters" value="${tag.title}" onclick="checkLabel('dropdownTag-${tag.id}')" >${tag.title}`;
-                        container.appendChild(tagElement);
-                    });
-                    tags.forEach((tag) => {
-                        let tagElement = document.createElement('label');
-                        tagElement.id = `dropdownTag-${tag.id}`;
-                        tagElement.innerHTML = `<input type="checkbox" name="filters" value="${tag.title}" onclick="checkLabel('dropdownTag-${tag.id}')" >${tag.title}`;
-                        container.appendChild(tagElement);
-                    });
-                    tags.forEach((tag) => {
-                        let tagElement = document.createElement('label');
-                        tagElement.id = `dropdownTag-${tag.id}`;
-                        tagElement.innerHTML = `<input type="checkbox" name="filters" value="${tag.title}" onclick="checkLabel('dropdownTag-${tag.id}')" >${tag.title}`;
                         container.appendChild(tagElement);
                     });
                 }

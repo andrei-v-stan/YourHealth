@@ -229,7 +229,7 @@
 #chosenTags {
   display: flex;
   flex-wrap: wrap;
-  margin: 5px 20px 15px;
+  margin: 7px 20px 15px;
   width: 100%;
 }
 #chosenTags div {
@@ -245,4 +245,19 @@
   font-size: 12px;
   cursor: pointer;
   margin-left: 5px;
+}
+
+#chosenTags #tagBox_Clear {
+  background-color: #c45858;
+  font-weight: 1000;
+}
+
+
+#tagBoxSplit {
+  display: none;
+  width: 85%;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(36, 8, 64, 0), rgba(36, 8, 64, 0.75), rgba(36, 8, 64, 0));
+
 }
