@@ -266,16 +266,21 @@ function getPosts(inputDetails,searchFor,sortingMethod,divIDs) {
 
 
 
-
-
-
-
-
-
-
-
-
-
+function handleLoginPopup(event) {
+  const loginPop = document.getElementById('loginPopup');
+  if (!loginPop.contains(event.target) || !event.target.closest(loginPop)) {
+    loginPop.style.display = "none";
+    document.getElementById('accountForms').style.display = "none";
+    document.removeEventListener('click', handleLoginPopup);
+  }
+}
+function loginPopup() {
+  document.getElementById('accountForms').style.display = "flex";
+  document.getElementById('loginPopup').style.display = "flex";
+  setTimeout(() => {
+    document.addEventListener('click', handleLoginPopup);
+  }, 100);
+}
 
 
 

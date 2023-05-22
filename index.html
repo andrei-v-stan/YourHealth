@@ -4,7 +4,6 @@
     <head>
         <title>Your Mind</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/login.css" type="text/css">
         <link rel="stylesheet" href="css/home.css" type="text/css">
         <link rel="stylesheet" href="css/navbar.css" type="text/css">
 
@@ -70,7 +69,81 @@
 
   </div>
 
+  <div id="accountForms">
+    <div id="accountFormsNavbar">
+      <button>Your ✰ Mind</button>
+    </div>
 
+    <div id="loginPopup">
+      <h2>Log In</h2>
+      <form id="loginForm">
+        <input type="text" id="loginUsername" name="username" placeholder="Username">
+        <input type="password" id="loginPassword" name="password" placeholder="Password">
+      </form>
+      <div class="rememberForgotContainer">
+        <label for="loginRememberMe">
+          <input type="checkbox" id="loginRememberMe" name="loginRememberMe">
+          Remember Me
+        </label>
+        <a onclick="recoveryMenuPopup()" id="forgot">Forgot account details?</a>
+      </div>
+      <input type="submit" form="loginForm" onclick="loginForm()">
+      <h3>New to Your Mind?</h3>
+      <a onclick="signupPopup()" class="signupLink"> Sign up here!</a>
+    </div>
+
+    <div id="signupPopup">
+      <button onclick="loginPopup()"> Go back </button>
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+        <div id="signupUsernameError"></div>
+        <input type="text" id="signupUsername" name="username" placeholder="Username" oninput="signupUsernameCheckAuto()">
+        <button onclick="signupUsernameCheck()">Check username availability</button> 
+        <div id="signupPasswordError"></div>
+        <input type="password" id="signupPassword" name="password" placeholder="Password" oninput="signupPasswordCheckAuto()">
+        <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
+        <div id="signupEmailError"></div>
+        <input type="email" id="signupEmail" name="email" placeholder="Email address" oninput="signupEmailCheckAuto()">
+        <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address">
+      </form>
+      <input type="submit" form="signupForm" onclick="signupForm()">
+    </div>
+  
+    <div id="recoveryMenuPopup">
+      <button onclick="loginPopup()"> Go back </button>
+      <h2>Recovery</h2>
+      <button onclick="recoverPasswordPopup()">Forgot Password</button>
+      <hr>
+      <h3>Need some additional help?</h3>
+      <button onclick="contactFormPopup()">Contact Form</button>
+    </div>
+  
+    <div id="recoverPasswordPopup">
+      <button onclick="recoveryMenuPopup()"> Go back </button>
+      <h2>Enter your email address and wait for further instructions</h2>
+      <form id="recoverPasswordForm">
+        <input type="email" id="recoveryEmail" name="email" placeholder="Email address">
+      </form>
+      <input type="submit" form="recoverPasswordForm" onclick="recoverPasswordForm()">
+    </div>
+  
+    <div id="contactFormPopup">
+      <button onclick="recoveryMenuPopup()"> Go back </button>
+      <h2>Complete the forum below and our staff will respond ASAP</h2>
+      <form id="contactForm">
+        <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
+        <input type="email" id="contactEmail" name="email" placeholder="Email address" required>
+        <select id="contactTopic" name="topic">
+          <option value="0">Please select a topic</option>
+          <option value="1">Account recovery</option>
+          <option value="2">Bug report</option>
+          <option value="3">Other</option>
+        </select>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text" required></textarea>
+      </form>
+      <input type="submit" form="contactForm" onclick="mailContactForm()">
+    </div>
+  </div>
 
 
 
@@ -82,129 +155,10 @@
 
 
   <h1>index</h1>
-<!--
-  <nav class="homeNavPosts">
-    <button id="sortPostsButton" onclick="toggleSort()">
-      <span id="sortPostsButtonText">Sort</span>
-      <img id="sortPostsButtonImage" src="../Resources/navbar/sort.png" style="display: none;">
-    </button>
-    <div id="sortPostsDropdown" class="dropdown-content">
-      <button id="#" onclick="sortPosts('recommendedPosts','')">Recommended</button>
-      <button id="#" onclick="sortPosts('hotPosts','')">Hot (most liked past 24h)</button>
-      <button id="#" onclick="sortPosts('newPosts','')">New (sort the posts on date)</button>
-      <button id="#" onclick="sortPosts('oldPosts','')">Old (sort the posts on date)</button>
-      <button id="#" onclick="sortPosts('topPosts','')">Top (sort the posts on likes)</button>
-      <button id="#" onclick="sortPosts('bottomPosts','')">Bottom (sort the posts on likes)</button>
-    </div>
-    <button id="createPostButton" onclick="createPostPopup()">
-      <span id="createPostButtonText">Create</span>
-    </button>
-    <button id="filterPostsButton" onclick="toggleFilter()">
-      <span id="filterPostsButtonText">Filter</span>
-      <img id="filterPostsButtonImage" src="../Resources/navbar/filter.png" style="display: none;">
-    </button>
-    <div id="filterPostsDropdown" class="dropdown-content">
-      <input type="text" id="searchTag" placeholder="Search...">
-      <div id="postTags"></div>
-      <button id="#" onclick="checkFilters()">Filter posts</button>
-    </div>
-  </nav>
-
-  <nav id="homeNavSection" style="display: flex;">
-    <button id="displayPostsButton" onclick="displayPosts()">
-      <img id="displayPostsButtonImageCompact" src="../Resources/navbar/compact.png" style="display: flex;">
-      <img id="displayPostsButtonImageCard" src="../Resources/navbar/card.png" style="display: none;">
-    </button>
-    <button id="clearFiltersButton" onclick="clearFilters()" style="display: none;">
-      <span id="clearFiltersButtonText">Clear</span>
-    </button>
-  </nav>
--->
-
 
   <div id="redirectPopup"></div>
 
-  <div id="loginBackground"></div>
-  <div id="signupBackground"></div>
-  <div id="recoveryBackground"></div>
 
-  <div id="loginPopupTop">
-    <button>Your ✰ Mind</button>
-  </div>
-  <div id="signupPopupTop">
-    <button>Your ✰ Mind</button>
-  </div>
-  <div id="recoveryPopupTop">
-    <button>Your ✰ Mind</button>
-  </div>
-
-
-	<div id="loginPopup">
-		<h2>Log In</h2>
-		<form id="loginForm">
-			<input type="text" id="loginUsername" name="username" placeholder="Username">
-			<input type="password" id="loginPassword" name="password" placeholder="Password">
-      <label for="loginRememberMe">
-        <input type="checkbox" id="loginRememberMe" name="loginRememberMe">
-        Remember Me
-    </label>
-    </form>
-		<a onclick="recoveryMenuPopup()" id="forgot">Forgot account details?</a>
-    <input type="submit" form="loginForm" onclick="loginForm()">
-    <h3>New to Your Mind? <a onclick="signupPopup()"> Sign up here!</a></h3>
-	</div>
-
-  <div id="signupPopup">
-    <button onclick="loginPopup()"> Go back </button>
-		<h2>Sign Up</h2>
-		<form id="signupForm">
-      <div id="signupUsernameError"></div>
-			<input type="text" id="signupUsername" name="username" placeholder="Username" oninput="signupUsernameCheckAuto()">
-      <button onclick="signupUsernameCheck()">Check username availability</button> 
-			<div id="signupPasswordError"></div>
-      <input type="password" id="signupPassword" name="password" placeholder="Password" oninput="signupPasswordCheckAuto()">
-      <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
-      <div id="signupEmailError"></div>
-      <input type="email" id="signupEmail" name="email" placeholder="Email address" oninput="signupEmailCheckAuto()">
-      <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address">
-    </form>
-    <input type="submit" form="signupForm" onclick="signupForm()">
-	</div>
-
-  <div id="recoveryMenuPopup">
-    <button onclick="loginPopup()"> Go back </button>
-		<h2>Recovery</h2>
-    <button onclick="recoverPasswordPopup()">Forgot Password</button>
-    <hr>
-    <h3>Need some additional help?</h3>
-    <button onclick="contactFormPopup()">Contact Form</button>
-	</div>
-
-  <div id="recoverPasswordPopup">
-    <button onclick="recoveryMenuPopup()"> Go back </button>
-		<h2>Enter your email address and wait for further instructions</h2>
-    <form id="recoverPasswordForm">
-			<input type="email" id="recoveryEmail" name="email" placeholder="Email address">
-    </form>
-    <input type="submit" form="recoverPasswordForm" onclick="recoverPasswordForm()">
-	</div>
-
-  <div id="contactFormPopup">
-    <button onclick="recoveryMenuPopup()"> Go back </button>
-		<h2>Complete the forum below and our staff will respond ASAP</h2>
-    <form id="contactForm">
-      <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
-      <input type="email" id="contactEmail" name="email" placeholder="Email address" required>
-      <select id="contactTopic" name="topic">
-        <option value="0">Please select a topic</option>
-        <option value="1">Account recovery</option>
-        <option value="2">Bug report</option>
-        <option value="3">Other</option>
-      </select>
-      <textarea id="contactMessage" name="message" rows="5" placeholder="Message text" required></textarea>
-    </form>
-    <input type="submit" form="contactForm" onclick="mailContactForm()">
-	</div>
 
 
 
@@ -241,7 +195,7 @@
 </div>
 
 
-<script src="js/login.js"></script>
+<!-- <script src="js/login.js"></script> -->
 <script src="js/jquery-3.6.4.min.js"></script>
 <!-- <script src="js/home.js"></script> -->
 <script src="js/navBar.js"></script>
