@@ -73,7 +73,14 @@ CREATE TABLE IF NOT EXISTS tagPostID (
   FOREIGN KEY (tagID) REFERENCES tags(id)
 );
 
-
+CREATE TABLE IF NOT EXISTS userDetails (
+  userID INT NOT NULL PRIMARY KEY,
+  FOREIGN KEY (userID) REFERENCES usercreds (id),
+  displayName VARCHAR(255),
+  username VARCHAR(255),
+  birthDate DATE,
+  bioData TEXT
+);
 
 
 

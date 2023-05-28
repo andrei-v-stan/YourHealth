@@ -1,101 +1,105 @@
 
+
+function showPass(button,fieldID) {
+  const field = document.getElementById(fieldID);
+  if (field.type == "password") {
+    field.type = "showPassword";
+    button.style.backgroundImage = "url('../Resources/account/eyeClose.png')";
+  } else {
+    field.type = "password";
+    button.style.backgroundImage = "url('../Resources/account/eye.png')";
+  }
+}
+
+
 // ----- Popup functions (START)  ----- >>
 
-const loginBack = document.getElementById('loginBackground');
-const loginPopTop = document.getElementById('loginPopupTop');
+const accForms = document.getElementById('accountForms');
+const accFormsNav = document.getElementById('accountFormsNavbar');
 const loginPop = document.getElementById('loginPopup');
 
-const signupBack = document.getElementById('signupBackground');
-const signupPopTop = document.getElementById('signupPopupTop');
-const signupPop = document.getElementById('signupPopup');
-
-const recoveryBack = document.getElementById('recoveryBackground');
-const recoveryPopT = document.getElementById('recoveryPopupTop');
-const recoveryMenuPop = document.getElementById('recoveryMenuPopup');
-const recoverPassPop = document.getElementById('recoverPasswordPopup');
-const contactFormPop = document.getElementById('contactFormPopup');
-
-
-loginBack.addEventListener('click', () => {
-  removeLoginPopup();
-  document.body.style.overflow = 'auto';
-});
-
-signupBack.addEventListener('click', () => {
-  removeSignupPopup();
-  loginPopup();
-  document.body.style.overflow = 'auto';
-});
-
-recoveryBack.addEventListener('click', () => {
-  removeRecoveryPopup();
-  loginPopup();
-  document.body.style.overflow = 'auto';
-});
-
-
-function removeLoginPopup() {
-  loginBack.style.display = 'none';
-  loginPopTop.style.display = 'none';
-  loginPop.style.display = 'none';
+function accPopup() {
+  accForms.style.display = "flex";
+  accForms.classList.add('active');
+  accFormsNav.classList.add('active');
 }
+function removePopup(popup,handlePopup) {
+  document.removeEventListener('click', handlePopup);
+  accForms.classList.remove('active');
+  accForms.classList.add('inactive');
 
-function removeSignupPopup() {
-  signupBack.style.display = 'none';
-  signupPopTop.style.display = 'none';
-  signupPop.style.display = 'none';
-}
-
-function removeRecoveryPopup() {
-  recoveryBack.style.display = 'none';
-  recoveryPopT.style.display = 'none';
-  recoveryMenuPop.style.display = 'none';
-  recoverPassPop.style.display = 'none';
-  contactFormPop.style.display = 'none';
+  setTimeout(() => {
+    accFormsNav.classList.remove('active');
+    popup.classList.remove('active');
+    accForms.classList.remove('inactive');
+    popup.style.display = 'none';
+    accForms.style.display = 'none';
+  }, 250);
 }
 
 
 function loginPopup() {
+  if (accForms.style.display != "flex") {
+    accPopup();
+  }
+
   if (localStorage.getItem("loginUser")) {
     document.getElementById("loginUsername").value = localStorage.getItem("loginUser");
     document.getElementById('loginRememberMe').checked = true;
   }
-  removeRecoveryPopup();
-  removeSignupPopup();
-  loginBack.style.display = 'block';
-  loginPopTop.style.display = 'block';
-  loginPop.style.display = 'block';
-  document.body.style.overflow = 'hidden';
+
+  accForms.style.backgroundColor = "#acbfe5";
+  accFormsNav.style.backgroundColor = "#5a82d1";
+  accFormsNav.querySelector("button").style.backgroundColor = "#2c57ae";
+
+  loginPop.style.display = "flex";
+  loginPop.classList.add('active');
+ 
+  setTimeout(() => {
+    document.addEventListener('click', handleLoginPopup);
+  }, 10);
+}
+function handleLoginPopup(event) {
+  if ((!loginPop.contains(event.target) && !accFormsNav.contains(event.target) && event.target.id != "showPassword") || event.target.id == "closeLogin") {
+    removePopup(loginPop,handleLoginPopup);
+  }
 }
 
-function signupPopup() {
-  removeLoginPopup();
-  signupBack.style.display = 'block';
-  signupPopTop.style.display = 'block';
-  signupPop.style.display = 'block';
-  document.body.style.overflow = 'hidden';
+
+
+
+const signupPop = document.getElementById('signupPopup');
+function toSignup() {
+  document.removeEventListener('click', handleLoginPopup);
+  loginPop.classList.remove('active');
+  loginPop.classList.add('inactive');
+  setTimeout(() => {
+    loginPop.style.display = "none";
+    loginPop.classList.remove('inactive');
+  }, 750);
+  signupPopup();
 }
 
-function recoveryMenuPopup() {
-  recoverPassPop.style.display = 'none';
-  contactFormPop.style.display = 'none';
-  removeLoginPopup();
-  recoveryBack.style.display = 'block';
-  recoveryPopT.style.display = 'block';
-  recoveryMenuPop.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
 
-function recoverPasswordPopup() {
-  recoveryMenuPop.style.display = 'none';
-  recoverPassPop.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
+function signupPopup() {  
+  if (accForms.style.display != "flex") {
+    accPopup();
+  }
+  accForms.style.backgroundColor = "#acd3e5";
+  accFormsNav.style.backgroundColor = "#5aa7d1";
+  accFormsNav.querySelector("button").style.backgroundColor = "#2c83ae";
 
-function contactFormPopup() {
-  recoveryMenuPop.style.display = 'none';
-  contactFormPop.style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  signupPop.style.display = "flex";
+  signupPop.classList.add('active');
+ 
+  setTimeout(() => {
+    document.addEventListener('click', handleSignupPopup);
+  }, 0);
+}
+function handleSignupPopup(event) {
+  if (!signupPop.contains(event.target) && !accFormsNav.contains(event.target) || event.target == document.getElementById('closeSignup')) {
+    removePopup(signupPop,handleSignupPopup);
+  }
 }
 
 // ----- Popup functions (END) -----
@@ -103,6 +107,41 @@ function contactFormPopup() {
 
 
 // ----- Auto input checks (START) -----
+
+function checkSignupUser() {
+  if (signupUsernameCheckAuto(1) == 1) {
+    signupUsernameCheck();
+  }
+}
+
+function checkSignups(field,confirm) {
+  const input = document.getElementById(field);
+  const inputCon = document.getElementById(confirm);
+  const errorBubble = document.getElementById(`${confirm}Error`);
+
+  if (input != "" && inputCon != "") {
+    if (inputCon.hasAttribute('onblur')) {
+      inputCon.removeAttribute('onblur');
+      inputCon.setAttribute('oninput', `checkSignups('${field}','${confirm}')`);
+    }
+    if (input.value != inputCon.value) {
+      inputCon.style.backgroundColor = "#dc6e6e";
+      if (confirm == "signupPasswordConfirm") {
+        errorBubble.innerHTML = `The passwords do not match<br>`;
+      }
+      else if (confirm == "signupEmailConfirm") {
+        errorBubble.innerHTML = `The email addresses do not match<br>`;
+      }
+      errorBubble.style.display = "block"; 
+    }
+    else if (input.value == inputCon.value) {
+      inputCon.style.backgroundColor = "#ffffff";
+      errorBubble.innerHTML = "";
+      errorBubble.style.display = "none"; 
+    }
+  }
+}
+
 
 function ctOnes(vector) {
   let count = 0;
@@ -126,6 +165,7 @@ function signupUsernameCheckAuto(usage) {
     usernameInput.style.backgroundColor = "#fff";
     errorBubble.innerHTML = "";
     errorBubble.style.display = "none";
+    document.getElementById 
   }
   else {
     usernameInput.style.backgroundColor = "#dc6e6e";
@@ -282,7 +322,7 @@ function signupEmailRules(email) {
   
   errors = [0];
   if (regex.test(email) == false) {
-      error[0] = 1;
+    errors[0] = 1;
   }
   return errors;
 }
@@ -301,7 +341,7 @@ function signupUsernameCheck(usage) {
 
     return new Promise((resolve, reject) => {
       jQuery.ajax({
-        type: "POST",
+        type: "GET",
         url: "/signupUsernameCheck",
         data: {
           username: usernameInput.value,
@@ -394,13 +434,21 @@ function signupForm() {
     const passwordErrorBubble = document.getElementById("signupPasswordError");
     const emailErrorBubble = document.getElementById("signupEmailError");
 
+    const passwordCon = document.getElementById("signupPasswordConfirm");
+    const emailCon = document.getElementById("signupEmailConfirm");
+    
+    const passwordConErrorBubble = document.getElementById("signupPasswordConfirmError");
+    const emailConErrorBubble = document.getElementById("signupEmailConfirmError");
+
     if (formData.get("password") != formData.get("passwordConfirm")) {
-      passwordErrorBubble.innerHTML = `The passwords do not match<br>`;
-      passwordErrorBubble.style.display = "block";  
+      passwordCon.style.backgroundColor = "#dc6e6e";
+      passwordConErrorBubble.innerHTML = `The passwords do not match<br>`;
+      passwordConErrorBubble.style.display = "block";  
     }
     else if (formData.get("email") != formData.get("emailConfirm")) {
-      emailErrorBubble.innerHTML = `The email addresses do not match<br>`;
-      emailErrorBubble.style.display = "block";  
+      emailCon.style.backgroundColor = "#dc6e6e";
+      emailConErrorBubble.innerHTML = `The email addresses do not match<br>`;
+      emailConErrorBubble.style.display = "block";  
     }
     else if (signupUsernameCheckAuto(1) == 1 && signupPasswordCheckAuto(1) == 1 && signupEmailCheckAuto(1) == 1) {
         Promise.all([signupUsernameCheck(1), signupEmailCheck(1)]).then(function(results) {
@@ -438,6 +486,8 @@ function signupForm() {
 
 // ----- Signup data entry (END) -----
 
+
+
 function loginForm() {
   event.preventDefault();
   const formData = new FormData(document.getElementById("loginForm"));
@@ -446,7 +496,8 @@ function loginForm() {
       "password": formData.get("password")
   };
 
-  if (formData.get("loginRememberMe") == "on") {
+  const rememberMe = document.getElementById("loginRememberMe");
+  if (rememberMe.checked == true) {
     localStorage.setItem("loginUser", formVar.username);
   }
   else {
@@ -464,7 +515,7 @@ function loginForm() {
           redirPopup.style.display = "block";  
           document.cookie = "accountID=" + response.accID + ";path=/";
           setTimeout(function() {
-            window.location.href = "/posts";
+            window.location.href = "/";
           }, 3000);
         } 
         else if (response.code == 401) {
@@ -486,6 +537,11 @@ function loginForm() {
     }
   });
 }
+
+
+
+
+
 
 
 

@@ -24,8 +24,6 @@ const genPagesRouter = require('./genPages');
 app.use('/', genPagesRouter);
 const homePagesRouter = require('./homePages');
 app.use('/', homePagesRouter);
-const accLogRouter = require('./accLog');
-app.use('/', accLogRouter);
 const mailJsonRouter = require('./mailJson');
 app.use('/', mailJsonRouter);
 const otherFunctionsRouter = require('./otherFunctions');

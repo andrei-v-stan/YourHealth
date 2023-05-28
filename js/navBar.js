@@ -155,7 +155,6 @@ function clearTags() {
 }
 
 
-
 function getFilters() {
     jQuery.ajax({
         type: 'GET',
@@ -234,17 +233,29 @@ function searchPosts() {
 }
 
 
+
 function getPosts(inputDetails,searchFor,sortingMethod,divIDs) {
+  let urlPage,urlData;
+
+  if (searchFor == "postTitle" || searchFor == "postContent") {
+    urlPage = "/getPosts";
+    urlData = {
+      "inputDetails": inputDetails,
+      "searchingFor": searchFor,
+      "sortMethod": sortingMethod,
+      "tagFilters": divIDs
+    };
+  }
+  else if (searchFor == "users") {
+    urlPage = "/getUsers";
+    urlData = { "inputDetails": inputDetails };
+  }
+
   return new Promise(function(resolve, reject) {
     jQuery.ajax({
       type: 'GET',
-      url: `/getPosts`,
-      data: {
-        "inputDetails": inputDetails,
-        "searchingFor": searchFor,
-        "sortMethod": sortingMethod,
-        "tagFilters": divIDs
-      },
+      url: urlPage,
+      data: urlData,
       success: function(response) {
         console.log(response);
         if (response.code == 200) {
@@ -266,25 +277,88 @@ function getPosts(inputDetails,searchFor,sortingMethod,divIDs) {
 
 
 
-function handleLoginPopup(event) {
-  const loginPop = document.getElementById('loginPopup');
-  if (!loginPop.contains(event.target) || !event.target.closest(loginPop)) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+const signupPop = document.getElementById('signupPopup');
+function signupPopup() {  
+  if (accForms.style.display != "flex") {
+    accPopup(accForms,accFormsNav);
+  }
+  accForms.style.backgroundColor = "#acd3e5";
+  accFormsNav.style.backgroundColor = "#5aa7d1";
+  accFormsNav.querySelector("button").style.backgroundColor = "#2c83ae";
+
+  loginPop.classList.remove('active');
+  loginPop.classList.add('inactive');
+  setTimeout(() => {
     loginPop.style.display = "none";
-    document.getElementById('accountForms').style.display = "none";
-    document.removeEventListener('click', handleLoginPopup);
+    loginPop.classList.remove('inactive');
+  }, 750);
+
+  signupPop.style.display = "flex";
+  signupPop.classList.add('active');
+ 
+  setTimeout(() => {
+    document.addEventListener('click', handleSignupPopup);
+  }, 0);
+}
+function handleSignupPopup(event) {
+  if (!signupPop.contains(event.target) && !accFormsNav.contains(event.target) || event.target == document.getElementById('closeSignup')) {
+    removePopup(signupPop,accForms,accFormsNav,handleSignupPopup);
   }
 }
-function loginPopup() {
-  document.getElementById('accountForms').style.display = "flex";
-  document.getElementById('loginPopup').style.display = "flex";
+
+function backLogin() {
+  const accForms = document.getElementById('accountForms');
+  const accFormsNav = document.getElementById('accountFormsNavbar');
+  accForms.style.backgroundColor = "#acbfe5";
+  accFormsNav.style.backgroundColor = "#5a82d1";
+  accFormsNav.querySelector("button").style.backgroundColor = "#2c57ae";
+
+  const signupPop = document.getElementById('signupPopup');
+  signupPop.classList.remove('active');
+  signupPop.classList.add('inactive');
   setTimeout(() => {
-    document.addEventListener('click', handleLoginPopup);
-  }, 100);
+    signupPop.style.display = "none";
+    signupPop.classList.remove('inactive');
+  }, 750);
+
+
+  const loginPop = document.getElementById('loginPopup');
+  loginPop.style.display = "flex";
+  loginPop.classList.add('active');
+
 }
-
-
-
-
+*/
 
 
 
