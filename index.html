@@ -1,36 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
     <head>
         <title>Your Mind</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/home.css" type="text/css">
         <link rel="stylesheet" href="css/navbar.css" type="text/css">
+        <link rel="stylesheet" href="css/login.css" type="text/css">
 
     </head>
 
 <body>
 
   <nav class="homeTopNavbar">
-    <button id="" onclick="toggleSort()">
-      <img id="" src="../Resources/navbar/home.png">
+    <button onclick="toggleSort()">
+      <img src="../Resources/navbar/home.png" alt="topNavbarHome">
     </button>
       <input id="topNavbarSearch" type="text" placeholder="Search..." class="searchBar" onclick="toggleSearch()">
-    <button id="" onclick="createPostPopup()">
-      <img id="" src="../Resources/navbar/create.png">
+    <button onclick="createPostPopup()">
+      <img src="../Resources/navbar/create.png" alt="topNavbarPostCreation">
     </button>
-    <button id="" onclick="toggleSort()">
-      <img id="" src="../Resources/navbar/notifications.png">
+    <button onclick="toggleSort()">
+      <img src="../Resources/navbar/notifications.png" alt="topNavbarNotification">
     </button>
-    <button id="" onclick="toggleSort()">
-      <img id="" src="../Resources/navbar/messages.png">
+    <button onclick="toggleSort()">
+      <img src="../Resources/navbar/messages.png" alt="topNavbarMessage">
     </button>
-    <button id="" onclick="toggleSort()">
-      <img id="" src="../Resources/navbar/profile.png">
+    <button onclick="toggleSort()">
+      <img src="../Resources/navbar/profile.png" alt="topNavbarProfile">
     </button>
 
     <button id="loginButton" onclick="loginPopup()">Login</button>
-    <button id="loginButton" onclick="logoutPOST()">Logout</button>
+    <button id="logoutButton" onclick="logoutPOST()">Logout</button>
   </nav>
 
   <div id="searchTopNavbar">
@@ -57,7 +58,7 @@
     </select>
 
     <div id="postsTags" onclick="showTags()">
-      <span>Tags</span>
+      <div class="rowElements">Tags</div>
     </div>
     <div id="dropdownTags">
       <input type="text" id="searchTag" placeholder="Search..." oninput="filterTags()">
@@ -75,7 +76,7 @@
     </div>
 
     <div id="loginPopup">
-      <button id="closeLogin" class="closeButton"></button>
+      <button id="closeLogin" class="closeButton" onclick="removePopup('loginPopup')"></button>
       <h2>Log In</h2>
       <form id="loginForm">
         <input type="text" id="loginUsername" name="username" placeholder="Username">
@@ -89,99 +90,82 @@
           <input type="checkbox" id="loginRememberMe" name="loginRememberMe">
           Remember Me
         </label>
-        <a onclick="recoveryPopup()" id="forgotLink">Forgot account?</a>
+        <a onclick="toRecovery()" id="forgotLink">Forgot account?</a>
       </div>
       <input type="submit" form="loginForm" onclick="loginForm()">
       <h3>New to Your Mind? <a onclick="toSignup()" class="signupLink"> Sign up here</a></h3>
     </div>
 
     <div id="signupPopup">
-      <button id="closeSignup" class="closeButton"></button>
-      <button id="backSignup" class="backButton" onclick="backLogin()"></button>
+      <button id="closeSignup" class="closeButton" onclick="removePopup('signupPopup')"></button>
+      <button id="backSignup" class="backButton" onclick="signupBackLogin()"></button>
       <h2>Sign Up</h2>
       <form id="signupForm">
-        <span>
-          <input type="text" id="signupUsername" name="username" placeholder="Username" oninput="signupUsernameCheckAuto()"> 
+        <div class="rowElements">
+          <input type="text" id="signupUsername" name="username" placeholder="Username" autocomplete="off" onblur="signupRuleBox(this,1)" oninput="signupUsernameCheckAuto();signupRuleBox(this,0)" onfocus="signupRuleBox(this,0)"> 
           <button class="userCheck" onclick="checkSignupUser()" type="button"></button>
-        </span>
+        </div>
         <div id="signupUsernameError"></div>
-        <span>
-          <input type="password" id="signupPassword" name="password" placeholder="Password" oninput="signupPasswordCheckAuto()">
+        <div class="rowElements">
+          <input type="password" id="signupPassword" name="password" placeholder="Password" onblur="signupRuleBox(this,1)" oninput="signupPasswordCheckAuto(0,0);checkSignups('signupPassword','signupPasswordConfirm');signupRuleBox(this,0)" onfocus="signupRuleBox(this,0)">
           <button class="showPassword" onclick="showPass(this,'signupPassword')" type="button"></button>        
-        </span>
+        </div>
         <div id="signupPasswordError"></div>
-        <span>
-          <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Password" onblur="checkSignups('signupPassword','signupPasswordConfirm')">
+        <div class="rowElements">
+          <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Confirm password" onblur="signupRuleBox(this,1)" oninput="checkSignups('signupPassword','signupPasswordConfirm');signupRuleBox(this,0)" onfocus="signupRuleBox(this,0)">
           <button class="showPassword" onclick="showPass(this,'signupPasswordConfirm')" type="button"></button>
-        </span>
+        </div>
         <div id="signupPasswordConfirmError"></div>
-        <input type="email" id="signupEmail" name="email" placeholder="Email address" oninput="signupEmailCheckAuto()">
+        <input type="email" id="signupEmail" name="email" placeholder="Email address" autocomplete="off" onblur="signupRuleBox(this,1)" oninput="signupEmailCheckAuto();checkSignups('signupEmail','signupEmailConfirm');signupRuleBox(this,0)" onfocus="signupRuleBox(this,0)">
         <div id="signupEmailError"></div>
-        <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address" onblur="checkSignups('signupEmail','signupEmailConfirm')">
+        <input type="email" id="signupEmailConfirm" name="emailConfirm" placeholder="Confirm email address" autocomplete="off" onblur="signupRuleBox(this,1)" oninput="checkSignups('signupEmail','signupEmailConfirm');signupRuleBox(this,0)" onfocus="signupRuleBox(this,0)">
         <div id="signupEmailConfirmError"></div>
       </form>
       <input type="submit" form="signupForm" onclick="signupForm()">
     </div>
-  
-    <div id="recoveryMenuPopup">
-      <button onclick="loginPopup()"> Go back </button>
+
+    <div id="recoveryPopup">
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('recoveryPopup')"></button>
+      <button id="backRecovery" class="backButton" onclick="recoveryBackLogin()"></button>
       <h2>Recovery</h2>
-      <button onclick="recoverPasswordPopup()">Forgot Password</button>
-      <hr>
-      <h3>Need some additional help?</h3>
-      <button onclick="contactFormPopup()">Contact Form</button>
+      <span></span>
+      <div class="rowElements">
+        <button class="formOption" onclick="passwordSectionPopup()">Forgot Password</button>
+        <button class="formOption" onclick="contactSectionPopup()">Contact Form</button>
+      </div>
     </div>
-  
-    <div id="recoverPasswordPopup">
-      <button onclick="recoveryMenuPopup()"> Go back </button>
-      <h2>Enter your email address and wait for further instructions</h2>
+
+    <div id="passwordSectionPopup">
+      <button id="backSignup" class="backButton" onclick="passToRecovery()"></button>
+      <h3>Enter your email address and wait for further instructions</h3>
       <form id="recoverPasswordForm">
-        <input type="email" id="recoveryEmail" name="email" placeholder="Email address">
+        <input type="email" id="recoveryEmail" name="email" placeholder="Email address" oninput="checkEmail(0,0)" required>
       </form>
       <input type="submit" form="recoverPasswordForm" onclick="recoverPasswordForm()">
     </div>
   
-    <div id="contactFormPopup">
-      <button onclick="recoveryMenuPopup()"> Go back </button>
-      <h2>Complete the forum below and our staff will respond ASAP</h2>
+    <div id="contactSectionPopup">
+      <button id="backSignup" class="backButton" onclick="contactToRecovery()"></button>
+      <h3>Complete the forum below and our staff will respond ASAP</h3>
       <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
-        <input type="email" id="contactEmail" name="email" placeholder="Email address" required>
+        <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
         <select id="contactTopic" name="topic">
-          <option value="0">Please select a topic</option>
+          <option value="0" disabled selected hidden>Select a topic</option>
           <option value="1">Account recovery</option>
           <option value="2">Bug report</option>
           <option value="3">Other</option>
         </select>
-        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text" required></textarea>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text"></textarea>
       </form>
       <input type="submit" form="contactForm" onclick="mailContactForm()">
     </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-  <h1>index</h1>
-
-  <div id="redirectPopup"></div>
-
-
-
-
-
-
-  <div id="createPostBackground"></div>
-  <div id="createPostPopupTop">
-      <button>Your ✰ Mind</button>
+  <div id="redirectPopup">
+    <div id="popupBox"></div>
   </div>
-
+  
   <div id="createPostPopup">
       <h2>Enter the post details:</h2>
         <form id="createPostForm" action="/create_post" method="post">
@@ -198,6 +182,16 @@
         </form>
       <input type="submit" form="createPostForm" onclick="x()">
   </div>
+
+
+
+
+
+
+
+
+
+  <h1>index</h1>
 
 
 

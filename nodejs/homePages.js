@@ -324,13 +324,13 @@ appRouter.get('/sortPosts',(req, res) => {
         if (error) {
           console.log('[Error]: appRouter.post(/signupUsernameCheck) -> con.query(queryCheck)');
           console.error(error);
-          res.send({code: 500});
+          res.send({code: 600});
         }
         else if (resCheck.length == 0) {
-          res.send({code: 200});
+          res.send({code: 01});
         }
         else {
-          res.send({code: 401});
+          res.send({code: 02});
         }
       });
   });
@@ -437,7 +437,6 @@ appRouter.get('/sortPosts',(req, res) => {
             accDislikes = accDislikes + resDislikes[i]['postID'] + "_";
           }
           accDislikes = accDislikes.slice(0, -1);
-          console.log(accDislikes);
         }
         resolve(accDislikes);
       });
