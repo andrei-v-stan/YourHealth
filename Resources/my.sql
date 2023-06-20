@@ -10,12 +10,10 @@ CREATE TABLE IF NOT EXISTS userCreds (
 	  creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
 
-INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('', '', '');
-
 CREATE TABLE IF NOT EXISTS userLocs (
+  logNumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   accountID INT NOT NULL,
   FOREIGN KEY (accountID) REFERENCES usercreds(id),
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   latitude TEXT NOT NULL,
   longitude TEXT NOT NULL,
   accuracy TEXT NOT NULL,
@@ -30,6 +28,9 @@ CREATE TABLE IF NOT EXISTS posts (
   authorID INT NOT NULL,
   FOREIGN KEY (authorID) REFERENCES usercreds(id),
   voteCount INT DEFAULT 0, 
+  commentCount INT DEFAULT 0,
+  sentimentScore FLOAT DEFAULT 0.0,
+  sentimentMagnitude FLOAT DEFAULT 0.0,
   creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -78,35 +79,45 @@ CREATE TABLE IF NOT EXISTS userDetails (
   FOREIGN KEY (userID) REFERENCES usercreds (id),
   displayName VARCHAR(255),
   username VARCHAR(255),
+  clearance FLOAT DEFAULT 1,
+  title VARCHAR(255) NOT NULL, 
+  /*
+  Admin - 10
+  Mod - 9
+  International government services ( UN / ICAO) - 8
+  Higher government services (FBI / CIA) - 7
+  Supreme / International Courthouses - 6
+  Local Courthouses - 5
+  Police officer / Investigators / Government Offices - 4
+  Medical Practitioner / Researcher - 3 
+  Social Aider - 2
+  Regular User - 1
+  */
   birthDate DATE,
-  bioData TEXT
+  bioData TEXT,
+  avgSentimentScore FLOAT DEFAULT 0.0000000000,
+  avgSentimentMagnitude FLOAT DEFAULT 0.00000000000
 );
 
 
+CREATE TABLE IF NOT EXISTS bookmarkedPosts (
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
+  userID INT NOT NULL,
+  FOREIGN KEY (userID) REFERENCES usercreds(id)
+);
 
+CREATE TABLE IF NOT EXISTS hiddenPosts (
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
+  userID INT NOT NULL,
+  FOREIGN KEY (userID) REFERENCES usercreds(id)
+);
 
-INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('asd', 'asd123', 'asd@gmail.com');
-INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 1', 'Post 1 content', '2');
-INSERT INTO tags (`title`) VALUE ('post 1');
-INSERT INTO tags (`title`) VALUE ('1 post');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','1');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('1','2');
+CREATE TABLE IF NOT EXISTS viewedPosts (
+  postID INT NOT NULL,
+  FOREIGN KEY (postID) REFERENCES posts(id),
+  userID INT NOT NULL,
+  FOREIGN KEY (userID) REFERENCES usercreds(id)
+);
 
-INSERT INTO usercreds (`username`, `password`, `email`) VALUES ('asd2', 'asd123', 'asd2@gmail.com');
-INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 2', 'Post 2 content', '3');
-INSERT INTO tags (`title`) VALUE ('post 2');
-INSERT INTO tags (`title`) VALUE ('2 post');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('2','3');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('2','4');
-
-INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 3', 'Post 3 content', '3');
-INSERT INTO tags (`title`) VALUE ('post 3');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','5');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('3','2');
-
-INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 4', 'Post 4 content', '2');
-
-INSERT INTO posts (`title`, `content`, `authorID`) VALUES ('Post 5', 'Post 5 content', '2');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','5');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','2');
-INSERT INTO tagpostid (`postID`, `tagID`) VALUE ('5','1');

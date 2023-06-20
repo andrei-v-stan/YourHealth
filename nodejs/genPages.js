@@ -5,294 +5,219 @@ const appRouter = express.Router();
 const path = require('path');
 
 
-appRouter.route('/testing')
-  .get((req, res) => {
-    const queryAllPosts = 'SELECT * FROM posts ORDER BY creationDate DESC';
-    const queryAllTags = 'SELECT * FROM tags ORDER BY title ASC';
+appRouter.get('/posts/:id', (req, res) => {
+  const postID = req.params.id;
 
-    con.query(queryAllPosts, (error, resultPosts) => {
+  if (/[^0-9]/.test(postID) || /^0/.test(postID) || req.url.length > `/posts/${postID}`.length) {
+    res.render('statusHandler', { statusMessage: 'This post does not exist' });
+  }
+  else {
+    con.query('SELECT * FROM posts WHERE id=?', postID, (error, result) => {
       if (error) {
-        console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllPosts)');
-        console.log(err);
+        console.log(error);
+        res.send({ code: 500, errorText: "appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE id=?)" });
       }
-      else {
-        con.query(queryAllTags, (error, resultTags) => {
-          if (error) {
-            console.log('[Error]: appRouter.route.(/posts).get -> con.query(queryAllTags)');
-            console.log(err);
-          }
-          else {
-            res.render('posts', { posts: resultPosts, tags: resultTags });
-          }
-        });
-      }
-    });
-  })
-
-  .post((req, res) => {
-    const queryAllPosts = 'SELECT * FROM posts ORDER BY creationDate DESC';
-    const queryAllTags = 'SELECT * FROM tags ORDER BY title ASC';
-    let strFilters = '';
-    var i;
-  
-    if (req.body && req.body.filters) {
-      if(typeof(req.body.filters) == 'string')  {
-        strFilters = `'` + req.body.filters + `'`;
-        i = 1;
-      }
-      else {
-        let reqFilters;
-        reqFilters = Array.from(new Set(req.body.filters));
-        reqFilters = Object.entries(reqFilters).map(([key, value]) => `${value}`);
-        for (i=0; i<reqFilters.length; i++) {
-          strFilters = strFilters + `'` + reqFilters[i] + `',`
-        }
-        strFilters = strFilters.slice(0, -1);
-      }
-
-      console.log(req.body.filters,'\n',strFilters,'\n',i);
-
-      const queryFilters = `SELECT * FROM posts WHERE id IN (
-          SELECT postID FROM tagpostid WHERE tagID IN (
-          SELECT id FROM tags WHERE title IN (${strFilters}))
-          GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${i}) 
-      ORDER BY creationDate DESC;`
-
-      con.query(queryFilters, (error, resultPosts) => {
-        if (error) {
-          console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryFilters)');
-          console.log(err);
-        }
-        else {
-          con.query(queryAllTags, (error, resultTags) => {
-            if (error) {
-              console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryAllTags)');
-              console.log(err);
-            }
-            else {
-              res.render('posts', { posts: resultPosts, tags: resultTags });
-            }
-          });
-        }
-      });
-    }
-    else {  
-      con.query(queryAllPosts, (error, resultPosts) => {
-        if (error) {
-          console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryAllPosts)');
-          console.log(err);
-        }
-        else {
-          con.query(queryAllTags, (error, resultTags) => {
-            if (error) {
-              console.log('[Error]: appRouter.route.(/posts).post -> con.query(queryAllTags)');
-              console.log(err);
-            }
-            else {
-              res.render('posts', { posts: resultPosts, tags: resultTags });
-            }
-          });
-        }
-      });
-    }
-  });
-
-
-
-
-  appRouter.get('/posts/:id', (req, res) => {
-    const postID = req.params.id;
-
-    if (/[^0-9]/.test(postID) || /^0/.test(postID) || req.url.length > `/posts/${postID}`.length) {
-      res.render('statusHandler', { statusMessage: 'This post does not exist' });
-    }
-    else {
-      con.query('SELECT * FROM posts WHERE id=?', postID, (error, result) => {
-        if (error) {
-          console.log('[Error]: appRouter.post(/posts/:id) -> con.query(SELECT * FROM posts WHERE id=?)');
-          console.error(error);
-          res.send({code: 500});
-        }
-        if (Object.keys(result).length == 0) {
-            res.render('statusHandler', { statusMessage: 'This post does not exist' });
-        }
-        else {
-          res.sendFile(path.join(__dirname, '../html', 'postDetails.html'));
-        }
-      });
-    }
-  });
-
-
-
-  appRouter.get('/getPostDetails', (req, res) => {
-    const postID = req.query.postID;
-
-    con.query('SELECT * FROM posts WHERE id=?', postID, (error, resPostDetails) => {
-      if (error) {
-        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(SELECT * FROM posts WHERE id=?)');
-        console.error(error);
-        res.send({code: 500});
-      }
-      if (Object.keys(resPostDetails).length == 0) {
+      if (Object.keys(result).length == 0) {
           res.render('statusHandler', { statusMessage: 'This post does not exist' });
       }
       else {
-        con.query('SELECT * FROM comments WHERE postID=?', postID, (error, resComments) => {
-          if (error) {
-            console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(SELECT * FROM posts WHERE id=?)');
-            console.error(error);
-            res.send({code: 500});
-          }
-
-          else {
-            res.send({code: 200, post: resPostDetails[0], comments: resComments});
-          }
-        });
+        res.sendFile(path.join(__dirname, '../html', 'postDetails.html'));
       }
     });
-  });
+  }
+});
 
 
+appRouter.get('/users/:id', (req, res) => {
+  const postID = req.params.id;
 
-  appRouter.get('/submitComment', (req, res) => {
-    const { postID, parentID, parentType, authorID, content } = req.query;
-    const queryPostComment = `INSERT INTO comments (postID, parentID, parentType, authorID, content) VALUES (?, ?, ?, ?, ?)`;
-
-    con.query(queryPostComment, [postID, parentID, parentType, authorID, content, '0'], (error, result) => {
+  if (/[^0-9]/.test(postID) || /^0/.test(postID) || req.url.length > `/posts/${postID}`.length) {
+    res.render('statusHandler', { statusMessage: 'This user does not exist' });
+  }
+  else {
+    con.query('SELECT * FROM posts WHERE id=?', postID, (error, result) => {
       if (error) {
-        console.log('[Error]: appRouter.post(/submitComment) -> con.query(queryPostComment)');
-        console.error(error);
-        res.send({code: 500});
+        console.log(error);
+        res.send({ code: 500, errorText: "appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE id=?)" });
+      }
+      if (Object.keys(result).length == 0) {
+          res.render('statusHandler', { statusMessage: 'This post does not exist' });
       }
       else {
-        res.send({code: 200});
+        res.sendFile(path.join(__dirname, '../html', 'userDetails.html'));
+      }
+    });
+  }
+});
+
+
+appRouter.get('/missingLogin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html', 'missingLogin.html'));
+});
+
+appRouter.get('/resourcesMap', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html', 'resourcesMap.html'));
+});
+
+appRouter.get('/sentimentStats', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html', 'sentimentStats.html'));
+});
+
+appRouter.get('/additionalInfo', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html', 'additionalInfo.html'));
+});
+
+appRouter.get('/yourHealth', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html', 'yourHealth.html'));
+});
+
+
+
+
+appRouter.get('/getPostDetails', (req, res) => {
+  const postID = req.query.postID;
+  const accID = req.cookies.accountID;
+
+  const postDetails = new Promise((resolve, reject) => {
+    con.query('SELECT * FROM posts WHERE id=?', postID, (error, resPostDetails) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resPostDetails)');
+        console.error(error);
+        reject(error);
+      } 
+      else {
+        resolve(resPostDetails[0]);
       }
     });
   });
 
+  const postComments = new Promise((resolve, reject) => {
+    con.query('SELECT * FROM comments WHERE postID=?', postID, (error, resComments) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resComments)');
+        console.error(error);
+        reject(error);
+      } 
+      else {
+        resolve(resComments);
+      }
+    });
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-appRouter.route('/users/:id')
-  .get((req, res) => {
-    const userID = parseInt(req.params.id);
-
-    if (userID == req.params.id && req.params.id[0] != '0') {
-      con.query('SELECT MAX(id) FROM usercreds', (error, result) => {
-        if (error) {
-          console.log('[Error]: appRouter.get(/users/:id) -> con.query(SELECT MAX(id) FROM usercreds)');
-          console.log(err);
+  const postVote = new Promise((resolve, reject) => {
+    con.query('SELECT vote FROM postlikes WHERE postID = ? AND userID = ?', [postID, accID], (error, resPostVote) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resPostVote)');
+        console.error(error);
+        reject(error);
+      } 
+      else {
+        let voteScore = 0;
+        if (resPostVote.length > 0) {
+          voteScore = resPostVote[0].vote;
         }
-        else {
-          const userMax = result[0]['MAX(id)'];
-          if (0 < userID && userID <= userMax) {
-            con.query('SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC', [userID], (err, resultPosts) => {
-              if (error) {
-                console.log('[Error]: appRouter.get(/users/:id) -> con.query(SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC)');
-                console.log(err);
+        resolve(voteScore);
+      }
+    });
+  });
+
+  const userTitle = new Promise((resolve, reject) => {
+    con.query('SELECT CASE WHEN displayName IS NULL THEN username ELSE displayName END AS result FROM userdetails WHERE userID = ?', [accID], (error, resUser) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resUser)');
+        console.error(error);
+        reject(error);
+      } 
+      else {
+        resolve(resUser[0]);
+      }
+    });
+  });
+
+  const postTags = new Promise((resolve, reject) => {
+    con.query('SELECT tagID FROM tagpostid WHERE postID = ?', [postID], (error, resTags) => {
+      if (error) {
+        console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resTags)');
+        console.error(error);
+        reject(error);
+      } 
+      else {
+        let tagsData = [];
+        let completedQueries = 0;
+
+        for (let i = 0; i < resTags.length; i++) {
+          con.query('SELECT title FROM tags WHERE id = ?', [resTags[i].tagID], (error, resTagTitle) => {
+            if (error) {
+              console.log('[Error]: appRouter.post(/getPostDetails) -> con.query(resTagTitle)');
+              console.error(error);
+              reject(error);
+            } else {
+              tagsData[i] = { tagID: resTags[i].tagID, tagTitle: resTagTitle[0].title };
+              completedQueries++;
+
+              if (completedQueries == resTags.length) {
+                resolve(tagsData);
               }
-              else {
-                con.query('SELECT * FROM tags ORDER BY title ASC', (error, resultTags) => {
-                  if (error) {
-                    console.log('[Error]: appRouter.get(/users/:id) -> con.query(SELECT * FROM tags ORDER BY title ASC)');
-                    console.log(err);
-                  }
-          
-                  res.render('user', { posts: resultPosts, tags: resultTags, userID });
-                });
-              }
-            });
-          }
-          else {
-            res.status(401).send(res.render('statusHandler', { statusMessage: 'The post does not exist' }));
-          }
-        }   
-     });
+            }
+          });
+        }
+      }
+    });
+  });
+
+  Promise.all([postDetails, postComments, postVote, userTitle, postTags])
+  .then(([postDetails, postComments, postVote, userTitle, postTags]) => {
+    res.send({ code: 200, postDetails, postComments, postVote, userTitle, postTags });
+  })
+  .catch((error) => {
+    console.log('[Error]: appRouter.post(/getPostDetails)');
+    console.error(error);
+    res.send({ code: 500, errorText: "appRouter.post(/getPostDetails)" });
+  });
+});
+
+
+appRouter.get('/getBookmarks',(req, res) => {
+  con.query(`SELECT postID FROM bookmarkedposts WHERE userID = '${req.query.accountID}'`, (error, resBookmarks) => {
+    if (error) {
+      console.log(error);
+      res.send({code: 500, errorText: "[Error]: appRouter.post(/getBookmarks) -> con.query()"});
     }
     else {
-      res.status(401).send(res.render('statusHandler', { statusMessage: 'The user does not exist' }));
+      res.send({code: 200, bookmarkData: resBookmarks});
     }
-  })
+  });
+})
 
-  .post((req, res) => {
-    const queryAllPostsByUser = 'SELECT * FROM posts WHERE authorID=? ORDER BY creationDate DESC';
-    const queryAllTags = 'SELECT * FROM tags ORDER BY title ASC';
-    const userID = parseInt(req.params.id);
-    let strFilters = '';
-    var i;
-  
-    if (req.body && req.body.filters) {
-      if(typeof(req.body.filters) == 'string')  {
-        strFilters = `'` + req.body.filters + `'`;
-        i = 1;
-      }
-      else {
-        let reqFilters;
-        reqFilters = Array.from(new Set(req.body.filters));
-        reqFilters = Object.entries(reqFilters).map(([key, value]) => `${value}`);
-        for (i=0; i<reqFilters.length; i++) {
-          strFilters = strFilters + `'` + reqFilters[i] + `',`
-        }
-        strFilters = strFilters.slice(0, -1);
-      }
 
-      const queryFilters = `SELECT * FROM posts WHERE (id IN (
-        SELECT postID FROM tagpostid WHERE tagID IN (
-        SELECT id FROM tags WHERE title IN (${strFilters}))
-        GROUP BY postID HAVING COUNT(DISTINCT tagID) = ${i}) 
-        AND authorID=${userID})
-      ORDER BY creationDate DESC;`
 
-      con.query(queryFilters, (error, resultPosts) => {
+
+appRouter.get('/submitComment', (req, res) => {
+  const { postID, parentID, parentType, content } = req.query;
+  const authorID = req.cookies.accountID;
+  const queryPostComment = "INSERT INTO comments (postID, parentID, parentType, authorID, content) VALUES (?, ?, ?, ?, ?)";
+  const queryUpdateCount = "UPDATE posts SET commentCount = commentCount + 1 WHERE id = ?";
+
+  con.query(queryPostComment, [postID, parentID, parentType, authorID, content, '0'], (error, result) => {
+    if (error) {
+      console.log('[Error]: appRouter.post(/submitComment) -> con.query(queryPostComment)');
+      console.error(error);
+      res.send({code: 500});
+    }
+    else {
+      con.query(queryUpdateCount, [postID], (error, result) => {
         if (error) {
-          console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryFilters)');
-          console.log(err);
+          console.log('[Error]: appRouter.post(/submitComment) -> con.query(queryPostComment)');
+          console.error(error);
+          res.send({code: 500});
         }
         else {
-          con.query(queryAllTags, (error, resultTags) => {
-            if (error) {
-              console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllTags)');
-              console.log(err);
-            }
-            else {
-              res.render('user', { posts: resultPosts, tags: resultTags, userID });
-            }
-          });
-        }
-      });
-    }
-    else {  
-      con.query(queryAllPostsByUser, [userID], (error, resultPosts) => {
-        if (error) {
-          console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllPostsByUser)');
-          console.log(err);
-        }
-        else {
-          con.query(queryAllTags, (error, resultTags) => {
-            if (error) {
-              console.log('[Error]: appRouter.route.(/users/:id).post -> con.query(queryAllTags)');
-              console.log(err);
-            }
-            else {
-              res.render('user', { posts: resultPosts, tags: resultTags, userID });
-            }
-          });
+          res.send({code: 200});
         }
       });
     }
   });
-
+});
 
 
 

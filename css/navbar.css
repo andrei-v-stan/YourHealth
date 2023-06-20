@@ -1,5 +1,25 @@
+html {
+  width: 100%;
+  height: 100%;
+  background-image: url("../Resources//others/pentagonsBackground.png");
+  min-width: 320px;
+  min-height: 640px;
+}
+body {
+  margin: 60px 5px 0 5px;
+}
+@media (max-width: 320px) {
+  html, body {
+    min-width: 320px;
+    min-height: 640px;
+    overflow: hidden;
+  }
+}
+
+
 
 .homeTopNavbar {
+  display: flex;
   background-color: #1975c1;
   position: fixed;
   top: 0;
@@ -7,37 +27,71 @@
   height: 50px;
   width: 100%;
   overflow: hidden;
-  display: flex;
   align-items: center;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 0 5px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.1);  
+  resize: none;
   z-index: 2;
 }
 .homeTopNavbar button {
-  padding: 20px 15px;
-  font-size: 16px;
+  width: 60px;
+  height: 48px;
+  margin: 0 10px;
+  line-height: 5px;
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  background-position: center;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  border-radius: 50%;
-  font-size: 20px;
-  line-height: 5px;
-  transition: background-color 0.3s ease-in-out;
+  border-radius: 10px;
+  transition: background-image 0.5s, background-color 0.3s ease-in-out;
 }
 .homeTopNavbar button:hover {
   background-color: #65ace7;
+  border-radius: 10px;
 }
-.homeTopNavbar button img {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 32px;
-  width: 32px;
-  object-fit: contain;
+
+
+
+#homeButton {
+  background-image: url("/Resources/navbar/home.png");
+  margin-right: auto;
 }
+#createPostButton {
+  background-image: url("/Resources/navbar/create.png");
+}
+#notificationButton {
+  background-image: url("/Resources/navbar/notifications.png");
+}
+#messagesButton {
+  background-image: url("/Resources/navbar/messages.png");
+  margin-right: auto;
+}
+#profileButton:hover {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+}
+.profileButtonActive {
+  background-color: #509ad7;;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4), 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+}
+.profileButtonIn {
+  background-image: url("/Resources/navbar/profile.png");
+  margin-left: auto;
+}
+.profileButtonOut {
+  background-image: url("/Resources/navbar/profileQuestion.png");
+  margin-left: auto;
+}
+
+
+
+
 .homeTopNavbar .searchBar {
   border-radius: 20px;
-  padding: 7px;
-  background-color: #acc7dc;
+  padding: 7px 12px;
+  background-color: rgb(201, 219, 239);
   border: none;
   outline: none;
   height: 20px;
@@ -45,7 +99,7 @@
 }
 
 
-#searchTopNavbar {
+#searchTopNavbar, #createTopNavbar {
   display: none;
   background-color: #1975c1;
   position: fixed;
@@ -61,10 +115,11 @@
   align-items: center;
   justify-content: center;
   transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
   z-index: 1;
   overflow: visible;
 }
-#searchTopNavbar.active {
+#searchTopNavbar.active, #createTopNavbar.active {
   animation: slideSwingTop 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
 }
 @keyframes slideSwingTop {
@@ -77,7 +132,7 @@
     opacity: 1;
   }
 }
-#searchTopNavbar.inactive {
+#searchTopNavbar.inactive, #createTopNavbar.inactive {
   animation: slideSwingDown 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
 }
 @keyframes slideSwingDown {
@@ -192,7 +247,7 @@
   z-index: 3;
 }
 
-#tagsContainer {
+#tagsContainer, #createTagsContainer {
   display: flex;
   flex-direction: column;
   max-height: 300px;
@@ -241,13 +296,917 @@
 }
 
 
-#tagBoxSplit {
+#tagBoxSplit, .tagBoxSplit {
   display: none;
   width: 85%;
   border: 0;
   height: 1px;
   background-image: linear-gradient(to right, rgba(36, 8, 64, 0), rgba(36, 8, 64, 0.75), rgba(36, 8, 64, 0));
-
+}
+.tagBoxSplit {
+  display: flex;
 }
 
+
+
+
+
+
+
+#profileDropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  height: auto;
+  width: 160px;
+  padding: 15px 0;
+  border-radius: 10px;
+  background-color: rgb(184, 207, 232);
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+#profileDropdown a {
+  display: flex;
+  height: 40px;
+  width: 100%;
+  text-decoration: none;
+  align-items: center;
+  justify-content: flex-start; 
+}
+#profileDropdown img {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+#profileDropdown p {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+#profileDropdown a {
+  color:#2b005c;
+}
+#profileDropdown a:hover {
+  color:#112db7;
+  background-color: rgb(113, 169, 230);
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+#profileDropdown a:active {
+  color:#6600da;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#accountForms, #hideBody {
+  display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+  justify-content: center;
+  text-align: center;
+	z-index: 2;
+  background-color: #cdeaffb1;
+  transition: background-color 0.5s ease-in-out;
+}
+#hideBody {
+  background-color: #cdeaff;
+}
+#accountForms.active, #hideBody.active {
+  animation: fadeIn 0.25s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#accountForms.inactive, #hideBody.inactive {
+  animation: fadeOut 0.25s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+#accountFormsNavbar {
+	position: fixed;
+  width: 100%;
+  padding: 5px;
+  justify-content: center;
+  text-align: center;
+  background-color: #ffffff;
+  transition: background-color 0.5s ease-in-out;
+	z-index: 2;
+}
+#accountFormsNavbar button {
+  color: #000000;
+  font-size: 32px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #c6ccd7;
+  transition: background-color 0.5s ease-in-out;
+}
+#accountFormsNavbar.active {
+  animation: slideTopIn 0.25s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+@keyframes slideTopIn {
+  0% {
+    transform: translate(0%, -100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+}
+
+
+.closeButton {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-image: url('../Resources/account/close.png');
+  background-size: 90%; 
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border: none;
+  margin-bottom: -50px;
+  box-shadow: 3px 0 5px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s;
+}
+#closeLogin {
+  background-color: #a8d0f2;
+}
+#closeSignup {
+  background-color: #a8f2ed;
+}
+#closeRecovery {
+  background-color: #a8aef2;
+}
+#closeReport {
+  background-color: #a8aef2;
+}
+#closeLogin:hover, #closeSignup:hover, #closeRecovery:hover, #closeReport:hover {
+  transform: rotate(90deg);
+  background-color: rgb(239, 163, 163);
+  transition: transform 0.25s;
+}
+#closeLogin:active, #closeSignup:active, #closeRecovery:active, #closeReport:active {
+  transform: rotate(90deg) translateX(2px);
+  background-color: rgb(237, 121, 121);
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.backButton {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-image: url('../Resources/account/back.png');
+  background-size: 90%; 
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border: none;
+  margin-bottom: -50px;
+  box-shadow: 3px 0 5px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s;
+}
+#backSignup {
+  background-color: #a8f2ed;
+}
+#backRecovery {
+  background-color: #a8aef2;
+}
+#backSignup:hover, #backRecovery:hover {
+  background-color: rgb(239, 233, 163);
+  transition: transform 0.25s;
+}
+#backSignup:active, #backRecovery:active {
+  transform: translateY(2px);
+  background-color: rgb(237, 208, 121);
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.showPassword {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  height: 40px;
+  width: 40px;
+  background-image: url('../Resources/account/eye.png');
+  background-size: 40px 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  transition: background-image 0.15s ease-in-out;
+}
+
+
+.userCheck {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  height: 40px;
+  width: 40px;
+  background-image: url('../Resources/account/userCard.png');
+  background-size: 40px 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  transition: background-image 0.15s ease-in-out;
+}
+
+
+#loginPopup,
+#signupPopup,
+#recoveryPopup,
+#passwordSectionPopup,
+#contactSectionPopup,
+#reportPostPopup,
+#changePassPopup {
+  display: none;
+	position: fixed;
+  top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  width: calc(100% - 100px);
+  min-width: 300px;
+  max-width: 500px;
+	background-color: #fff;
+	padding: 20px;
+  margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+  font-size: 24px;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+#loginPopup h2, #signupPopup h2, #recoveryPopup h2, #changePassPopup h2 {
+  text-align: center;
+  font-size: 45px;
+  position: relative;
+}
+#loginPopup h3, #recoveryPopup h3 {
+  text-align: center;
+  font-size: 22px;
+  position: relative;
+  width: 70%;
+}
+
+#loginPopup a {
+  text-decoration: none;
+  color: #007bff;
+}
+#loginPopup .signupLink {
+  font-weight: 1000;
+  margin: 0 -5px 0 0;
+}
+
+#loginPopup form, #signupPopup form, #changePassPopup form {
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+#loginPopup span {
+  position: relative;
+}
+
+
+#loginPopup input[type="text"],
+#loginPopup input[type="password"],
+#loginPopup input[type="showPassword"],
+#loginPopup input[type="submit"],
+#signupPopup input[type="text"],
+#signupPopup input[type="password"],
+#signupPopup input[type="showPassword"],
+#signupPopup input[type="email"],
+#signupPopup input[type="submit"],
+#passwordSectionPopup input[type="email"],
+#passwordSectionPopup input[type="submit"],
+#contactSectionPopup input[type="text"],
+#contactSectionPopup input[type="email"],
+#reportPostPopup input[type="text"],
+#reportPostPopup input[type="email"],
+#contactMessage,
+#reportContactMessage,
+#contactTopic, #reportTopic,
+#changePassPopup input[type="password"],
+#changePassPopup input[type="showPassword"],
+#changePassPopup input[type="submit"] {
+  width: 85%;
+  font-size: 20px;
+	padding: 25px 5px 25px 50px;
+	margin: 5px 0 10px 0;
+	border-radius: 5px;
+  border: 1px solid rgb(185, 185, 185);
+  background-color: #ecf8ff;
+  background-size: 35px 35px;
+  background-position: left 5px center;
+  background-repeat: no-repeat; 
+}
+
+
+#loginPopup input[type="text"]  {
+  width: calc(100% - 60px);
+  background-image: url('../Resources/account/user.png');
+  margin-top: -10px;
+}
+#loginPopup input[type="password"], #loginPopup input[type="showPassword"] {
+  background-image: url('../Resources/account/lock.png');
+  width: calc(100% - 115px);
+  padding-right: 60px;
+}
+
+
+#signupPopup input[type="text"], 
+#signupPopup input[type="password"], 
+#signupPopup input[type="showPassword"] {
+  width: 100%;
+}
+#signupPopup input[type="text"]  {
+  background-image: url('../Resources/account/user.png');
+}
+#signupPopup input[type="password"] {
+  background-image: url('../Resources/account/lock.png');
+  padding-right: 60px;
+}
+#signupPopup input[type="showPassword"] {
+  background-image: url('../Resources/account/lock.png');
+  padding-right: 60px;
+}
+
+
+#loginPopup input[type="submit"],
+#signupPopup input[type="submit"],
+#passwordSectionPopup input[type="submit"],
+#contactSectionPopup input[type="submit"],
+#reportPostPopup input[type="submit"],
+#changePassPopup input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  width: 60%;
+  padding: 20px 0;
+  margin: 10px auto 0;
+  border-radius: 15px;
+  font-size: 25px;
+  border-right: 6px solid #0054ae;
+  border-bottom: 8px solid #0054ae;
+  transition: all 0.15s;
+  outline: none;
+  box-shadow: inset 5px 7px 5px rgba(255, 255, 255, 0.3);
+}
+
+#loginPopup input[type="submit"]:hover, #signupPopup input[type="submit"]:hover {
+  border-right: 3px solid #0054ae;
+  border-bottom: 4px solid #0054ae;
+  cursor: pointer;
+  box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.3);
+}
+#loginPopup input[type="submit"]:active, #signupPopup input[type="submit"]:active {
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+#loginPopup .rememberForgotContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center; 
+  margin: 15px 0 10px 0;
+}
+#loginPopup label[for="loginRememberMe"] {
+  display: flex;
+  margin-right: 10px;
+  align-items: center;
+}
+#loginPopup input[type="checkbox"] {
+  position: relative;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #003b7b;
+  margin-right: 10px;
+}
+#loginPopup input[type="checkbox"]:checked {
+  background-color: #007bff;
+  background-image: url('../Resources/account/checkmark.png');
+  background-size: 20px 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#loginPopup a#forgotLink {
+  font-weight: lighter;
+}
+#loginPopup.active {
+  animation: slideIn 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: -200%;
+  --beginSlideY: -50%;
+}
+#loginPopup.inactive {
+  animation: slideOut 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: -200%;
+  --beginSlideY: -50%;
+}
+@keyframes slideIn {
+  0% {
+    transform: translate(var(--beginSlideX), var(--beginSlideY));
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+@keyframes slideOut {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--beginSlideX), var(--beginSlideY));
+    opacity: 0;
+  }
+}
+
+
+#signupPopup .rowElements {
+  position: relative;
+  display: flex;
+  align-items: center; 
+}
+
+#signupPopup input[type="text"],
+#signupPopup input[type="password"],
+#signupPopup input[type="showPassword"],
+#signupPopup input[type="email"] {
+  border: 1px solid rgb(185, 185, 185);
+  background-color: #ecffff;
+  transition: background-color 0.15s ease-in-out;
+}
+#signupPopup input[type="email"] {
+  width: calc(100% - 60px);
+  background-image: url('../Resources/account/email.png');
+}
+#signupPopup input[type="submit"] {
+  background-color: #00ccd3;
+  border-right: 6px solid #009aa0;
+  border-bottom: 8px solid #009aa0;
+  box-shadow: inset 5px 7px 5px rgba(255, 255, 255, 0.3);
+}
+#signupPopup input[type="submit"]:hover {
+  border-right: 3px solid #009aa0;
+  border-bottom: 4px solid #009aa0;
+  box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.3);
+}
+#signupPopup input[type="submit"]:active {
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+#signupPopup.active {
+  animation: slideIn 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: 200%;
+  --beginSlideY: -50%;
+}
+#signupPopup.inactive {
+  animation: slideOut 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: 200%;
+  --beginSlideY: -50%;
+}
+
+
+
+#signupUsernameError,
+#signupPasswordError,
+#signupPasswordConfirmError,
+#signupEmailError,
+#signupEmailConfirmError,
+#changePasswordError,
+#changePasswordConfirmError {
+  display: none;
+  font-size:16px;
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  width: calc(100% - 70px);
+  min-width: 280px;
+  padding: 20px 10px;
+  margin-right: 50px;
+  font-size: 20px;
+  background-color: rgb(249, 245, 245);
+  border: 3px solid rgb(236 64 64);
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+#signupUsernameError {
+  top: 230px;
+}
+#signupPasswordError {
+  top: 318px;
+}
+#signupPasswordConfirmError {
+  top: 406px;
+}
+#signupEmailError {
+  top: 494px;
+}
+#signupEmailConfirmError {
+  top: 583px;
+}
+#signupUsernameError::before,
+#signupPasswordError::before,
+#signupPasswordConfirmError::before,
+#signupEmailError::before,
+#signupEmailConfirmError::before,
+#changePasswordError::before,
+#changePasswordConfirmError::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent rgb(236 64 64) transparent;
+}
+
+
+#recoveryPopup .rowElements {
+  position: relative;
+  display: flex;
+  align-items: center; 
+}
+#recoveryPopup.active, #passwordSectionPopup.active, #contactSectionPopup.active, #reportPostPopup.active {
+  animation: slideIn 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: -50%;
+  --beginSlideY: 200%;
+}
+#recoveryPopup.inactive, #passwordSectionPopup.inactive, #contactSectionPopup.inactive, #reportPostPopup.inactive {
+  animation: slideOut 0.75s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+  --beginSlideX: -50%;
+  --beginSlideY: 200%;
+}
+#recoveryPopup h3 {
+  font-size: 26px;
+}
+
+#recoveryPopup button.formOption {
+  width: 130px;
+  height: 75px;
+  color: #ffffff;
+  font-size: 22px;
+  margin: 40px 20px 20px 20px;
+  background-color: #4a00d3;
+  border-right: 6px solid #4000a0;
+  border-bottom: 8px solid #3b00a0;
+  border-radius: 30px;
+  box-shadow: inset 5px 7px 5px rgba(255, 255, 255, 0.3);
+}
+#recoveryPopup button.formOption:hover {
+  border-right: 3px solid #4000a0;
+  border-bottom: 4px solid #3b00a0;
+  box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.3);
+}
+#recoveryPopup button.formOption:active {
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+#recoveryPopup span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+
+#passwordSectionPopup, #contactSectionPopup, #reportPostPopup {
+  display: none;
+  height: auto;
+  width: 90%;
+  padding: 20px;
+	border-radius: 10px;
+  flex-direction: column;
+  justify-content: center;
+}
+#passwordSectionPopup h3, #contactSectionPopup h3, #reportPostPopup h3 {
+  width: 85%;
+  margin-bottom: 20px;
+}
+#passwordSectionPopup input[type="email"],
+#contactSectionPopup input[type="email"],
+#reportPostPopup input[type="email"] {
+  background-color: #f2ecff;
+  width: calc(100% - 60px);
+  background-image: url('../Resources/account/email.png');
+}
+#passwordSectionPopup input[type="submit"], #contactSectionPopup input[type="submit"], #reportPostPopup input[type="submit"]  {
+  background-color: #4a00d3;
+  border-right: 6px solid #4000a0;
+  border-bottom: 8px solid #3b00a0;
+  box-shadow: inset 5px 7px 5px rgba(255, 255, 255, 0.3);
+}
+#passwordSectionPopup input[type="submit"]:hover, #contactSectionPopup input[type="submit"]:hover, #reportPostPopup input[type="submit"]:hover {
+  border-right: 3px solid #4000a0;
+  border-bottom: 4px solid #3b00a0;
+  box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.3);
+}
+#passwordSectionPopup input[type="submit"]:active, #contactSectionPopup input[type="submit"]:active, #reportPostPopup input[type="submit"]:active {
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+#contactSectionPopup input[type="text"],
+#reportPostPopup input[type="text"] {
+  background-color: #f2ecff;
+  width: calc(100% - 60px);
+  background-image: url('../Resources/account/user.png');
+}
+#contactMessage, #reportContactMessage {
+  background-color: #f2ecff;
+  width: calc(100% - 30px);
+  padding: 10px;
+}
+#contactTopic, #reportTopic {
+  background-color: #f2ecff;
+  width: 200px;
+  padding: 10px;
+}
+
+
+#redirectPopup, #changeRedirectPopup {
+  display: none;
+  position: absolute;
+  top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  width: calc(100% - 100px);
+  min-width: 300px;
+  max-width: 480px;
+  height: auto;
+  border-radius: 25px;
+  padding: 20px 0;
+  background-color: #fc8a8ae3;
+  box-shadow: inset 0 1px 1px #fff, inset 0 -1px 1px #aaa, 0 5px 10px -1px #666;
+  z-index: 2;
+}
+
+
+#popupBox, #changePopupBox {
+  display: flex;
+  width: 80%;
+  height: auto;
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 auto;
+  font-size: 24px;
+  border-radius: 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#popupBox::before, #changePopupBox::before {
+    content: "";
+}
+
+
+
+#accountForm {
+  display: flex;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+  justify-content: center;
+  text-align: center;
+	z-index: 2;
+  background-color: #ffcdfbb1;
+  transition: background-color 0.5s ease-in-out;
+}
+
+#accountFormNavbar {
+	position: fixed;
+  width: 100%;
+  padding: 5px;
+  justify-content: center;
+  text-align: center;
+  background-color: #d15aaf;
+  transition: background-color 0.5s ease-in-out;
+	z-index: 1;
+}
+#accountFormNavbar button {
+  color: #000000;
+  font-size: 32px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #9e2690;
+  transition: background-color 0.5s ease-in-out;
+}
+#accountFormNavbar.active {
+  animation: slideTopIn 0.25s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+}
+#changePassPopup {
+  display: flex;
+}
+#changePassPopup span {
+  position: relative;
+}
+
+#changePassPopup input[type="submit"] {
+  background-color: #b700d3;
+  border-right: 6px solid #9b00a0;
+  border-bottom: 8px solid #9300a0;
+  box-shadow: inset 5px 7px 5px rgba(255, 255, 255, 0.3);
+}
+#changePassPopup input[type="submit"]:hover {
+  border-right: 3px solid #9b00a0;
+  border-bottom: 4px solid #9300a0;
+  box-shadow: inset 5px 5px 5px rgba(255, 255, 255, 0.3);
+}
+#changePassPopup input[type="submit"]:active {
+  border: none;
+  box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+#changePassPopup input[type="password"], #changePassPopup input[type="showPassword"] {
+  width: calc(100% - 120px);
+  background-color: #d7c6d6;
+  background-image: url('../Resources/account/lock.png');
+  padding-right: 60px;
+}
+#changePasswordError {
+  top: 190px;
+}
+#changePasswordConfirmError {
+  top: 280px;
+}
+
+
+
+
+#createTopNavbar {
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+#createTopNavbar h2 {
+  text-align: center;
+  font-size: 35px;
+  position: relative;
+}
+#createPostTitle {
+  width: 75%;
+  font-size: 20px;
+	padding: 20px 5px 20px 50px;
+	margin: -10px 0 20px 0;
+	border-radius: 5px;
+  border: 1px solid rgb(185, 185, 185);
+  background-image: url('../Resources/navbar/postTitle.png');
+  background-color: #ecf8ff;
+  background-size: 35px 35px;
+  background-position: left 5px center;
+  background-repeat: no-repeat; 
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+#createTopNavbar textarea {
+  height: 100px;
+  width: 85%;
+  padding: 5px;
+  margin-bottom: 20px;
+  font-size: 20px;
+	border-radius: 5px;
+  border: 1px solid rgb(185, 185, 185);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+#createPostTags {
+  display: none;
+  max-height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #7faff2;
+  border-radius: 20px;
+  flex-wrap: wrap;
+  overflow: none;
+}
+#createPostTags button {
+  margin: 0 3px;
+  padding: 5px;
+  font-size: 15px;
+  background-color: #ecf8ff;
+  border-radius: 10px;
+}
+#addTagButton, #createPostTag {
+  padding: 10px;
+  background-color: #ecf8ff;
+  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+#createPostTag {
+  height: 30px;
+}
+#addTagButton:hover {
+  background-color: #d4d4d4;
+}
+#addTagButton:active {
+  background-color: #a6c5e6;
+}
+.createPostButton {
+  width: 55%;
+	padding: 20px 20px;
+	margin: 20px 0 20px 0;
+  font-size: 25px;
+	border-radius: 20px;
+  border: 1px solid rgb(185, 185, 185);
+  background-color: #ecf8ff;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.createPostButton:hover {
+  background-color: #abc0f4;
+}
+.createPostButton:active {
+  background-color: #94b0fd;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+
+
+
+
+#createTagsContainer {
+  display: none;
+  position: absolute;
+  margin-left: 20px;
+  max-height: 200px;
+  width: auto;
+  min-width: 150px;
+  border: 1.5px solid #0D3782;
+  overflow-y: auto;
+  z-index: 3;
+}
+#createTagsContainer button {
+  height: 30px;
+  font-size: 16px;
+  background-color: #f3f3f3;
+  border: none;
+  border-bottom: 2px solid #0D3782;
+  transition: background-color 0.25s ease-in-out;
+}
+#createTagsContainer button:hover {
+  background-color: #d1d1d1;
+}
+#createTagsContainer input[type=text] {
+  height: 30px;
+  padding: 5px;
+  background-color: #f3f3f3;
+  border: none;
+  border-bottom: 3.5px solid #0D3782;
+  font-size: 16px;
+}
 

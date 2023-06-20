@@ -1,14 +1,8 @@
-html {
-  width: 100%;
-  height: 100%;
-  background-color:rgb(62, 86, 125);
-}
-body {
-  position: absolute;
-  margin: 50px 5px 0 5px;
-  width: calc(100% - 10px);
-  height: calc(100% - 50px);
-  background-color:rgb(121, 153, 206);
+@media (max-width: 640px) {
+  html, body {
+    min-width: 640px;
+    overflow: hidden;
+  }
 }
 
 .homeNavPosts, #homeNavSection {
@@ -96,4 +90,344 @@ body {
 #postTags {
   height: 70px;
   overflow: auto;
+}
+
+
+
+
+#generatedContent, #generatedContentX {
+  display: flex;
+  height: auto;
+  width: 95%;
+  margin: 75px auto 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+#generatedContent a , #userContent a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #0049e7;
+}
+#generatedContent a:hover, #userContent a:hover {
+  color: #a96eda;
+}
+#generatedContent a:visited, #userContent a:visited {
+  color: #5e07b0;
+}
+#generatedContent a:active, #userContent a:active {
+  color: #1593ec;
+}
+
+.postContainer, .userContainer {
+  display: flex;
+  position: relative;
+  height: auto;
+  width: 85%;
+  margin: 5px auto;
+  border-radius: 20px;
+  background: rgb(223 232 242);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.userContainer {
+  width: 50%;
+  padding: 10px 10px;
+}
+
+.postVotes {
+  height: auto;
+  width: 130px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-right: 0.5px;
+	border-left: 0;
+  border-right: 0.75px;
+	border-left: 0;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, transparent, #000000, transparent) 1 100%;
+}
+.upVote, .downVote, .upVoteActive, .downVoteActive {
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  background-image: url("/Resources/home/upVote.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-image 0.5s;
+}
+.upVote {
+  background-image: url("/Resources/home/upVote.png");
+  margin-right: 2px;
+}
+.upVote:hover {
+  background-image: url("/Resources/home/upVoteHover.png");
+}
+.upVote:active {
+  background-image: url("/Resources/home/upVoteActive.png");
+}
+.upVoteActive {
+  background-image: url("/Resources/home/upVoteActive.png");
+}
+
+.downVote {
+  background-image: url("/Resources/home/downVote.png");
+  margin-left: 2px;
+}
+.downVote:hover {
+  background-image: url("/Resources/home/downVoteHover.png");
+}
+.downVote:active {
+  background-image: url("/Resources/home/downVoteActive.png");
+}
+.downVoteActive {
+  background-image: url("/Resources/home/downVoteActive.png");
+}
+
+.postVotes p {
+  margin: auto 5px;
+  font-size: 20px;
+}
+
+
+.postType {
+  height: auto;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 0.75px;
+	border-left: 0;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, transparent, #000000, transparent) 1 100%;
+}
+
+.contentType {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/openTextPost.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.postContent, .userContent {
+  height: auto;
+  width: calc(100% - 295px);
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  border-right: 0.75px;
+	border-left: 0;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, transparent, #000000, transparent) 1 100%;
+}
+.userContent {
+  width: 50%;
+  align-items: center;
+  justify-content: center;
+}
+div.userContent:last-of-type {
+  border: none;
+}
+
+.postContent span {
+  margin-top: 5px;
+}
+.postTags span {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin-right: 5px;
+  padding: 3px;
+  background-color: rgba(110, 168, 240, 0.3);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+}
+
+.postComments {
+  height: auto;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 0.75px;
+	border-left: 0;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, transparent, #000000, transparent) 1 100%;
+}
+.showComments {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/postComments.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  margin-top: 5px;
+  border: none;
+  cursor: pointer;
+}
+.postComments a {
+  margin-top: 5px;
+}
+.postComments span {
+  margin: 5px 0;
+}
+
+
+.postOthers {
+  height: auto;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.postMore {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/menuInactive.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.postMoreActive {
+  background-image: url("/Resources/home/menuActive.png");
+}
+
+.postOthersDropdown {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: auto;
+  width: 40px;
+  padding: 10px 0;
+  border-radius: 10px;
+  background-color: rgb(184, 207, 232);
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  transform: translate(120%, -50%);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.postOthersDropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  transform: translate(-100%, 0);
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent rgba(6, 24, 44, 0.6) transparent transparent;
+  z-index: 0;
+}
+
+
+.postOthersDropdown button {
+  display: block;
+  margin: 5px 0;
+}
+.postBookmark {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/postBookmark.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-image 0.5s;
+}
+.postBookmark {
+  background-image: url("/Resources/home/postBookmark.png");
+  margin-right: 2px;
+}
+.postBookmark:hover {
+  background-image: url("/Resources/home/postBookmarkHover.png");
+}
+.postBookmark:active {
+  background-image: url("/Resources/home/postBookmarkActive.png");
+}
+.postBookmarkActive {
+  background-image: url("/Resources/home/postBookmarkActive.png");
+}
+
+.hidePost {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/hidePost.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-image 0.5s;
+}
+.hidePost:hover {
+  background-image: url("/Resources/home/hidePostHover.png");
+}
+.hidePost:active {
+  background-image: url("/Resources/home/hidePostHover.png");
+}
+
+.postReport {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/postReport.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer; 
+  transition: background-image 0.5s;
+}
+.postReport:hover {
+  background-image: url("/Resources/home/postReportHover.png");
+}
+.postReport:active {
+  background-image: url("/Resources/home/postReportHover.png");
+}
+
+.postShare {
+  width: 30px;
+  height: 30px;
+  background-image: url("/Resources/home/postShare.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-image 0.5s;
+}
+.postShare:hover {
+  background-image: url("/Resources/home/postShareHover.png");
+}
+
+.otherButtonsSplit {
+  width: 85%;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(36, 8, 64, 0), rgba(36, 8, 64, 0.75), rgba(36, 8, 64, 0));
+
 }

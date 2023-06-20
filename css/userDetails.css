@@ -1,0 +1,74 @@
+
+#resultedInfo {
+    display: flex;
+    margin-top: 150px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loadingCircle {
+    width: 100px;
+    height: 100px;
+    border: 10px solid #f3f3f3;
+    border-right: 10px solid #3498db;
+    border-radius: 50%;
+    animation: spinCircle 1s linear infinite, colorCircle 5s linear infinite;
+}
+  
+@keyframes spinCircle {
+    0% {
+        transform: rotate(0deg);
+        border-right-color: #3498db;
+    }
+    25% {
+        border-right-color: #e74c3c;
+    }
+    50% {
+        border-right-color: #27ae60;
+    }
+    75% {
+        border-right-color: #f1c40f;
+    }
+    100% {
+        transform: rotate(360deg);
+        border-right-color: #3498db;
+    }
+}
+
+@keyframes colorCircle {
+    0% {
+        border-right-color: #ff7777;
+    }
+    10% {
+        border-right-color: #ff9977;
+    }
+    20% {
+        border-right-color: #ffcd77;
+    }
+    30% {
+        border-right-color: #fff877;
+    }
+    40% {
+        border-right-color: #b9ff77;
+    }
+    50% {
+        border-right-color: #77ffb9;
+    }
+    60% {
+        border-right-color: #77f4ff;
+    }
+    70% {
+        border-right-color: #7799ff;
+    }
+    80% {
+        border-right-color: #8977ff;
+    }
+    90% {
+        border-right-color: #ff77d8;
+    }
+    100% {
+        border-right-color: #c077ff;
+    }
+}
+  

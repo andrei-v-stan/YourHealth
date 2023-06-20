@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Your Mind</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../Resources/logo.ico">
+        <link rel="stylesheet" href="../css/navbar.css" type="text/css">
+        <link rel="stylesheet" href="../css/userDetails.css" type="text/css">
+
+    </head>
+
+<body>
+
+  <nav class="homeTopNavbar">
+    <button id="homeButton" onclick="window.location.href = '/'"></button>
+    <button id="notificationButton" onclick=""></button>
+    <button id="messagesButton" onclick=""></button>
+    <div id="profileButtonSection"></div>
+  </nav>
+
+  <div id="profileDropdown">
+    <a id="userDropdownSel" href="/users/">
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <p>Profile</p>
+    </a>
+    <a id="dropdownLoginOut" href="#">
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <p>Logout</p>
+    </a>
+    <hr class="tagBoxSplit">
+    <a onclick="contactSectionPopup()">
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <p>Help Center</p>
+    </a>
+    <a href="/additionalInfo">
+      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <p>More Info</p>
+    </a>
+  </div>
+
+  <div id="accountForms">
+    <div id="accountFormsNavbar">
+      <button>Your ✰ Mind</button>
+    </div>
+
+    <div id="recoveryPopup">
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('recoveryPopup')"></button>
+      <button id="backRecovery" class="backButton" onclick="recoveryBackLogin()"></button>
+      <h2>Recovery</h2>
+      <span></span>
+      <div class="rowElements">
+        <button class="formOption" onclick="passwordSectionPopup()">Forgot Password</button>
+        <button class="formOption" onclick="contactSectionPopup()">Contact Form</button>
+      </div>
+    </div>
+
+    <div id="contactSectionPopup">
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <h3>Complete the forum below and we will assist you shortly</h3>
+      <form id="contactForm">
+        <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
+        <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
+        <select id="contactTopic" name="topic">
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Account recovery</option>
+          <option value="2">Bug report</option>
+          <option value="3">Other</option>
+        </select>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text..."></textarea>
+      </form>
+      <input type="submit" form="contactForm" onclick="mailContactForm()">
+    </div>
+  </div>
+
+  <div id="hideBody"></div>
+
+  <div id="alertPopup">
+    <div id="alertBox"></div>
+  </div>
+
+
+
+
+  <div id="resultedInfo">
+    <div class="loadingCircle"></div>
+  </div>
+
+
+
+
+  <script src="../js/jquery-3.6.4.min.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/userDetails.js"></script>
+
+
+
+
+</body>
+</html>

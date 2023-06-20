@@ -1,6 +1,21 @@
 <html>
   <body>
-    <p><%= statusMessage %> ... Redirecting in: <span id="countdown">2</span></p>
-    <script src="../js/countRedirect.js"></script>
+    <h1><%= statusMessage %> ... Redirecting in: <span id="countdown">3</span></h1>
+    <script>
+      window.addEventListener("load", () => {
+    const countdown = document.getElementById("countdown");
+    var countdownVal = parseInt(countdown.innerHTML);
+  
+    var countdownInterval = setInterval(() => {
+      countdownVal--;
+      countdown.innerHTML = countdownVal.toString();
+  
+      if (countdownVal === 0) {
+        clearInterval(countdownInterval);
+        window.location.href = "/";
+      }
+    }, 1000);
+  });
+    </script>
   </body>
 </html>

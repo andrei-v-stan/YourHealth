@@ -4,35 +4,46 @@
     <head>
         <title>Your Mind</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/Resources/logo.ico">
         <link rel="stylesheet" href="css/home.css" type="text/css">
         <link rel="stylesheet" href="css/navbar.css" type="text/css">
-        <link rel="stylesheet" href="css/login.css" type="text/css">
 
     </head>
 
 <body>
 
-  <nav class="homeTopNavbar">
-    <button onclick="toggleSort()">
-      <img src="../Resources/navbar/home.png" alt="topNavbarHome">
-    </button>
-      <input id="topNavbarSearch" type="text" placeholder="Search..." class="searchBar" onclick="toggleSearch()">
-    <button onclick="createPostPopup()">
-      <img src="../Resources/navbar/create.png" alt="topNavbarPostCreation">
-    </button>
-    <button onclick="toggleSort()">
-      <img src="../Resources/navbar/notifications.png" alt="topNavbarNotification">
-    </button>
-    <button onclick="toggleSort()">
-      <img src="../Resources/navbar/messages.png" alt="topNavbarMessage">
-    </button>
-    <button onclick="toggleSort()">
-      <img src="../Resources/navbar/profile.png" alt="topNavbarProfile">
-    </button>
+  <div id="hideBody"></div>
 
-    <button id="loginButton" onclick="loginPopup()">Login</button>
-    <button id="logoutButton" onclick="logoutPOST()">Logout</button>
+  <nav class="homeTopNavbar">
+    <button id="homeButton" onclick="window.location.href = '/'"></button>
+    <input id="topNavbarSearch" class="searchBar" type="text" placeholder="Search..." autocomplete="off" readonly onclick="toggleSearchPost()">
+    <button id="createPostButton" onclick="toggleCreatePost()"></button>
+    <button id="notificationButton" onclick=""></button>
+    <button id="messagesButton" onclick=""></button>
+    <div id="profileButtonSection"></div>
   </nav>
+
+  <div id="profileDropdown">
+    <a id="userDropdownSel" href="/users/">
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <p>Profile</p>
+    </a>
+    <a id="dropdownLoginOut" href="#">
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <p>Logout</p>
+    </a>
+    <hr class="tagBoxSplit">
+    <a onclick="contactSectionPopup()">
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <p>Help Center</p>
+    </a>
+    <a href="/additionalInfo">
+      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <p>More Info</p>
+    </a>
+  </div>
+
+
 
   <div id="searchTopNavbar">
     <div class="searchBox">
@@ -47,7 +58,7 @@
       <option value="users">User</option>
     </select>
 
-    <select id="sortMethod" onchange="sortPosts(this.value, '')">
+    <select id="sortMethod" onchange="searchPosts(this.value, '')">
       <option value="" disabled selected hidden>Sorting</option>
       <option value="recommendedPosts">Suggested</option>
       <option value="hotPosts">Hot <!--(most liked past 24h)--></option>
@@ -67,8 +78,22 @@
     </div>
     <hr id="tagBoxSplit">
     <div id="chosenTags"></div>
-
   </div>
+
+  <div id="createTopNavbar">
+    <h2>Enter the post details</h2>
+      <input type="text" id="createPostTitle" placeholder="Post title" autocomplete="off">
+      <textarea id="createPostContent" placeholder="Post Content" autocomplete="off"></textarea>
+      <div class="rowElements">
+        <input type="text" id="createPostTag" placeholder="Input a tag" autocomplete="off" onclick="showCreateTags()">
+        <button id="addTagButton" type="button" onclick="setCreateTag()">Set tag</button>
+        <div id="createTagsContainer"></div>
+      </div>
+      <div id="createPostTags" class="rowElements"></div>
+      <input type="submit" class="createPostButton" value="Create Post" onclick="createPost()">
+  </div>
+
+
 
   <div id="accountForms">
     <div id="accountFormsNavbar">
@@ -145,8 +170,8 @@
     </div>
   
     <div id="contactSectionPopup">
-      <button id="backSignup" class="backButton" onclick="contactToRecovery()"></button>
-      <h3>Complete the forum below and our staff will respond ASAP</h3>
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <h3>Complete the forum below and we will assist you shortly</h3>
       <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
         <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
@@ -156,57 +181,84 @@
           <option value="2">Bug report</option>
           <option value="3">Other</option>
         </select>
-        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text"></textarea>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text..."></textarea>
       </form>
       <input type="submit" form="contactForm" onclick="mailContactForm()">
+    </div>
+
+    <div id="reportPostPopup">
+      <button id="closeReport" class="closeButton" onclick="removePopup('reportPostPopup')"></button>
+      <h3>Complete the forum below and our staff will respond ASAP</h3>
+        <select id="reportTopic" name="topic">
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Harassment</option>
+          <option value="2">Violence</option>
+          <option value="3">Hate Speech</option>
+          <option value="4">Personal Info</option>
+          <option value="5">Intimate Media</option>
+          <option value="6">Impersonation</option>
+          <option value="7">Self Harm</option>
+          <option value="8">Spam</option>
+          <option value="9">Other</option>
+        </select>
+        <textarea id="reportContactMessage" name="message" rows="5" placeholder="Additional information..."></textarea>
+      <input id="submitReport" type="submit" onclick="submitReport()">
     </div>
   </div>
 
   <div id="redirectPopup">
     <div id="popupBox"></div>
   </div>
-  
-  <div id="createPostPopup">
-      <h2>Enter the post details:</h2>
-        <form id="createPostForm" action="/create_post" method="post">
-          <label for="title">Title:</label>
-          <input type="text" name="titlePost" id="titlePost"><br>
-        
-          <label for="content">Content:</label>
-          <textarea name="contentPost" id="contentPost"></textarea><br>
-      
-          <button id="addTagButton" type="button" onclick="createAndSet()">Add a new Tag</button><br>
-      
-          <br>
-          <input type="submit" value="Create Post" style="margin-top: 10px;">
-        </form>
-      <input type="submit" form="createPostForm" onclick="x()">
+
+
+
+
+
+  <!--
+  <div id="generatedPostsX">
+    <div id="0_postContainer" class="postContainer">
+      <div class="postVotes">
+        <button class="upVote" id="0_LikeButton" type="button" onclick="voteFunction(1,1)"></button> 
+        <p id="0_VoteCount">95</p>
+        <button class="downVote" id="0_DislikeButton" type="button" onclick="voteFunction(1,-1)"></button>
+      </div>
+      <div class="postType">
+        <button class="contentType" id="0_LikeButton" type="button" onclick="voteFunction(1,1)"></button>
+      </div>
+      <div class="postContent">
+        <a href="/posts/1">Post 1</a>
+        <div class="postTags"><span>x</span></div>
+        <span>Posted by <a href="/users/4">x</a> on 18/12/2020:8:23am</span>
+      </div>
+      <div class="postComments">
+        <button class="showComments"></button>
+        <span>12</span>
+      </div>
+      <div class="postOthers">
+        <button id="0_postOthers" class="postMore" onclick="postMoreDropdown(0)"></button>
+      </div>
+      <div id="0_postOthersDropdown" class="postOthersDropdown" style="display:none;">
+        <button id="0_bookmarkButton" class="postBookmark" onclick="bookmarkPost(0)" type="button"></button>
+        <hr class="otherButtonsSplit">
+        <button id="0_hideButton" class="hidePost" onclick="hidePost(0)"></button>
+        <hr class="otherButtonsSplit">
+        <button class="postReport"></button>
+        <hr class="otherButtonsSplit">
+        <button class="postShare"></button>
+      </div>
+    </div>
   </div>
+  -->
 
 
+  <div id="generatedContent"></div>
 
 
+  <script src="js/jquery-3.6.4.min.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/navbar.js"></script>
 
 
-
-
-
-  <h1>index</h1>
-
-
-
-
-
-<h1>Results</h1>
-<div id="resultedPosts">
-  <p>Resulted posts</p>
-</div>
-
-
- <script src="js/login.js"></script>
-<script src="js/jquery-3.6.4.min.js"></script>
-<!-- <script src="js/home.js"></script> -->
-<script src="js/navBar.js"></script>
 
 </body>
 </html>

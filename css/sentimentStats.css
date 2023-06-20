@@ -1,0 +1,294 @@
+
+
+#selectUserBox, #selectTagBox {
+  display: none;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+#selectChart {
+  display: flex;
+  min-width: 320px;
+  max-width: 640px;
+  width: 75%;
+  height: auto;
+  margin: 25px auto 0 auto;
+  padding: 0 25px 25px 25px;
+  background-color:#74a4f0;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 2px solid #00000069;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topButtons {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.topButtons button {
+  width: 100%;
+  background-color: rgb(51, 106, 194);
+  padding: 5px 10px;
+  border-radius: 0;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s;
+}
+
+.topButtons button:first-child {
+  margin-left: -25px;
+  padding-left: 25px;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px 0 0 0;
+}
+.topButtons button:last-child {
+  margin-right: -25px;
+  padding-right: 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 0 5px 0 0;
+}
+.topButtons button:hover {
+  background-color: rgb(28, 80, 165);
+}
+.topButtons button:active {
+  background-color: #113f8a;
+}
+
+
+h2 {
+  color: rgb(0, 0, 0);
+  margin-bottom: 20px;
+}
+
+.rowElements {
+  display: flex;
+  width: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.columElements {
+  display: flex;
+  width: auto;
+  margin: 0 10px;
+  padding: 10px;
+  background-color: #a2ceff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+input[type="datetime-local"], input[type="number"] {
+  margin-top: 3px;
+  padding: 3px;
+  border-radius: 5px;
+}
+input[type="number"] {
+  width: 50px;
+}
+
+
+
+#usersContainer, #tagsContainerC {
+  display: flex;
+  max-height: 100px;
+  height: auto;
+  font-size: 20px;
+  overflow: auto;
+  flex-direction: column;
+}
+
+#usersContainer button, #tagsContainerC button {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+}
+#usersContainer button:hover, #tagsContainerC button:hover {
+  background-color: #33333333;
+}
+
+#usersContainer .checkedButton {
+  background-color: #fbcc96;
+}
+#usersContainer .checkedButton:hover {
+  background-color: #eea858;
+}
+#tagsContainerC .checkedButton {
+  background-color: #a9fb96;
+}
+#tagsContainerC .checkedButton:hover {
+  background-color: #65b430;
+}
+
+
+#usersList, #tagsList {
+  display: flex;
+  height: 50px;
+  width: 160px;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #ffffff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+#dropdownUsers, #dropdownTagsC {
+  display: none;
+  height: auto;
+  width: 160px;
+  margin: 1px 0 0 0;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #ffffff;
+  color: #333;
+  flex-direction: column;
+  z-index: 3;
+}
+
+#intervalTypeUser, #intervalTypeTag {
+  height: 40px;
+  width: 120px;
+  margin: 0 10px 0;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+
+hr {
+  margin: 4px 0;
+}
+
+
+
+
+.searchButton {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  background-color: #f3f3f3;
+  background-image: url("../Resources/navbar/search.png");
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 30%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5);
+}
+.searchButton:hover {
+  background-color: #b7cbde;  
+}
+.searchButton:active {
+  background-color: #90bfee;  
+}
+
+
+
+
+#alertPopup {
+  display: none;
+  position: absolute;
+  top: 10%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  width: calc(100% - 100px);
+  min-width: 300px;
+  max-width: 480px;
+  height: auto;
+  border-radius: 25px;
+  padding: 20px 0;
+  background-color: #fcfa8a;
+  box-shadow: inset 0 1px 1px #fff, inset 0 -1px 1px #aaa, 0 5px 10px -1px #666;
+  z-index: 2;
+}
+
+
+#alertBox {
+  display: flex;
+  width: 80%;
+  height: auto;
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 auto;
+  font-size: 24px;
+  border-radius: 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 3;
+}
+#alertBox::before {
+    content: "";
+}
+
+
+
+
+
+
+
+
+.containerCanvas {
+  position: relative;
+  width: 90%;
+  padding: 0;
+  margin: 0 auto;
+}
+canvas {
+  display: flex;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: aliceblue;
+  border-radius: 20px;
+  box-shadow: -2px -2px 10px rgba(0,0,0,.25) inset, 2px 2px 10px white inset, rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.removeCanvas {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: -10px;
+  right: -10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: #f3f3f3;
+  background-image: url('../Resources/others/removeCanvas.png');
+  background-size: 100%; 
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  box-shadow: -2px -2px 10px rgba(0,0,0,.25) inset, 2px 2px 10px white inset;
+}
+.removeCanvas:hover {
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+.removeCanvas:active {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Your Mind</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../Resources/logo.ico">
+        <link rel="stylesheet" href="../css/navbar.css" type="text/css">
+        <link rel="stylesheet" href="../css/sentimentStats.css" type="text/css">
+
+    </head>
+
+<body>
+
+  <nav class="homeTopNavbar">
+    <button id="homeButton" onclick="window.location.href = '/'"></button>
+    <button id="notificationButton" onclick=""></button>
+    <button id="messagesButton" onclick=""></button>
+    <div id="profileButtonSection"></div>
+  </nav>
+
+  <div id="profileDropdown">
+    <a id="userDropdownSel" href="/users/">
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <p>Profile</p>
+    </a>
+    <a id="dropdownLoginOut" href="#">
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <p>Logout</p>
+    </a>
+    <hr class="tagBoxSplit">
+    <a onclick="contactSectionPopup()">
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <p>Help Center</p>
+    </a>
+    <a href="/additionalInfo">
+      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <p>More Info</p>
+    </a>
+  </div>
+
+  <div id="accountForms">
+    <div id="accountFormsNavbar">
+      <button>Your ✰ Mind</button>
+    </div>
+
+    <div id="recoveryPopup">
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('recoveryPopup')"></button>
+      <button id="backRecovery" class="backButton" onclick="recoveryBackLogin()"></button>
+      <h2>Recovery</h2>
+      <span></span>
+      <div class="rowElements">
+        <button class="formOption" onclick="passwordSectionPopup()">Forgot Password</button>
+        <button class="formOption" onclick="contactSectionPopup()">Contact Form</button>
+      </div>
+    </div>
+
+    <div id="contactSectionPopup">
+      <button id="closeRecovery" class="closeButton" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <h3>Complete the forum below and we will assist you shortly</h3>
+      <form id="contactForm">
+        <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
+        <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
+        <select id="contactTopic" name="topic">
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Account recovery</option>
+          <option value="2">Bug report</option>
+          <option value="3">Other</option>
+        </select>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text..."></textarea>
+      </form>
+      <input type="submit" form="contactForm" onclick="mailContactForm()">
+    </div>
+  </div>
+
+  <div id="hideBody"></div>
+
+  <div id="alertPopup">
+    <div id="alertBox"></div>
+  </div>
+
+
+
+  <div id="selectChart">
+
+    <div class="topButtons">
+      <button id="userChartButton" onclick="selChart('selectUserBox')">User Charts</button>
+      <button id="tagChartButton" onclick="selChart('selectTagBox')">Tag Charts</button>
+    </div>
+
+    <div id="selectChartBox">
+      <h2>Select the desired chart generator</h2>
+    </div>
+
+    <div id="selectUserBox" class="rowElements">
+      <h2>Enter the user(s) chart data</h2>
+      <div class="rowElements">
+        <div class="columElements">
+          <button id="usersList" onclick="uTDropdown(event, 'users')">
+            User List
+          </button>
+          <div id="dropdownUsers">
+            <input type="text" id="searchUser" placeholder="Search..." oninput="filterUsers()">
+            <button onclick="clearUT('users')">Clear Users</button>
+            <div id="usersContainer"></div>
+          </div>
+        </div>
+
+        <div class="columElements">
+          <label for="startDatetimeUser">Starting date & time</label>
+          <input id="startDatetimeUser" type="datetime-local" name="startDatetimeUser" value="2000-01-01T00:00">
+          <hr>
+          <label for="endDatetimeUser">Ending date & time</label>
+          <input id="endDatetimeUser" type="datetime-local" name="endDatetimeUser" value="" >
+        </div>
+
+        <div class="columElements" style="display:none;">
+          <label for="intervalNumberUser">Enter the interval</label>
+          <input id="intervalNumberUser" type="number" name="intervalNumberUser" value="1"  oninput="checkInvNr('User')">
+          <hr>
+          <select id="intervalTypeUser">
+            <option value="all" disabled selected hidden>Time intervals</option>
+            <option value="all">Each post</option>
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+            <option value="weeks">Weeks</option>
+            <option value="days">Days</option>
+            <option value="hours">Hours</option>
+            <option value="minutes">Minutes</option>
+          </select>
+        </div>
+        <div class="searchButton" onclick="displayChart('User')"></div>
+      </div>      
+    </div>
+
+    <div id="selectTagBox" class="rowElements">
+      <h2>Enter the tag(s) chart data</h2>
+      <div class="rowElements">
+
+          <div class="columElements">
+              <button id="tagsList" onclick="uTDropdown(event, 'tags')">
+                  Tag List
+              </button>
+              <div id="dropdownTagsC">
+                  <input type="text" id="searchTag" placeholder="Search..." oninput="filterTags()">
+                  <button onclick="clearUT('tags')">Clear Tags</button>
+                  <div id="tagsContainerC"></div>
+              </div>
+          </div>
+
+          <div class="columElements"> 
+          <label for="startDatetimeTag">Starting date & time</label>
+          <input id="startDatetimeTag" type="datetime-local" name="startDatetimeTag" value="2000-01-01T00:00">
+          <hr>
+          <label for="endDatetimeTag">Ending date & time</label>
+          <input id="endDatetimeTag" type="datetime-local" name="endDatetimeTag" value="" >
+          </div>
+
+          <div class="columElements" style="display:none;">
+          <label for="intervalNumberTag">Enter the interval</label>
+          <input id="intervalNumberTag" type="number" name="intervalNumberTag" value="1"  oninput="checkInvNr('Tag')">
+          <hr>
+          <select id="intervalTypeTag">
+              <option value="all" disabled selected hidden>Time intervals</option>
+              <option value="all">Each post</option>
+              <option value="years">Years</option>
+              <option value="months">Months</option>
+              <option value="weeks">Weeks</option>
+              <option value="days">Days</option>
+              <option value="hours">Hours</option>
+              <option value="minutes">Minutes</option>
+          </select>
+          </div>
+          <div class="searchButton" onclick="displayChart('Tag')"></div>
+      </div>     
+    </div>
+    
+  </div>
+  
+
+
+
+  <div id="generatedCharts"></div>
+
+
+
+
+
+
+
+
+  <script src="../js/jquery-3.6.4.min.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/chart.js"></script>
+  <script src="../js/sentimentStats.js"></script>
+
+
+
+
+</body>
+</html>

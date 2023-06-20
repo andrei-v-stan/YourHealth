@@ -1,0 +1,292 @@
+
+#resultedPost {
+    display: block;
+    height: auto;
+    min-width: 320px;
+    width: 80%;
+    margin: 100px auto 0 auto;
+    padding: 10px 20px 20px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url("../Resources/others/pentagonsBackgroundP.png");
+    filter: brightness(1.3);
+    border-radius: 20px;
+}
+
+
+.postTop {
+    display: flex;
+    position: relative;
+    height: auto;
+    width: 100%;
+}
+
+.postVote {
+    display: flex;
+    height: auto;
+    width: 70px;
+    margin-top: 5px;
+    margin-left: -20px;
+    border-right: 0.75px;
+    border-left: 0;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, transparent, #000000, transparent) 1 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.postVote button {
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: background-image 0.5s;
+}
+.upVote {
+    background-image: url("/Resources/home/upVote.png");
+    margin-bottom: 5px;
+}
+.upVote:hover {
+    background-image: url("/Resources/home/upVoteHover.png");
+}
+.upVote:active {
+    background-image: url("/Resources/home/upVoteActive.png");
+}
+.upVoteActive {
+    background-image: url("/Resources/home/upVoteActive.png");
+    margin-bottom: 5px;
+}
+
+.downVote {
+    background-image: url("/Resources/home/downVote.png");
+    margin-top: 5px;
+}
+.downVote:hover {
+    background-image: url("/Resources/home/downVoteHover.png");
+}
+.downVote:active {
+    background-image: url("/Resources/home/downVoteActive.png");
+}
+.downVoteActive {
+    background-image: url("/Resources/home/downVoteActive.png");
+    margin-top: 5px;
+}
+
+.postVote span {
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+  
+.postContent { 
+    display: flex;
+    flex: 1;
+    height: auto;
+    width: auto;
+    padding: 10px;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+.authorTime {
+    font-size: 16px;
+    margin-bottom: -10px;
+}
+.authorTime a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #0049e7;
+}
+.authorTime a:hover {
+    color: #4db5ff;
+}
+.authorTime a:visited {
+    color: #0037a4;
+}
+.authorTime a:active {
+    color: #5e07b0;
+}
+.postTags span {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+    padding: 3px;
+    font-size: 14px;
+    background-color: rgba(110, 168, 240, 0.3);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    border-radius: 5px;
+}
+
+.postContent h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+#resultedPost p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.postMainButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.postMainButtons button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+
+
+#resultedComments {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+.commentBox {
+    display: flex;
+    width: auto;
+    height: auto;
+    padding: 3px;
+    font-size: 14px;
+    border-radius: 5px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+#resultedComments button:not(.postComment) {
+    width: 60px;
+    height: 30px;
+    margin-left: 5px;
+    padding: 5px;
+    font-size: 16px;
+    background-color: rgba(210, 175, 240, 0.3);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    border-radius: 5px;
+}
+
+.commentContent {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+}
+.commentText {
+    display: flex;
+    align-items: center;
+}
+.commentText p {
+    display: inline;
+    margin: 0;
+}
+.commentActions {
+    display: flex;
+    align-items: center;
+}
+.commentActions input[type="text"] {
+    padding: 5px;
+	margin: 5px 10px 0 0;
+	border-radius: 10px;
+}
+
+.postComment {
+    width: 30px;
+    height: 30px;
+    background-image: url("/Resources/home/postComments.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.postBookmark {
+    width: 30px;
+    height: 30px;
+    background-image: url("/Resources/home/postBookmark.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-image 0.5s;
+}
+.postBookmark:hover {
+    background-image: url("/Resources/home/postBookmarkHover.png");
+}
+.postBookmark:active {
+    background-image: url("/Resources/home/postBookmarkActive.png");
+}
+.postBookmarkActive {
+    background-image: url("/Resources/home/postBookmarkActive.png");
+}
+  
+.hidePost {
+    width: 30px;
+    height: 30px;
+    background-image: url("/Resources/home/hidePost.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-image 0.5s;
+    }
+.hidePost:hover {
+    background-image: url("/Resources/home/hidePostHover.png");
+}
+.hidePost:active {
+    background-image: url("/Resources/home/hidePostHover.png");
+}
+
+  .postReport {
+    width: 30px;
+    height: 30px;
+    background-image: url("/Resources/home/postReport.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer; 
+    transition: background-image 0.5s;
+  }
+  .postReport:hover {
+    background-image: url("/Resources/home/postReportHover.png");
+  }
+  .postReport:active {
+    background-image: url("/Resources/home/postReportHover.png");
+  }
+  
+  .postShare {
+    width: 30px;
+    height: 30px;
+    background-image: url("/Resources/home/postShare.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-image 0.5s;
+  }
+  .postShare:hover {
+    background-image: url("/Resources/home/postShareHover.png");
+  }
+  
