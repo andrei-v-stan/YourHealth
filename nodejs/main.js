@@ -9,6 +9,7 @@ const app = express();
 app.use(express.static(__dirname + '/../../YourMind'));
 app.set('views', path.join(__dirname, '../ejs'));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());

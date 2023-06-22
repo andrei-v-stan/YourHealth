@@ -68,16 +68,16 @@ function checkLocationMap() {
 
 let openInfoWindow = null;
 
-function markStore(storeInfo, map, pinIcon) {
+function markMedical(medicalInfo, map, pinIcon) {
   var marker = new google.maps.Marker({
-    position: storeInfo.location,
+    position: medicalInfo.location,
     map: map,
-    title: storeInfo.name,
+    title: medicalInfo.name,
     icon: pinIcon
   });
 
   var infoWindow = new google.maps.InfoWindow({
-    content: createInfoWindowContent(storeInfo)
+    content: createInfoWindowContent(medicalInfo)
   });
 
   marker.addListener('click', function() {
@@ -96,20 +96,20 @@ function markStore(storeInfo, map, pinIcon) {
   });
 }
 
-function createInfoWindowContent(storeInfo) {
+function createInfoWindowContent(medicalInfo) {
   
   let rating;
-  if (!storeInfo.rating) {
+  if (!medicalInfo.rating) {
     rating = "No reviews";
   }
   else {
-    rating = storeInfo.rating;
+    rating = medicalInfo.rating;
   }
 
 
   const content = `
   <div class=infoWindow>
-    <a href="https://www.google.com/maps/place/?q=place_id:${storeInfo.place_id}"> <h3> ${storeInfo.name} </h3> </a>
+    <a href="https://www.google.com/maps/place/?q=place_id:${medicalInfo.place_id}"> <h3> ${medicalInfo.name} </h3> </a>
     <p>Rating: ${rating} </p>
   </div>
   `;
@@ -158,8 +158,8 @@ async function initMap() {
       }
     ];
 
-    locationDetails.forEach(function(store) {
-      markStore(store,map,googlePin);
+    locationDetails.forEach(function(medical) {
+      markMedical(medical,map,googlePin);
     });
   
   
@@ -176,14 +176,14 @@ async function initMap() {
     service.nearbySearch(reqDoctor, function(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         results.forEach(function(place) {
-          var store = {
+          var medical = {
             name: place.name,
             location: place.geometry.location,
             rating: place.rating,
             place_id: place.place_id
           };
-          locationDetails.push(store);
-          markStore(store,map,doctorPin);
+          locationDetails.push(medical);
+          markMedical(medical,map,doctorPin);
         });
       }
     });
@@ -198,14 +198,14 @@ async function initMap() {
     service.nearbySearch(reqHospital, function(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         results.forEach(function(place) {
-          var store = {
+          var medical = {
             name: place.name,
             location: place.geometry.location,
             rating: place.rating,
             place_id: place.place_id
           };
-          locationDetails.push(store);
-          markStore(store,map,hospitalPin);
+          locationDetails.push(medical);
+          markMedical(medical,map,hospitalPin);
         });
       }
     });

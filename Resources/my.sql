@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS userLocs (
   logNumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   accountID INT NOT NULL,
   FOREIGN KEY (accountID) REFERENCES usercreds(id),
-  latitude TEXT NOT NULL,
-  longitude TEXT NOT NULL,
-  accuracy TEXT NOT NULL,
+  latitude FLOAT NOT NULL,
+  longitude FLOAT NOT NULL,
+  accuracy FLOAT NOT NULL,
   recordingStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -81,7 +81,12 @@ CREATE TABLE IF NOT EXISTS userDetails (
   username VARCHAR(255),
   clearance FLOAT DEFAULT 1,
   title VARCHAR(255) NOT NULL, 
-  /*
+  birthDate DATE,
+  bioData TEXT,
+  avgSentimentScore FLOAT DEFAULT 0.0000000000,
+  avgSentimentMagnitude FLOAT DEFAULT 0.00000000000
+);
+/*
   Admin - 10
   Mod - 9
   International government services ( UN / ICAO) - 8
@@ -92,12 +97,7 @@ CREATE TABLE IF NOT EXISTS userDetails (
   Medical Practitioner / Researcher - 3 
   Social Aider - 2
   Regular User - 1
-  */
-  birthDate DATE,
-  bioData TEXT,
-  avgSentimentScore FLOAT DEFAULT 0.0000000000,
-  avgSentimentMagnitude FLOAT DEFAULT 0.00000000000
-);
+*/
 
 
 CREATE TABLE IF NOT EXISTS bookmarkedPosts (
