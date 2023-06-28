@@ -198,7 +198,7 @@ function getFilters() {
                   containerCreate.innerHTML += '<input type="text" id="searchCreateTag" placeholder="Search a tag..." oninput="filterCreateTags()">\n';
 
                   tags.forEach((tag) => {
-                      containerCreate.innerHTML += `<button onclick="setTagInput(this)" >${tag.title}</button>\n`
+                      containerCreate.innerHTML += `<button onclick="setTagInput(this)" >${tag.title}</button>\n`;
 
                       let tagElement = document.createElement('label');
                       tagElement.id = `dropdownTag-${tag.id}`;
@@ -214,12 +214,12 @@ function getFilters() {
             alert("[Error]: " + response.errorText);
           }
           else {
-            console.log("[Error]: There has been an error receiving the response from /getFilters")
+            console.log("[Error]: There has been an error receiving the response from /getFilters");
             alert("[Error]: Internal server error");
           }
       },
       error: function() {
-          console.log("[Error]: There has been an error parsing and receiving data from /getFilters")
+          console.log("[Error]: There has been an error parsing and receiving data from /getFilters");
           alert("[Error]: Internal server error");
       }
   });
@@ -529,7 +529,6 @@ function signupUsernameCheckAuto(usage) {
       errorBubble.innerHTML = errorBubble.innerHTML + `Your username cannot contain characters outside of alphanumeric characters and "- . _"<br>`;
     }
     if (errors[2] == 1) {
-      errorBubble.inner
       errorBubble.innerHTML = errorBubble.innerHTML + `Your username cannot start/end with non-alphanumeric characters<br>`;
     }
     if (errors[3] == 1) {
@@ -573,7 +572,6 @@ function signupPasswordCheckAuto(usage,idSet) {
       errorBubble.innerHTML = errorBubble.innerHTML + `Your password cannot contain characters outside the EN-US keyboard or spaces<br>`;
     }
     if (errors[2] == 1) {
-      errorBubble.inner
       errorBubble.innerHTML = errorBubble.innerHTML + `Your password must contain at least 1 uppercase letter<br>`;
     }
     if (errors[3] == 1) {
@@ -649,7 +647,7 @@ function signupUsernameRules(username) {
 function signupPasswordRules(password) {
   const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\x21-\x7E]{8,128}$/;
   
-  let errors = [0,0,0,0,0]
+  let errors = [0,0,0,0,0];
   if (regex.test(password) == false) {
       var regexp;
       if (password.length < 8 || password.length > 128) {
@@ -1387,6 +1385,170 @@ function filterCreateTags() {
       button.style.display = "none";
       }
   }
+}
+
+
+
+
+function bookmarkPost(postID) {
+  jQuery.ajax({
+      type: 'POST',
+      url: `/postBookmark`,
+      data: { 
+        "userID": getCookie('accountID'),
+        "postID": postID
+      },
+      success: function(response) {
+          if (response.code == 200) {
+            let bookmarkButton = document.getElementById(`${postID}_bookmarkButton`);
+            if (response.bookmark == "created") {
+              if (bookmarkButton.classList.contains('postBookmark')) {
+                bookmarkButton.classList.add('postBookmarkActive');
+              }
+            }
+            else {
+              if (bookmarkButton.classList.contains('postBookmarkActive')) {
+                bookmarkButton.classList.remove('postBookmarkActive');
+              }
+            }
+          }
+          else if (response.code == 500) {
+            console.log(response.errorText);
+            alert("[Error]: " + response.errorText);
+          }
+          else {
+            console.log("[Error]: There has been an error receiving the response from /postBookmark")
+            alert("[Error]: Internal server error");
+          }
+      },
+      error: function() {
+          console.log("[Error]: There was an error receiving the response from /postBookmark")
+          alert('[Error]: Internal server error');
+      }
+  });
+}
+
+
+
+function hidePost(postID) {
+  jQuery.ajax({
+      type: 'POST',
+      url: `/postHidden`,
+      data: { 
+        "userID": getCookie('accountID'),
+        "postID": postID
+      },
+      success: function(response) {
+          if (response.code == 200) {
+            const postContainer = document.getElementById(`${postID}_postContainer`);
+            if (response.hidden == "created") {
+              postContainer.style.display = "none";
+            }
+            else {
+              postContainer.style.display = "flex";
+            }
+          }
+          else if (response.code == 500) {
+            console.log(response.errorText);
+            alert("[Error]: " + response.errorText);
+          }
+          else {
+            console.log("[Error]: There has been an error receiving the response from /postHidden")
+            alert("[Error]: Internal server error");
+          }
+      },
+      error: function() {
+          console.log("[Error]: There was an error receiving the response from /postHidden")
+          alert('[Error]: Internal server error');
+      }
+  });
+}
+
+function submitReport(postID) {
+  event.preventDefault();
+  
+  let mailTopic = parseInt(document.getElementById("reportTopic").value);
+  switch (mailTopic) {
+    case 1:
+      mailTopic = "Harassment";
+      break;
+    case 2:
+      mailTopic = "Violence";
+      break;
+    case 3:
+      mailTopic = "Hate Speech";
+      break;
+    case 4:
+      mailTopic = "Personal Info";
+      break;
+    case 5:
+      mailTopic = "Intimate Media";
+      break;
+    case 6:
+      mailTopic = "Impersonation";
+      break;
+    case 7:
+      mailTopic = "Self Harm";
+      break;
+    case 8:
+      mailTopic = "Spam";
+      break;
+    case 9:
+      mailTopic = "Other";
+      break;
+    default:
+      mailTopic = "Topic not selected";
+      break;
+  }
+  
+  const formVar = {
+      "postID": postID,
+      "contactTopic": mailTopic,
+      "emailMessage": document.getElementById("reportContactMessage").value
+  };
+
+  jQuery.ajax({
+    type: 'POST',
+    url: '/mailReportContactForm',
+    data: formVar,
+    success: function(response) {
+      const redirPopup = document.getElementById("redirectPopup");
+      const popupBox = document.getElementById("popupBox");
+      if (response.code == 200) {
+        popupBox.innerHTML = `Email sent successfully!`;
+        redirPopup.style.backgroundColor = "#8afc92"; 
+        redirPopup.style.display = "block";
+        setTimeout(function() {
+          popupBox.innerHTML = "";
+          redirPopup.style.display = "none"; 
+          document.getElementById("reportTopic").value = 0;
+          document.getElementById("reportContactMessage").value = "";
+          removePopup('reportPostPopup');
+        }, 2000);
+      } 
+      else if (response.code == 500) {
+        popupBox.innerHTML = `There has been an issue while sending the email<br>`;
+        redirPopup.style.backgroundColor = "#fc8a8a"; 
+        redirPopup.style.display = "block"; 
+        setTimeout(function() {
+          popupBox.innerHTML = "";
+          redirPopup.style.display = "none"; 
+        }, 4000); 
+        console.log(response.errorText);
+      }  
+      else {
+        popupBox.innerHTML = `There has been an error while sending the email request...<br>`;
+        redirPopup.style.backgroundColor = "#fc8a8a"; 
+        redirPopup.style.display = "block";
+        console.log("[Error]: There has been an error receiving the response from /mailReportContactForm");
+        alert("[Error]: Internal server error");
+      }
+    },
+    error: function() {
+      console.log("[Error]: There has been an error parsing and receiving data from /mailReportContactForm");
+      alert("[Error]: Internal server error");
+    }
+  });
 }
 
 

@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS userLocs (
   logNumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   accountID INT NOT NULL,
   FOREIGN KEY (accountID) REFERENCES usercreds(id),
-  latitude FLOAT NOT NULL,
-  longitude FLOAT NOT NULL,
-  accuracy FLOAT NOT NULL,
+  latitude FLOAT DEFAULT 0.0,
+  longitude FLOAT DEFAULT 0.0,,
+  accuracy FLOAT DEFAULT 0.0,,
   recordingStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

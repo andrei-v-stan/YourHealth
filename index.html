@@ -25,20 +25,20 @@
 
   <div id="profileDropdown">
     <a id="userDropdownSel" href="/users/">
-      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button">
       <p>Profile</p>
     </a>
     <a id="dropdownLoginOut" href="#">
-      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button">
       <p>Logout</p>
     </a>
     <hr class="tagBoxSplit">
     <a onclick="contactSectionPopup()">
-      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button">
       <p>Help Center</p>
     </a>
     <a href="/additionalInfo">
-      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <img src="/Resources/navbar/infoButton.png" alt="Info button">
       <p>More Info</p>
     </a>
   </div>
@@ -123,7 +123,7 @@
 
     <div id="signupPopup">
       <button id="closeSignup" class="closeButton" onclick="removePopup('signupPopup')"></button>
-      <button id="backSignup" class="backButton" onclick="signupBackLogin()"></button>
+      <button class="backButton backSignup" onclick="signupBackLogin()"></button>
       <h2>Sign Up</h2>
       <form id="signupForm">
         <div class="rowElements">
@@ -150,7 +150,7 @@
     </div>
 
     <div id="recoveryPopup">
-      <button id="closeRecovery" class="closeButton" onclick="removePopup('recoveryPopup')"></button>
+      <button class="closeButton closeRecovery" onclick="removePopup('recoveryPopup')"></button>
       <button id="backRecovery" class="backButton" onclick="recoveryBackLogin()"></button>
       <h2>Recovery</h2>
       <span></span>
@@ -161,7 +161,7 @@
     </div>
 
     <div id="passwordSectionPopup">
-      <button id="backSignup" class="backButton" onclick="passToRecovery()"></button>
+      <button class="backButton backSignup" onclick="passToRecovery()"></button>
       <h3>Enter your email address and wait for further instructions</h3>
       <form id="recoverPasswordForm">
         <input type="email" id="recoveryEmail" name="email" placeholder="Email address" oninput="checkEmail(0,0)" required>
@@ -170,7 +170,7 @@
     </div>
   
     <div id="contactSectionPopup">
-      <button id="closeRecovery" class="closeButton" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <button class="closeButton closeRecovery" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
       <h3>Complete the forum below and we will assist you shortly</h3>
       <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>

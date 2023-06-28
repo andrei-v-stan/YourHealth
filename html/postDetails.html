@@ -71,12 +71,34 @@
       </form>
       <input type="submit" form="contactForm" onclick="mailContactForm()">
     </div>
+
+    <div id="reportPostPopup">
+      <button id="closeReport" class="closeButton" onclick="removePopup('reportPostPopup')"></button>
+      <h3>Complete the forum below and our staff will respond ASAP</h3>
+        <select id="reportTopic" name="topic">
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Harassment</option>
+          <option value="2">Violence</option>
+          <option value="3">Hate Speech</option>
+          <option value="4">Personal Info</option>
+          <option value="5">Intimate Media</option>
+          <option value="6">Impersonation</option>
+          <option value="7">Self Harm</option>
+          <option value="8">Spam</option>
+          <option value="9">Other</option>
+        </select>
+        <textarea id="reportContactMessage" name="message" rows="5" placeholder="Additional information..."></textarea>
+      <input id="submitReport" type="submit" onclick="submitReport()">
+    </div>
   </div>
 
   <div id="hideBody"></div>
 
   <div id="alertPopup">
     <div id="alertBox"></div>
+  </div>
+  <div id="redirectPopup">
+    <div id="popupBox"></div>
   </div>
 
 

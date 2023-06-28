@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
     <head>
         <title>Your Mind</title>
@@ -16,6 +16,7 @@
     </div>
 
     <div id="loginPopup">
+      <button id="closeLogin" class="closeButton" onclick="removePopup('loginPopup')"></button>
       <h2>Log In</h2>
       <form id="loginForm">
         <input type="text" id="loginUsername" name="username" placeholder="Username">
@@ -36,7 +37,8 @@
     </div>
 
     <div id="signupPopup">
-      <button id="backSignup" class="backButton" onclick="signupBackLogin()"></button>
+      <button id="closeSignup" class="closeButton" onclick="removePopup('signupPopup')"></button>
+      <button class="backButton backSignup" onclick="signupBackLogin()"></button>
       <h2>Sign Up</h2>
       <form id="signupForm">
         <div class="rowElements">
@@ -63,6 +65,7 @@
     </div>
 
     <div id="recoveryPopup">
+      <button class="closeButton closeRecovery" onclick="removePopup('recoveryPopup')"></button>
       <button id="backRecovery" class="backButton" onclick="recoveryBackLogin()"></button>
       <h2>Recovery</h2>
       <span></span>
@@ -73,7 +76,7 @@
     </div>
 
     <div id="passwordSectionPopup">
-      <button id="backSignup" class="backButton" onclick="passToRecovery()"></button>
+      <button class="backButton backSignup" onclick="passToRecovery()"></button>
       <h3>Enter your email address and wait for further instructions</h3>
       <form id="recoverPasswordForm">
         <input type="email" id="recoveryEmail" name="email" placeholder="Email address" oninput="checkEmail(0,0)" required>
@@ -82,8 +85,8 @@
     </div>
   
     <div id="contactSectionPopup">
-      <button id="backSignup" class="backButton" onclick="contactToRecovery()"></button>
-      <h3>Complete the forum below and our staff will respond ASAP</h3>
+      <button class="closeButton closeRecovery" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <h3>Complete the forum below and we will assist you shortly</h3>
       <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
         <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
@@ -93,12 +96,34 @@
           <option value="2">Bug report</option>
           <option value="3">Other</option>
         </select>
-        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text"></textarea>
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text..."></textarea>
       </form>
       <input type="submit" form="contactForm" onclick="mailContactForm()">
     </div>
+
+    <div id="reportPostPopup">
+      <button id="closeReport" class="closeButton" onclick="removePopup('reportPostPopup')"></button>
+      <h3>Complete the forum below and our staff will respond ASAP</h3>
+        <select id="reportTopic" name="topic">
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Harassment</option>
+          <option value="2">Violence</option>
+          <option value="3">Hate Speech</option>
+          <option value="4">Personal Info</option>
+          <option value="5">Intimate Media</option>
+          <option value="6">Impersonation</option>
+          <option value="7">Self Harm</option>
+          <option value="8">Spam</option>
+          <option value="9">Other</option>
+        </select>
+        <textarea id="reportContactMessage" name="message" rows="5" placeholder="Additional information..."></textarea>
+      <input id="submitReport" type="submit" onclick="submitReport()">
+    </div>
   </div>
 
+  <div id="alertPopup">
+    <div id="alertBox"></div>
+  </div>
   <div id="redirectPopup">
     <div id="popupBox"></div>
   </div>

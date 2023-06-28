@@ -1,0 +1,42 @@
+
+.userDetails {
+    display: flex;
+    align-items: center;
+    justify-content: inherit;
+    flex-direction: column;
+}
+
+.setDetail {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: inherit;
+    flex-direction: row;
+}
+.setDetail input[type="text"] {
+    height: 40px;
+    font-size: 14px;
+    padding: 5px;
+	border-radius: 10px;
+}
+.setDetail button {
+    height: 40px;
+    width: 60px;
+    margin-left: 15px;
+	border-radius: 10px;
+}
+.setDetail button {
+    width: 50px;
+    height: 50px;
+    background-image: url("../Resources/others/updateField.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.setDetail button:hover {
+background-image: url("../Resources/others/updateFieldHover.png");
+}
+  

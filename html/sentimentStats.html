@@ -21,20 +21,20 @@
 
   <div id="profileDropdown">
     <a id="userDropdownSel" href="/users/">
-      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button">
       <p>Profile</p>
     </a>
     <a id="dropdownLoginOut" href="#">
-      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button">
       <p>Logout</p>
     </a>
     <hr class="tagBoxSplit">
     <a onclick="contactSectionPopup()">
-      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button">
       <p>Help Center</p>
     </a>
     <a href="/additionalInfo">
-      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <img src="/Resources/navbar/infoButton.png" alt="Info button">
       <p>More Info</p>
     </a>
   </div>
@@ -56,7 +56,7 @@
     </div>
 
     <div id="contactSectionPopup">
-      <button id="closeRecovery" class="closeButton" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <button class="closeButton closeRecovery" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
       <h3>Complete the forum below and we will assist you shortly</h3>
       <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
@@ -72,11 +72,13 @@
       <input type="submit" form="contactForm" onclick="mailContactForm()">
     </div>
   </div>
-
   <div id="hideBody"></div>
 
   <div id="alertPopup">
     <div id="alertBox"></div>
+  </div>
+  <div id="redirectPopup">
+    <div id="popupBox"></div>
   </div>
 
 

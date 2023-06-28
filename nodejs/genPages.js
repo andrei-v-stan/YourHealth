@@ -29,19 +29,19 @@ appRouter.get('/posts/:id', (req, res) => {
 
 
 appRouter.get('/users/:id', (req, res) => {
-  const postID = req.params.id;
+  const userID = req.params.id;
 
-  if (/[^0-9]/.test(postID) || /^0/.test(postID) || req.url.length > `/posts/${postID}`.length) {
+  if (/[^0-9]/.test(userID) || /^0/.test(userID) || req.url.length > `/users/${userID}`.length) {
     res.render('statusHandler', { statusMessage: 'This user does not exist' });
   }
   else {
-    con.query('SELECT * FROM posts WHERE id=?', postID, (error, result) => {
+    con.query('SELECT * FROM userdetails WHERE userID=?', userID, (error, result) => {
       if (error) {
         console.log(error);
-        res.send({ code: 500, errorText: "appRouter.get(/posts/:id) -> con.query(SELECT * FROM posts WHERE id=?)" });
+        res.send({ code: 500, errorText: "appRouter.get(/users/:id) -> con.query(SELECT * FROM userdetails WHERE id=?)" });
       }
       if (Object.keys(result).length == 0) {
-          res.render('statusHandler', { statusMessage: 'This post does not exist' });
+          res.render('statusHandler', { statusMessage: 'This user does not exist' });
       }
       else {
         res.sendFile(path.join(__dirname, '../html', 'userDetails.html'));
@@ -49,6 +49,86 @@ appRouter.get('/users/:id', (req, res) => {
     });
   }
 });
+
+
+appRouter.get('/editingUser/:id', (req, res) => {
+  const userID = req.params.id;
+
+  if (/[^0-9]/.test(userID) || /^0/.test(userID) || req.url.length > `/editingUser/${userID}`.length) {
+    res.render('statusHandler', { statusMessage: 'This user does not exist' });
+  }
+  else {
+    con.query('SELECT * FROM userdetails WHERE userID=?', userID, (error, result) => {
+      if (error) {
+        console.log(error);
+        res.send({ code: 500, errorText: "appRouter.get(/editingUser/:id) -> con.query(SELECT * FROM userdetails WHERE userID=?)" });
+      }
+      if (Object.keys(result).length == 0) {
+          res.render('statusHandler', { statusMessage: 'This user does not exist' });
+      }
+      else {
+        if (result[0].userID == req.cookies.accountID) {
+          res.sendFile(path.join(__dirname, '../html', 'editingUser.html'));
+        }
+        else {
+          con.query('SELECT * FROM userdetails WHERE userID=?', req.cookies.accountID, (error, resultClear) => {
+            if (error) {
+              console.log(error);
+              res.send({ code: 500, errorText: "appRouter.get(/editingUser/:id) -> con.query(SELECT * FROM userdetails WHERE userID=?)" });
+            }
+            else {
+              if (resultClear[0].clearance >= 9) {
+                res.sendFile(path.join(__dirname, '../html', 'editingUser.html'));
+              }
+              else {
+                res.render('statusHandler', { statusMessage: 'You do not have permission to access this user edit' });
+              }
+            }
+          });
+        }
+      }
+    });
+  }
+});
+
+
+appRouter.get('/editingUser', (req, res) => {
+  const userID = req.cookies.accountID;
+  res.redirect(`/editingUser/${userID}`);
+});
+
+
+appRouter.get('/getUser',(req,res) => {
+  const userID = req.query.inputDetails;
+
+  let queryUsers = `SELECT * FROM userdetails WHERE userID=?`;
+  con.query(queryUsers, userID, (error, resultUser) => {
+    if (error) {
+      console.log(error);
+      res.send({ code: 500, errorText: "appRouter.get(/getUser) -> con.query(getUser)" });
+    }
+    else {
+      res.send({code: 200, user: resultUser});
+    }
+  });
+});
+
+appRouter.post('/updateUserDetail', (req, res) => {
+  const { userID, updateText, updateDetail } = req.body;
+  
+  const queryUpdateDetail = `UPDATE userdetails SET ${updateDetail} = ? WHERE userID = ?`;
+  con.query(queryUpdateDetail, [updateText, userID], (error, result) => {
+    if (error) {
+      console.log('[Error]: appRouter.post(/updateUserDetail) -> con.query(queryUpdateDetail)');
+      console.error(error);
+      res.send({code: 500});
+    }
+    else {
+      res.send({code: 200});
+    }
+  });
+});
+
 
 
 appRouter.get('/missingLogin', (req, res) => {

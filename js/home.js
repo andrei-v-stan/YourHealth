@@ -1,25 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function searchChange(searchType) {
   const options = searchType.options;
   if (options[0].value == "option0") {
@@ -188,7 +167,7 @@ function searchPosts() {
       divIDs.push(divTags[i].id.split("_").slice(1).join(''));
     }
     document.getElementById('topNavbarSearch').value = inputDetails;
-    localStorage.setItem("postInput", inputDetails.toLowerCase())
+    localStorage.setItem("postInput", inputDetails.toLowerCase());
     localStorage.setItem("postSearchFor", searchFor);
     localStorage.setItem("postSortMethod", sortingMethod);
     if (divIDs.length > 0) {
@@ -445,7 +424,7 @@ function getPostsData(accountID) {
   });
 
 
-  return Promise.all([promiseVotes, promiseBookmarks, promiseHidden, promiseContent])
+  return Promise.all([promiseVotes, promiseBookmarks, promiseHidden, promiseContent]);
 }
 
 function getPostsDetails(authorIDs,postIDs) {
@@ -1038,167 +1017,6 @@ function handleDropdownButtons(event) {
 }
 
 
-
-function bookmarkPost(postID) {
-  jQuery.ajax({
-      type: 'POST',
-      url: `/postBookmark`,
-      data: { 
-        "userID": getCookie('accountID'),
-        "postID": postID
-      },
-      success: function(response) {
-          if (response.code == 200) {
-            let bookmarkButton = document.getElementById(`${postID}_bookmarkButton`);
-            if (response.bookmark == "created") {
-              if (bookmarkButton.classList.contains('postBookmark')) {
-                bookmarkButton.classList.add('postBookmarkActive');
-              }
-            }
-            else {
-              if (bookmarkButton.classList.contains('postBookmarkActive')) {
-                bookmarkButton.classList.remove('postBookmarkActive');
-              }
-            }
-          }
-          else if (response.code == 500) {
-            console.log(response.errorText);
-            alert("[Error]: " + response.errorText);
-          }
-          else {
-            console.log("[Error]: There has been an error receiving the response from /postBookmark")
-            alert("[Error]: Internal server error");
-          }
-      },
-      error: function() {
-          console.log("[Error]: There was an error receiving the response from /postBookmark")
-          alert('[Error]: Internal server error');
-      }
-  });
-}
-
-
-
-function hidePost(postID) {
-  jQuery.ajax({
-      type: 'POST',
-      url: `/postHidden`,
-      data: { 
-        "userID": getCookie('accountID'),
-        "postID": postID
-      },
-      success: function(response) {
-          if (response.code == 200) {
-            const postContainer = document.getElementById(`${postID}_postContainer`);
-            if (response.hidden == "created") {
-              postContainer.style.display = "none";
-            }
-            else {
-              postContainer.style.display = "flex";
-            }
-          }
-          else if (response.code == 500) {
-            console.log(response.errorText);
-            alert("[Error]: " + response.errorText);
-          }
-          else {
-            console.log("[Error]: There has been an error receiving the response from /postHidden")
-            alert("[Error]: Internal server error");
-          }
-      },
-      error: function() {
-          console.log("[Error]: There was an error receiving the response from /postHidden")
-          alert('[Error]: Internal server error');
-      }
-  });
-}
-
-function submitReport(postID) {
-  event.preventDefault();
-  
-  let mailTopic = parseInt(document.getElementById("reportTopic").value);
-  switch (mailTopic) {
-    case 1:
-      mailTopic = "Harassment";
-      break;
-    case 2:
-      mailTopic = "Violence";
-      break;
-    case 3:
-      mailTopic = "Hate Speech";
-      break;
-    case 4:
-      mailTopic = "Personal Info";
-      break;
-    case 5:
-      mailTopic = "Intimate Media";
-      break;
-    case 6:
-      mailTopic = "Impersonation";
-      break;
-    case 7:
-      mailTopic = "Self Harm";
-      break;
-    case 8:
-      mailTopic = "Spam";
-      break;
-    case 9:
-      mailTopic = "Other";
-      break;
-    default:
-      mailTopic = "Topic not selected";
-      break;
-  }
-  
-  const formVar = {
-      "postID": postID,
-      "contactTopic": mailTopic,
-      "emailMessage": document.getElementById("reportContactMessage").value
-  };
-
-  jQuery.ajax({
-    type: 'POST',
-    url: '/mailReportContactForm',
-    data: formVar,
-    success: function(response) {
-      const redirPopup = document.getElementById("redirectPopup");
-      const popupBox = document.getElementById("popupBox");
-      if (response.code == 200) {
-        popupBox.innerHTML = `Email sent successfully!`;
-        redirPopup.style.backgroundColor = "#8afc92"; 
-        redirPopup.style.display = "block";
-        setTimeout(function() {
-          popupBox.innerHTML = "";
-          redirPopup.style.display = "none"; 
-          document.getElementById("reportTopic").value = 0;
-          document.getElementById("reportContactMessage").value = "";
-          removePopup('reportPostPopup');
-        }, 2000);
-      } 
-      else if (response.code == 500) {
-        popupBox.innerHTML = `There has been an issue while sending the email<br>`;
-        redirPopup.style.backgroundColor = "#fc8a8a"; 
-        redirPopup.style.display = "block"; 
-        setTimeout(function() {
-          popupBox.innerHTML = "";
-          redirPopup.style.display = "none"; 
-        }, 4000); 
-        console.log(response.errorText);
-      }  
-      else {
-        popupBox.innerHTML = `There has been an error while sending the email request...<br>`;
-        redirPopup.style.backgroundColor = "#fc8a8a"; 
-        redirPopup.style.display = "block";
-        console.log("[Error]: There has been an error receiving the response from /mailReportContactForm");
-        alert("[Error]: Internal server error");
-      }
-    },
-    error: function() {
-      console.log("[Error]: There has been an error parsing and receiving data from /mailReportContactForm");
-      alert("[Error]: Internal server error");
-    }
-  });
-}
 
 
 

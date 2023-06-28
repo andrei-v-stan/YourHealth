@@ -10,6 +10,7 @@
 .loadingCircle {
     width: 100px;
     height: 100px;
+    margin-bottom: 30px;
     border: 10px solid #f3f3f3;
     border-right: 10px solid #3498db;
     border-radius: 50%;
@@ -72,3 +73,27 @@
     }
 }
   
+
+#resultedInfo button {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    background-image: url("../Resources/others/updateField.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+#resultedInfo button:hover {
+background-image: url("../Resources/others/updateFieldHover.png");
+}
+
+h1 {
+    margin-bottom: 3px;
+}
+
+br {
+    margin-bottom: 10px;
+}

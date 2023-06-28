@@ -67,6 +67,7 @@ function checkLocationMap() {
 
 
 let openInfoWindow = null;
+let currentInfoWindow = null;
 
 function markMedical(medicalInfo, map, pinIcon) {
   var marker = new google.maps.Marker({
@@ -86,12 +87,13 @@ function markMedical(medicalInfo, map, pinIcon) {
     }
     infoWindow.open(map, marker);
     openInfoWindow = infoWindow;
+    currentInfoWindow = infoWindow;
   });
 
   map.addListener('click', function() {
     if (currentInfoWindow) {
-      openInfoWindow.close();
-      openInfoWindow = null;
+      currentInfoWindow.close();
+      currentInfoWindow = null;
     }
   });
 }
@@ -262,5 +264,4 @@ function updateMap() {
     initMap();
   }
 }
-
 

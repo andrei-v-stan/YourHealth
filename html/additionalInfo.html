@@ -1,10 +1,11 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Your Mind</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/Resources/logo.ico">
     <link rel="stylesheet" href="../css/navbar.css" type="text/css">
+    <link rel="stylesheet" href="../css/additionalInfo.css" type="text/css">
 </head>
 
 <body>
@@ -18,20 +19,20 @@
 
   <div id="profileDropdown">
     <a id="userDropdownSel" href="/users/">
-      <img src="/Resources/navbar/userProfile.png" alt="Profile button"></img>
+      <img src="/Resources/navbar/userProfile.png" alt="Profile button">
       <p>Profile</p>
     </a>
     <a id="dropdownLoginOut" href="#">
-      <img src="/Resources/navbar/logoutButton.png" alt="Logout button"></img>
+      <img src="/Resources/navbar/logoutButton.png" alt="Logout button">
       <p>Logout</p>
     </a>
     <hr class="tagBoxSplit">
     <a onclick="contactSectionPopup()">
-      <img src="/Resources/navbar/helpButton.png" alt="Profile help button"></img>
+      <img src="/Resources/navbar/helpButton.png" alt="Profile help button">
       <p>Help Center</p>
     </a>
     <a href="/additionalInfo">
-      <img src="/Resources/navbar/infoButton.png" alt="Info button"></img>
+      <img src="/Resources/navbar/infoButton.png" alt="Info button">
       <p>More Info</p>
     </a>
   </div>
@@ -53,26 +54,49 @@
     </div>
 
     <div id="contactSectionPopup">
-        <h3>Complete the forum below and our staff will respond ASAP</h3>
-        <form id="contactForm">
+      <button class="closeButton closeRecovery" onclick="removePopup('contactSectionPopup'); hideProfileDropdown()"></button>
+      <h3>Complete the forum below and we will assist you shortly</h3>
+      <form id="contactForm">
         <input type="text" id="contactName" name="fullname" placeholder="Full name" required>
         <input type="email" id="contactEmail" name="email" placeholder="Email address" oninput="checkEmail(0,1)" required>
         <select id="contactTopic" name="topic">
-            <option value="0" disabled selected hidden>Select a topic</option>
-            <option value="1">Account recovery</option>
-            <option value="2">Bug report</option>
-            <option value="3">Other</option>
+          <option value="0" disabled selected hidden>Select a topic</option>
+          <option value="1">Account recovery</option>
+          <option value="2">Bug report</option>
+          <option value="3">Other</option>
         </select>
-        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text"></textarea>
-        </form>
-        <input type="submit" form="contactForm" onclick="mailContactForm()">
+        <textarea id="contactMessage" name="message" rows="5" placeholder="Message text..."></textarea>
+      </form>
+      <input type="submit" form="contactForm" onclick="mailContactForm()">
     </div>
   </div>
 
   <div id="hideBody"></div>
 
-  <h2> List of pages</h2>
+  <div id="alertPopup">
+    <div id="alertBox"></div>
+  </div>
+  <div id="redirectPopup">
+    <div id="popupBox"></div>
+  </div>
 
+
+  <h1>Useful dev links:</h1>
+  <ul>
+    <li><a href="https://mail.google.com/mail">Gmail</a> (<span onclick="copyToClipboard(true)">usernamme</span> & <span onclick="copyToClipboard(false)">password</span>)</li>
+    <li><a href="https://validator.w3.org">HTML Validator</a></li>
+    <li><a href="https://jigsaw.w3.org/css-validator/">CSS Validator</a></li>
+    <li><a href="https://console.cloud.google.com/apis/credentials">Google API Keys</a></li>
+  </ul>
+
+  <h1>Credits:</h1>
+  <ul>
+    <li>Icons provided by Flaticon's artist <a href="https://www.flaticon.com/authors/freepik">Freepick</a></li>
+    <li>Artworks created and modified using <a href="https://krita.org/en/">Krita</a></li>
+  </ul>
+  
+
+  <h2>List of pages</h2>
   <ul>
     <li><a href="/yourHealth">Your Health</a></li>
     <li><a href="/">Homepage (posts)</a></li>
@@ -86,6 +110,7 @@
   
 
   <script src="../js/navbar.js"></script>
+  <script src="../js/additionalInfo.js"></script>
 
 </body>
 </html>

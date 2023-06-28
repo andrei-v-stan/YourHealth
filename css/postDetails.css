@@ -4,7 +4,7 @@
     height: auto;
     min-width: 320px;
     width: 80%;
-    margin: 100px auto 0 auto;
+    margin: 100px auto 50px auto;
     padding: 10px 20px 20px;
     background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url("../Resources/others/pentagonsBackgroundP.png");
     filter: brightness(1.3);
@@ -93,7 +93,6 @@
     width: auto;
     padding: 10px;
     flex-direction: column;
-    align-items: left;
     justify-content: center;
 }
 .authorTime {
@@ -138,6 +137,7 @@
 
 .postMainButtons {
     display: flex;
+    margin-bottom: 5px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -164,9 +164,8 @@
     padding: 3px;
     font-size: 14px;
     border-radius: 5px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: left;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 #resultedComments button:not(.postComment) {
     width: 60px;
@@ -178,23 +177,26 @@
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     border-radius: 5px;
 }
-
 .commentContent {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     margin: 5px 0;
 }
 .commentText {
     display: flex;
+    width: calc(100% - 30px);
     align-items: center;
 }
 .commentText p {
     display: inline;
     margin: 0;
+    padding: 5px;
 }
 .commentActions {
     display: flex;
     align-items: center;
+    justify-content: inherit;
+    flex-direction: row;
 }
 .commentActions input[type="text"] {
     padding: 5px;

@@ -468,18 +468,18 @@ body {
 #closeSignup {
   background-color: #a8f2ed;
 }
-#closeRecovery {
+.closeRecovery {
   background-color: #a8aef2;
 }
 #closeReport {
   background-color: #a8aef2;
 }
-#closeLogin:hover, #closeSignup:hover, #closeRecovery:hover, #closeReport:hover {
+#closeLogin:hover, #closeSignup:hover, .closeRecovery:hover, #closeReport:hover {
   transform: rotate(90deg);
   background-color: rgb(239, 163, 163);
   transition: transform 0.25s;
 }
-#closeLogin:active, #closeSignup:active, #closeRecovery:active, #closeReport:active {
+#closeLogin:active, #closeSignup:active, .closeRecovery:active, #closeReport:active {
   transform: rotate(90deg) translateX(2px);
   background-color: rgb(237, 121, 121);
   border: none;
@@ -503,17 +503,17 @@ body {
   box-shadow: 3px 0 5px rgba(0, 0, 0, 0.4);
   transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s;
 }
-#backSignup {
+.backSignup {
   background-color: #a8f2ed;
 }
 #backRecovery {
   background-color: #a8aef2;
 }
-#backSignup:hover, #backRecovery:hover {
+.backSignup:hover, #backRecovery:hover {
   background-color: rgb(239, 233, 163);
   transition: transform 0.25s;
 }
-#backSignup:active, #backRecovery:active {
+.backSignup:active, #backRecovery:active {
   transform: translateY(2px);
   background-color: rgb(237, 208, 121);
   border: none;
@@ -1132,7 +1132,6 @@ body {
   background-color: #7faff2;
   border-radius: 20px;
   flex-wrap: wrap;
-  overflow: none;
 }
 #createPostTags button {
   margin: 0 3px;

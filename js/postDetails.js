@@ -1,5 +1,53 @@
 
 
+function addInput(button, postID, commentID, commentType) {
+  const container = button.parentNode.parentNode;
+
+  const commentActionsDiv = document.createElement('div');
+  commentActionsDiv.className = 'commentActions';
+
+  const newInput = document.createElement('input');
+  newInput.setAttribute('type', 'text');
+  newInput.setAttribute('placeholder', 'Enter text here');
+
+  const postButton = document.createElement('button');
+  postButton.className = 'postComment';
+
+  commentActionsDiv.appendChild(newInput);
+  commentActionsDiv.appendChild(postButton);
+
+  button.style.display = 'none';
+  container.appendChild(commentActionsDiv);
+
+  postButton.addEventListener('click', function() {
+    submitComment(postID, commentID, newInput.value, commentType);
+    container.removeChild(commentActionsDiv);
+    button.style.display = 'flex';
+  });
+
+  const removeElements = function () {
+    if (!container.contains(commentActionsDiv)) {
+      return;
+    }
+  
+    container.removeChild(commentActionsDiv);
+    document.removeEventListener('click', removeElements);
+    button.style.display = 'flex';
+  };
+  
+
+  setTimeout(() => {
+    document.addEventListener('click', function (event) {
+      if (!commentActionsDiv.contains(event.target)) {
+        removeElements();
+      }
+    });
+  }, 100);
+}
+
+
+
+
 function getPostTime(postDate) {
   const nowDate = new Date();
 
@@ -83,12 +131,12 @@ function voteFunction(postID,vote) {
           alert("[Error]: " + response.errorText);
         }
         else {
-          console.log("[Error]: There has been an error receiving the response from /votePost")
+          console.log("[Error]: There has been an error receiving the response from /votePost");
           alert("[Error]: Internal server error");
         }
       },
     error: function() {
-      console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()")
+      console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()");
       alert('[Error]: Internal server error');
     }
   });
@@ -109,10 +157,7 @@ function addSubComments(allComments, resultedComments, postID, parentID, marginL
         <div class="commentText">
           <p>${comment.content} <a href="/users/${comment.authorID}">@user${comment.authorID}</a></p>
         </div>
-        <div class="commentActions">
-          <input type="text" class="" name="comment" placeholder="Write your comment">
-          <button class="postComment" onclick="submitComment(${postID},${comment.id},this.previousElementSibling.value,'comment')"></button>
-        </div>
+        <button class="postComment" onclick="addInput(this, ${postID},${comment.id},'comment')"></button>
       </div>
     </div>
     `;
@@ -170,18 +215,16 @@ function getPostData() {
               </div>
               <p>${response.postDetails.content}</p>
               <hr class="tagBoxSplit">
-              <div class="postMainButtons">
-                <button class="postComment"></button>
-                <button class="postBookmark"></button>
-                <button class="postShare"></button>
-                <button class="hidePost"></button>
-                <button class="postReport"></button>
+              <div style="justify-content:center">
+                <div class="postMainButtons">
+                  <button class="postBookmark" onclick="bookmarkPost(${response.postDetails.id})"></button>
+                  <button class="postShare" onclick="copyToClipboard('localhost:3000/posts/${response.postDetails.id}')"></button>
+                  <button class="hidePost" onclick="hidePost(${response.postDetails.id})"></button>
+                  <button class="postReport" onclick="reportPopup(${response.postDetails.id})"></button>
+                  <button class="postComment" onclick="addInput(this, ${response.postDetails.id},${response.postDetails.id},'post')"></button>
+                </div>
               </div>
               <hr class="tagBoxSplit">
-              <div class="commentActions">
-                <input type="text" class="" name="comment" placeholder="Write your comment">
-                <button class="postComment" onclick="submitComment(${response.postDetails.id},${response.postDetails.id},this.previousElementSibling.value,'post')"></button>
-              </div>
               <div id="resultedComments"></div>`;
         
               let resultedComments = document.getElementById("resultedComments");
@@ -196,10 +239,7 @@ function getPostData() {
                     <div class="commentText">
                       <p>${comment.content} <a href="/users/${comment.authorID}">@user${comment.authorID}</a></p>
                     </div>
-                    <div class="commentActions">
-                      <input type="text" class="" name="comment" placeholder="Write your comment" style="display: flex;">
-                      <button class="postComment" onclick="submitComment(${response.postDetails.id},${comment.id},this.previousElementSibling.value,'comment')"></button>
-                    </div>
+                    <button class="postComment" onclick="addInput(this, ${response.postDetails.id},${comment.id},'comment')"></button>
                   </div>
                 </div>`;
                 const commentLevel = 0;
@@ -213,13 +253,13 @@ function getPostData() {
               alert("[Error]: " + response.errorText);
             }
             else {
-              console.log("[Error]: There has been an error receiving the response from /votePost")
+              console.log("[Error]: There has been an error receiving the response from /votePost");
               alert("[Error]: Internal server error");
             }
           },
           
         error: function() {
-          console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()")
+          console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()");
           alert('[Error]: Internal server error');
         }
       });
@@ -235,8 +275,6 @@ function getPostData() {
 
 
 function submitComment(postID,parentID,commentContent,parentType) {
-
-  console.log(postID,parentID,commentContent,parentType)
 
   jQuery.ajax({
       type: 'GET',
@@ -257,14 +295,11 @@ function submitComment(postID,parentID,commentContent,parentType) {
           } 
         },
       error: function() {
-        console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()")
+        console.log("[Error]: There was an error receiving the response from /votePost in voteFunction()");
         alert('[Error]: Internal server error');
       }
     });
 }
-
-
-
 
 
 
