@@ -94,6 +94,22 @@ async function setLocation(position) {
   }
 }
 
+function locationAllowed() {
+  const popup = document.getElementById("hideBody");
+  popup.classList.remove('active');
+  popup.classList.add('inactive');
+  setTimeout(() => {
+    popup.classList.remove('active');
+    popup.style.display = 'none';
+  }, 250);
+
+  navigator.geolocation.getCurrentPosition(setLocation);
+}
+
+function locationDenied() {
+  alert("Location tracking must be enabled to use this website");
+  window.location.href = "/missingLogin";
+}
 
 function checkLocation() {
   const popup = document.getElementById("hideBody");
@@ -101,18 +117,9 @@ function checkLocation() {
   popup.classList.add('active');
 
   if (navigator.geolocation) {
-    popup.classList.remove('active');
-    popup.classList.add('inactive');
-    setTimeout(() => {
-      popup.classList.remove('active');
-      popup.style.display = 'none';
-    }, 250);
-
-    navigator.geolocation.getCurrentPosition(setLocation);
-  } 
-  else {
-    alert("Location tracking must be enabled to use this website");
-    window.location.href = "/";
+    navigator.geolocation.getCurrentPosition(locationAllowed, locationDenied);
+  } else {
+    alert("Geolocation is not supported, thus sadly you cannot use this web application...");
   }
 }
 
