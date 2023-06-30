@@ -606,14 +606,14 @@ appRouter.post('/createPost', (req, res) => {
 appRouter.get('/checkUserAccess', (req, res) => {
   const accID = req.cookies.accountID;
 
-  let clearanceQuery = "SELECT IF(clearance > 2, 'true', 'false') AS result FROM userdetails WHERE userID = ?";
+  let clearanceQuery = "SELECT IF(clearance > 2, 'true', 'false') AS res FROM userdetails WHERE userID = ?";
   con.query(clearanceQuery, [accID], (error, result) => {
     if (error) {
       console.log(error);
       res.send({ code: 500, errorText: "appRouter.get(/checkUserAccess) -> con.query(clearanceQuery)" });
     } 
     else {
-      res.send({code: 200, answer: result[0].result});
+      res.send({code: 200, answer: result[0]});
     }
   });
 
